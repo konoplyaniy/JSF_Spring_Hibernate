@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:body>
+	<!-- Delete ticket popup form -->
+	
+			<!-- Delete ticket button -->
+		<p:commandButton
+		 value="-" 
+		 onclick="PF('deleteTicketDialog').show();"
+		 disabled="#{not calendarBean.itsCurrentMonth() or createTicketBean.createdTicketsCount==0}" />
+						
+						<!-- Delete ticket popup -->
+						<p:dialog header="Delete ticket form"
+						widgetVar="deleteTicketDialog"
+						width="350"
+						resizable="false"
+						showEffect="fade"
+						hideEffect="fade">
+						
+						<!-- Delete ticket scroll table -->
+						<p:dataTable id="deleteTable" var="deleteTickets"
+							value="#{createTicketBean.createdTickets}"
+							selection="#{createTicketBean.deleteTickets}"
+							rowKey="#{deleteTickets.id}"
+							scrollable="true"
+							scrollHeight="300">
+							
+							<p:column headerText="PRODUCT">
+							
+								<h:outputText value="#{deleteTickets.product}" />
+								
+							</p:column>
+							
+							<p:column headerText="DATE">
+							
+								<h:outputText value="#{deleteTickets.date}" >
+								
+								<f:convertDateTime pattern="MM/dd/yy"/>
+								
+								</h:outputText>
+								
+							</p:column>
+							
+							<p:column headerText="AREA">
+							
+							<h:outputText value="#{(deleteTickets.front_area==1)? 'Front' : ''} #{(deleteTickets.members_area==1)? ' Members' : ''}"/>
+							
+							</p:column>
+							
+							<p:column selectionMode="multiple"	style="width:16px;text-align:center" />
+							
+							</p:dataTable>
+					
+							<!-- Footer -->
+						<f:facet name="footer">
+						
+							<p:toolbar>
+							
+								<f:facet name="left">
+								
+									<p:commandButton action="#{createTicketBean.deleteTickets}"
+										value="Delete"
+										icon="fa fa-remove"
+										oncomplete="if (args &amp;&amp; !args.validationFailed) PF('deleteTicketDialog').hide();PF('deleteTicketButton').enable();"
+										update=":mainViewForm,message"
+										widgetVar="deleteTicketButton"
+								        onclick="PF('deleteTicketButton').disable();">
+								 	
+										<f:ajax render=":mainViewForm,message"/>
+										
+									</p:commandButton>
+									
+									<p:commandButton icon="fa fa-close"
+									 value="Close"
+									 oncomplete="PF('deleteTicketDialog').hide()" />
+									 
+								</f:facet>
+								
+							</p:toolbar>
+							
+						</f:facet>
+						
+					</p:dialog>
+					
+
+     </h:body>
+
+</html>

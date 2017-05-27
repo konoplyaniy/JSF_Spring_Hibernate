@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+	<link href="https://fonts.googleapis.com/css?family=Fira+Sans"
+		rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Oswald"
+		rel="stylesheet" />
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" />
+	<h:outputStylesheet library="css" name="main.css" />
+	<h:outputStylesheet library="css" name="topMenu.css" />
+	<h:outputStylesheet library="css" name="leftMenu.css" />
+	<h:outputStylesheet library="css" name="editProfileMenu.css" />
+	<h:outputStylesheet library="css" name="mainView.css" />
+	<h:outputScript library="js" name="leftMenu.js" />
+	<h:outputScript library="js/jqplotjs/" name="jquery.jqplot.js" />
+	<h:outputScript library="js/jqplotjs/plugins/"
+		name="jqplot.pieRenderer.js" />
+	<h:outputScript library="js/jqplotjs/plugins/"
+		name="jqplot.enhancedPieLegendRenderer.js" />
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<title>Main Dashboard</title>
+</h:head>
+<h:body>
+	<ui:composition>
+		<h:form id="dashboard">
+
+			<!-- Calendar form -->
+
+			<ui:insert name="calendar_form">
+			
+				<ui:include src="templates/forms/calendar_form.xhtml" />
+				
+			</ui:insert>
+
+			<p:panel id="boxPanel">
+			
+				<div class="ui-g">
+				
+					<div class="ui-g-12 ui-md-6 ui-lg-9">
+
+						<!-- Ticket top panel form -->
+
+						<ui:insert name="calendar_form">
+						
+							<ui:include src="templates/forms/ticket_top_panel_form.xhtml" />
+							
+						</ui:insert>
+
+						<!-- Ticket top panel form -->
+
+						<div class="ui-g-12 ui-md-12 ui-lg-12">
+						
+							<h3>TICKETS BY DAYS</h3>
+							
+							<p:chart type="line" model="#{chartsBean.lineChart}"
+								responsive="true" id="resizable1" style="height:500px;" />
+								
+						</div>
+
+						<div class="ui-g-12 ui-md-6 ui-lg-6">
+					
+					<!-- User statistic table -->
+							<ui:insert name="user_statistic_form">
+							
+								<ui:include src="templates/forms/user_statistic.xhtml" />
+								
+							</ui:insert>
+
+						</div>
+						
+						<div class="ui-g-12 ui-md-6 ui-lg-6">
+						
+							<h3>CHART STATISTIC</h3>
+								
+										<!-- User statistic bar -->
+							<p:chart type="bar" model="#{chartsBean.barChartModel}"	style="height:450px" />
+
+						</div>
+
+					</div>
+					
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+
+						<!-- Overtime table form -->
+
+						<ui:insert name="overtime_form">
+						
+							<ui:include src="templates/forms/overtime_table_form.xhtml" />
+							
+						</ui:insert>
+						
+						<div class="fade_line"></div>
+
+						<ui:insert name="calendar_form">
+						
+							<!-- Pie chart -->
+							<ui:include src="templates/forms/ticket_pie_chart.xhtml" />
+							
+						</ui:insert>
+
+						<!-- Overtime table form -->
+
+					</div>
+					
+				</div>
+				
+			</p:panel>
+			
+ 
+
+	
+	
+	<!-- Scripts for customize charts -->
+			<script>
+				function customExtender() {
+					this.cfg.seriesDefaults = {
+						renderer : jQuery.jqplot.PieRenderer,
+						rendererOptions : {
+							padding : 2,
+							sliceMargin : 12,
+							showDataLabels : true,
+							startAngle : -90
+						}
+					};
+					this.cfg.seriesDefaults.rendererOptions.dataLabels = 'value';
+					this.cfg.seriesDefaults.rendererOptions.dataLabelPositionFactor = '0.8';
+					this.cfg.seriesDefaults.rendererOptions.dataLabelThreshold = '0';
+					this.cfg.grid = {
+						background : '#FFF', //Set background to white
+						borderWidth : '0',
+						shadow : 'false',
+						shadowAlpha : '0',
+						shadowOffset : '0'
+					};
+					$('#pie8').bind('resize', function(event, ui) {
+						plot1.replot({
+							resetAxes : true
+						});
+					});
+
+				}
+
+				function customExtenderLine() {
+					this.cfg.grid = {
+						background : '#FFF', //Set background to white
+						borderWidth : '0',
+						shadow : 'false',
+						shadowAlpha : '0',
+						shadowOffset : '0'
+					};
+
+				}
+				
+				function customExtenderBar() {
+					this.cfg.grid = {
+						background : '#FFF', //Set background to white
+						borderWidth : '0',
+						shadow : 'false',
+						shadowAlpha : '0',
+						shadowOffset : '0'
+					};
+
+				}
+			</script>
+
+		</h:form>
+
+	</ui:composition>
+	
+</h:body>
+
+</html>

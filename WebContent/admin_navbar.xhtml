@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:body>
+
+	<!-- Top navbar  -->
+	<ui:composition>
+	
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+		
+		<div class="container-fluid topbar">
+		
+			<div class="navbar-header">
+			
+				<button type="button"
+				 class="navbar-toggle"
+				 data-toggle="collapse"
+				 data-target="#myNavbar">
+				 
+					<span class="icon-bar"></span>
+					
+					 <span class="icon-bar"></span>
+					 
+					  <span	class="icon-bar"></span>
+					  
+				</button>
+				<!-- Brand -->
+				<a class="navbar-brand" href="#">DREAM SCAPE QA</a>
+				
+			</div>
+			
+			<div class="collapse navbar-collapse" id="myNavbar">
+			 
+				<ul class="nav navbar-nav">
+
+					<!-- For insert menu buttons -->
+					<li><ui:include src="templates/forms/create_form.xhtml" /></li>
+					
+					<li><ui:include src="templates/forms/edit_form.xhtml" /></li>
+					<li><ui:include
+							src="templates/forms/create_overtime_form.xhtml" /></li>
+							
+					<!-- For insert menu buttons -->
+
+				</ul>
+				
+				<ul class="nav navbar-nav navbar-right">
+				
+					<li>
+					<h:form>
+					
+							<p:commandButton action="#{loginBean.logout()}" value=" Logout"
+								icon="fa fa-fw fa-sign-out" styleClass="topPanelButton" />
+								
+						</h:form>
+						
+						</li>
+						
+				</ul>
+				
+			</div>
+			
+		</div>
+		
+		</nav>
+		
+	</ui:composition>
+
+</h:body>
+</html>

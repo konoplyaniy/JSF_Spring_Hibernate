@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:body>
+
+	<!-- Create Overtime form -->
+	<h:form id="createOvertimeForm">
+
+		<!-- Overtime button for open overtime form at top navbar -->
+		<p:commandButton value="Create Overtime"
+		    process="@this"
+			oncomplete="PF('overtimePopup').show();"
+			icon="fa fa-fw fa-clock-o"
+			styleClass="topPanelButton"
+			update="overtimeDialog" >
+			<p:resetInput target="overtimeDialog"/>
+			</p:commandButton>
+
+		<!-- Popup overtime dialog  -->
+		<p:dialog header="Create overtime form"
+		 id="overtimeDialog"
+		 widgetVar="overtimePopup"
+		 width="350"
+		 resizable="false"
+		 showEffect="fade"
+		 hideEffect="fade">
+
+			<h:panelGrid columns="2">
+
+				<h:outputText value="Date from :"/>
+
+				<p:calendar size="32"
+				    id="calendar_from"
+				    pattern="MM/dd/yy HH:mm"
+					value="#{overtimeBean.overtime_form_date_from}"
+					required="true"
+					showOn="button">
+
+					<f:convertDateTime pattern="MM/dd/yy HH:mm" />
+
+				</p:calendar>
+
+				<h:outputText value="Date to :"/>
+
+				<p:calendar size="32" id="calendar_to" pattern="MM/dd/yy HH:mm"
+				  required="true"
+				  value="#{overtimeBean.overtime_form_date_to}"
+				  showOn="button">
+
+					<f:convertDateTime pattern="MM/dd/yy HH:mm" />
+
+				</p:calendar>
+
+				<h:outputText value="Project :" />
+
+				<p:inputText value="#{overtimeBean.overtime_form_project}" size="32" />
+
+			</h:panelGrid>
+			
+			<!-- Overtime footer  -->
+			<f:facet name="footer">
+
+				<p:toolbar>
+
+					<f:facet name="left">
+						
+						<!-- Create overtime button  -->
+						<p:commandButton value="Create"
+							widgetVar="createOvertimeButton"
+							onclick="PF('createOvertimeButton').disable();"
+							oncomplete="PF('createOvertimeButton').enable();if (args &amp;&amp; !args.validationFailed) PF('overtimePopup').hide();"
+							update=":mainViewForm"
+							action="#{overtimeBean.create}">
+
+							<f:ajax render="message,:mainViewForm" />
+
+						</p:commandButton>
+						
+						<!-- Close overtime button  -->
+						<p:commandButton icon="fa fa-close" value="Close"
+							oncomplete="PF('overtimePopup').hide()" />
+
+					</f:facet>
+
+				</p:toolbar>
+
+			</f:facet>
+
+		</p:dialog>
+
+	</h:form>
+
+</h:body>
+
+</html>

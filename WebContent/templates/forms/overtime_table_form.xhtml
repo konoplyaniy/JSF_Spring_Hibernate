@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:body>
+
+	<h3>OVERTIMES</h3>
+	
+	<!-- Overtime table -->
+	<p:dataTable id="panel"
+	 styleClass="overtimeTable"
+	 var="over"
+	 rows="10"
+	 paginator="true"
+	 paginatorPosition="bottom"
+	 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+	 rowsPerPageTemplate="10"
+	 value="#{overtimeBean.overtimes}"
+	 selectionMode="single"
+	 selection="#{overtimeBean.overtimeEntity}"
+	 rowKey="#{over.id}">
+
+		<p:ajax event="rowSelect"
+		 listener="#{overtimeBean.onRowSelect}"
+		 oncomplete="PF('row').show();"
+		 process="panel"
+		 update=":mainViewForm" />
+
+		<p:column headerText="USER"
+			rendered="#{loginBean.userRole.equals('admin')}">
+			
+			<h:outputText value="#{over.userEntity.user_first_name} " />
+			
+			<h:outputText value="#{over.userEntity.user_last_name}" />
+			
+		</p:column>
+		
+		<p:column headerText="FROM">
+		
+			<h:outputText value="#{over.date_from}">
+			
+				<f:convertDateTime pattern="MM/dd/yy HH:mm" />
+				
+			</h:outputText>
+			
+		</p:column>
+		
+		<p:column headerText="TO" priority="1">
+		
+			<h:outputText value="#{over.date_to}">
+			
+				<f:convertDateTime pattern="MM/dd/yy HH:mm" />
+				
+			</h:outputText>
+			
+		</p:column>
+		
+		<p:column headerText="WORK TIME">
+		
+			<h:outputText value="#{overtimeBean.getDifferentBetweenDate(over.date_from,over.date_to)}" />
+			
+		</p:column>
+		
+		<p:column headerText="APPROVE">
+		
+			<h:outputText value="#{overtimeBean.intToBoolean(over.approvement) ? 'Approve' : 'Disapprove'}" />
+			
+		</p:column>
+
+		<p:columnGroup type="footer">
+		
+			<p:row>
+			
+				<p:column colspan="3" style="text-align:right;" footerText="TOTAL:" />
+				
+				<p:column colspan="1" footerText="#{overtimeBean.totalHours}" />
+				
+				<p:column colspan="1" />
+				
+			</p:row>
+			
+		</p:columnGroup>
+
+		<f:facet name="{Exporters}">
+		
+			<p:commandButton ajax="false" icon="fa fa-file-excel-o">
+			
+				<p:dataExporter type="xls" target="panel" fileName="overtimes" />
+				
+			</p:commandButton>
+			
+			<p:commandButton ajax="false" icon="fa fa-file-pdf-o">
+			
+				<p:dataExporter type="pdf" target="panel" fileName="overtimes" />
+				
+			</p:commandButton>
+
+		</f:facet>
+		
+	</p:dataTable>
+	
+	<!-- Approve/Disapprove all switcher -->	
+	<p:inputSwitch value="#{overtimeBean.approvementAll}"
+		rendered="#{loginBean.userRole.equals('admin')}"
+		style="float:left;"
+		onLabel="APPROVE ALL"
+		offLabel="DISAPPROVE ALL">
+		
+		<p:ajax listener="#{overtimeBean.switchApprovement()}"
+			update=":mainViewForm" />
+			
+	</p:inputSwitch>
+	
+	<!-- Overtime description form -->
+		<ui:include src="overtime_description_form.xhtml" />
+
+</h:body>
+
+</html>

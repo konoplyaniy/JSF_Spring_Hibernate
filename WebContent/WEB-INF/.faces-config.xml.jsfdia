@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#enterPage.xhtml" PATH="/enterPage.xhtml"
+  SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#enterPage.xhtml:0" NAME="item"
+   PATH="/enterPage.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="admin::#adminDashboardPage.xhtml"
+    NAME="output" PATH="/adminDashboardPage.xhtml"
+    TARGET="rules:#adminDashboardPage.xhtml" TITLE="admin" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+  <PROCESS-ITEM ID="rules:#enterPage.xhtml:1" NAME="item1"
+   PATH="/enterPage.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="user::#adminDashboardPage.xhtml"
+    NAME="output" PATH="/adminDashboardPage.xhtml"
+    TARGET="rules:#adminDashboardPage.xhtml" TITLE="user" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#adminDashboardPage.xhtml"
+  PATH="/adminDashboardPage.xhtml" SHAPE="240,33,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#adminDashboardPage.xhtml:0" NAME="item"
+   PATH="/adminDashboardPage.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="logout::#enterPage.xhtml" NAME="output"
+    PATH="/enterPage.xhtml" TARGET="rules:#enterPage.xhtml"
+    TITLE="logout" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+</PROCESS>

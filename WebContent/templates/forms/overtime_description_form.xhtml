@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:body>
+
+	<!-- Overtime description popup form -->
+	<p:dialog header="Overtime Description"
+	  widgetVar="row"
+	  showEffect="fade"
+	  hideEffect="fade"
+	  width="350"
+	  resizable="false">
+	  
+		<h:panelGrid columns="2">
+		
+			<h:outputText value="User:"	rendered="#{loginBean.userRole.equals('admin')}" />
+			
+			<h:outputText rendered="#{loginBean.userRole.equals('admin')}"
+				value="#{overtimeBean.overtimePopup.userEntity.user_first_name} #{overtimeBean.overtimePopup.userEntity.user_last_name}" />
+				
+			<h:outputText value="Date from:" />
+			
+			<p:calendar id="calendar_from"
+			 pattern="MM/dd/yy HH:mm"
+			 value="#{overtimeBean.overtimePopup.date_from}"
+			 size="30"
+			 showOn="button">
+			 
+				<f:convertDateTime pattern="MM/dd/yy HH:mm" />
+				
+			</p:calendar>
+			
+			<h:outputText value="Date to:" />
+			
+			<p:calendar id="calendar_to"
+			    pattern="MM/dd/yy HH:mm"
+				value="#{overtimeBean.overtimePopup.date_to}"
+				size="30"
+			    showOn="button">
+			    
+				<f:convertDateTime pattern="MM/dd/yy HH:mm" />
+				
+			</p:calendar>
+			
+			<h:outputText value="Project:" />
+			
+			<p:inputText value="#{overtimeBean.overtimePopup.project}" size="30" />
+			
+			<h:outputText value="Approvement:" />
+			
+			<h:outputText
+				value="#{overtimeBean.intToBoolean(overtimeBean.overtimePopup.approvement) ? 'Approve' : 'Disapprove'}" />
+				
+		</h:panelGrid>
+		
+		<f:facet name="footer">
+		
+			<p:toolbar>
+			
+				<f:facet name="left">
+				
+					<p:commandButton update=":mainViewForm,message"
+					 widgetVar="updateOvertimeButton"
+					 value="Update"
+					 disabled="#{overtimeBean.intToBoolean(overtimeBean.overtimePopup.approvement) and loginBean.userRole.equals('user')}"
+					 icon="fa fa-edit"
+					 action="#{overtimeBean.update(overtimeBean.overtimePopup)}"
+					 onclick="PF('updateOvertimeButton').disable();"
+					 oncomplete="PF('updateOvertimeButton').enable();if (args &amp;&amp; !args.validationFailed) PF('row').hide();">
+					 
+						<f:ajax render=":mainViewForm,message"/>
+						
+					</p:commandButton>
+					
+					<p:commandButton update=":mainViewForm,message"
+					 widgetVar="deleteOvertimeButton"
+					 onclick="PF('deleteOvertimeButton').disable();"
+					 oncomplete="PF('deleteOvertimeButton').enable();PF('row').hide();"
+					 value="Delete"
+					 disabled="#{overtimeBean.intToBoolean(overtimeBean.overtimePopup.approvement) and loginBean.userRole.equals('user')}"
+					 icon="fa fa-remove"
+					 action="#{overtimeBean.delete(overtimeBean.overtimePopup)}">
+					 
+						<f:ajax render=":mainViewForm,message"/>
+						
+					</p:commandButton>
+					
+					<p:commandButton update=":mainViewForm,message"
+					 widgetVar="approveOvertimeButton"
+					 icon="fa fa-check"
+					 value="App"
+					 onclick="PF('approveOvertimeButton').disable();"
+					 oncomplete="PF('approveOvertimeButton').enable();"
+					 rendered="#{loginBean.userRole.equals('admin')}"
+					 action="#{overtimeBean.singleApprove()}">
+					 
+						<f:ajax render=":mainViewForm,message"/>
+						
+					</p:commandButton>
+					
+					<p:commandButton update=":mainViewForm,message"
+					 widgetVar="disapproveOvertimeButton"
+					 onclick="PF('disapproveOvertimeButton').disable();"
+					 oncomplete="PF('disapproveOvertimeButton').enable();"
+					 icon="fa fa-minus-circle"
+					 value="Dis" rendered="#{loginBean.userRole.equals('admin')}"
+					 action="#{overtimeBean.singleDisapprove()}">
+					 
+						<f:ajax render=":mainViewForm,message"/>
+						
+					</p:commandButton>
+					
+				</f:facet>
+				
+			</p:toolbar>
+			
+		</f:facet>
+		
+	</p:dialog>
+
+</h:body>
+
+</html>

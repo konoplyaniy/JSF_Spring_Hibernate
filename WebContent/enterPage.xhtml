@@ -1,0 +1,74 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<link rel="icon" type="image/x-icon"
+		  href="#{request.contextPath}/images/favicon.ico" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+	<link rel="stylesheet"
+		href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+	<link href="https://fonts.googleapis.com/css?family=Oswald"
+		rel="stylesheet" />
+	<h:outputStylesheet library="css" name="main.css" />
+	<h:outputStylesheet library="css" name="loginPage.css" />
+	<h:outputStylesheet library="css" name="topMenu.css" />
+	<h:outputStylesheet library="css" name="mainView.css" />
+	<title>Login | Dreamscape.QA</title>
+</h:head>
+<h:body>
+
+	<div class="ui-g">
+
+		<div class="ui-g-12 ui-md-4 ui-lg-4"></div>
+
+		<div class="ui-g-12 ui-md-4 ui-lg-4 loginBlock">
+
+			<h:form styleClass="loginForm">
+
+				<div class="fade_line"></div>
+
+				<h1 style="margin-bottom: 2px;">Dreamscape.QA</h1>
+
+				<p>statistic and graphics</p>
+
+				<p:growl id="growl" showDetail="true" />
+				
+				<h:panelGrid columns="1">
+
+					<p:watermark for="username" value="Username"/>
+					<h:inputText value="#{loginBean.username}" id="username"
+							style="height: 40px; padding: 5px !important; margin: 5px"/>
+
+					<p:watermark for="password" value="Password"/>
+					<h:inputSecret value="#{loginBean.password}" id="password"
+								   style="height: 40px; padding: 5px !important; margin: 5px"/>
+					
+				</h:panelGrid>
+
+				<h:commandButton action="#{loginBean.login()}" value="Login"
+					update="growl" style="width:210px; height: 40px; padding: 5px !important; margin: 10px;
+					font-size: 1.5em;
+    				font-weight: bold;" />
+
+				<h:commandButton id="forgotPasswordButton" value="Forgot password"
+								 style="width:210px; height: 30px; padding: 5px !important; margin: 10px;
+								 font-weight: bold;" disabled="true" />
+
+				<p:tooltip id="forgotPasswordTooltip" for="forgotPasswordButton" value="Coming soon"
+						   position="top" styleClass="MyToolTip" style="font-size: 12px"/>
+
+				<div class="fade_line"></div>
+				
+			</h:form>
+			
+		</div>
+		
+	</div>
+
+</h:body>
+</html>

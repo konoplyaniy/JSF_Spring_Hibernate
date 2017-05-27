@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:body>
+	<div>
+	<p:growl id="message" showDetail="true" />
+	<h:panelGrid columns="3" styleClass="calendarForm" >
+		<p:commandButton action="#{calendarBean.previousMonth}"
+			icon="fa fa-angle-left"
+			update="message,boxPanel event calendarPanel"
+			styleClass="calendarNavigation">
+			<f:ajax render="message,calendarPanel,event,:pieChart"/>
+		</p:commandButton>
+		<p:calendar id="event"
+		 value="#{calendarBean.date}"
+		 mode="inline"
+		 maxdate="#{calendarBean.currentDate}">
+		</p:calendar>
+		<p:commandButton action="#{calendarBean.nextMonth()}"
+		 id="calendarPanel"
+		 icon="fa fa-angle-right"
+		 update="message,boxPanel event calendarPanel"
+		 styleClass="calendarNavigation"
+		 disabled="#{calendarBean.itsCurrentMonth()}">
+			<f:ajax render="message,calendarPanel,event,:pieChart"></f:ajax>
+		</p:commandButton>
+	</h:panelGrid>
+</div>
+</h:body>
+
+</html>

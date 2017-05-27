@@ -1,0 +1,25 @@
+.editImage{
+	width: 100px !important;
+	height: 100px !important;
+	border-radius: 50px !important;
+	display:block !important;
+	margin:auto !important;
+	
+}
+
+.ui-fileupload-content .ui-progressbar{
+	display:none !important;
+}
+.ui-fileupload-buttonbar .ui-button{
+	width:97px !important;
+}
+.ui-widget-content{
+	border:none !important;
+	font-family: inherit !important;
+}
+
+.smallImage{
+	width: 50px !important;
+	height: 50px !important;
+	border-radius: 25px !important;
+}

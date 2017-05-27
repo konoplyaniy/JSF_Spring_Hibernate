@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:body>
+
+	<!-- Edit profile form -->
+	<h:form id="editProfileForm" enctype="multipart/form-data">
+
+		<!-- Edit profile button -->
+		<p:commandButton value="Edit Profile" process="@this"
+			oncomplete="PF('editProfilePopup').show();" icon="fa fa-fw fa-edit"
+			update="editProfile" styleClass="topPanelButton"
+			actionListener="#{editProfileBean.buttonAction}">
+		</p:commandButton>
+
+		<!-- Edit profile popup -->
+		<p:dialog header="Edit profile form" id="editProfile"
+			widgetVar="editProfilePopup" width="350" resizable="false"
+			showEffect="fade" hideEffect="fade">
+
+			<!-- User Avatar -->
+
+
+			<h:panelGroup id="cropped">
+
+				<p:graphicImage value="#{loginBean.userAvatar}"
+					rendered="#{empty editProfileBean.newImageName}"
+					styleClass="editImage">
+
+					<f:param name="userId" value="#{editProfileBean.userPopup.user_id}" />
+
+				</p:graphicImage>
+
+				<p:graphicImage rendered="#{not empty editProfileBean.newImageName}"
+					styleClass="editImage"
+					value="/images/#{editProfileBean.newImageName}" />
+
+			</h:panelGroup>
+
+			<!-- Upload file -->
+			<p:fileUpload
+				fileUploadListener="#{editProfileBean.handleFileUpload}"
+				mode="advanced" dragDropSupport="false" auto="true"
+				allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+				update="message,outputPanelUpload" />
+
+
+			<p:growl id="msgs" showDetail="true" />
+
+			<p:outputPanel id="outputPanelUpload">
+
+				<h:panelGrid columns="1">
+
+					<p:imageCropper value="#{editProfileBean.croppedImage}" rendered="#{not empty editProfileBean.imagemUploadName}"
+						image="#{pageContext.servletContext.contextPath}/images/#{editProfileBean.imagemUploadName}.jpg"
+						initialCoords="0,#{editProfileBean.width},#{editProfileBean.width},0"  maxSize="330,330" aspectRatio="1.0" />
+
+
+
+				</h:panelGrid>
+
+	
+
+			</p:outputPanel>
+
+			<!-- User information fields -->
+			<h:panelGrid columns="2">
+
+				<h:outputText value="Username :" />
+
+				<p:inputText id="editUsername"
+					value="#{editProfileBean.userPopup.username}" maxlength="40"
+					size="32">
+
+					<f:validateLength minimum="1" maximum="40" />
+
+				</p:inputText>
+
+				<h:outputText value="Password :" />
+
+				<p:password value="#{editProfileBean.password}" maxlength="40"
+					size="32" />
+
+				<h:outputText value="First name :" />
+
+				<p:inputText value="#{editProfileBean.userPopup.user_first_name}"
+					maxlength="40" size="32">
+
+					<f:validateLength minimum="1" maximum="40" />
+					<f:validateRegex pattern="^[a-zA-Z]+$" />
+
+				</p:inputText>
+
+				<h:outputText value="Last name :" />
+
+				<p:inputText value="#{editProfileBean.userPopup.user_last_name}"
+					maxlength="40" size="32">
+
+					<f:validateLength minimum="2" maximum="40" />
+					<f:validateRegex pattern="^[a-zA-Z]+$" />
+
+				</p:inputText>
+
+				<h:outputText value="User email :" />
+
+				<p:inputText value="#{editProfileBean.userPopup.user_email}"
+					size="32" validatorMessage="Invalid email">
+
+					<f:validateRegex
+						pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+
+				</p:inputText>
+
+			</h:panelGrid>
+
+			<!-- Edit profile footer -->
+			<f:facet name="footer">
+
+				<p:toolbar>
+
+					<f:facet name="left">
+
+						<p:commandButton
+							action="#{editProfileBean.updadteUser(editProfileBean.userPopup)}"
+							value="Update"
+							oncomplete="if (args &amp;&amp; !args.validationFailed) PF('editProfilePopup').hide();"
+							update=":mainViewForm,message,:leftMenu" icon="fa fa-edit">
+
+							<f:ajax render=":mainViewForm,message,:leftMenu" />
+
+						</p:commandButton>
+
+						<p:commandButton
+							action="#{editProfileBean.deleteUser(editProfileBean.userPopup)}"
+							rendered="#{loginBean.userRole.equals('admin')}" value="Delete"
+							oncomplete="PF('editProfilePopup').hide();"
+							update=":mainViewForm,message" icon="fa fa-remove">
+
+							<f:ajax render=":mainViewForm,message" />
+
+						</p:commandButton>
+
+						<p:commandButton icon="fa fa-close" value="Close"
+							oncomplete="PF('editProfilePopup').hide()" />
+
+					</f:facet>
+
+				</p:toolbar>
+
+			</f:facet>
+
+		</p:dialog>
+
+	</h:form>
+
+</h:body>
+</html>

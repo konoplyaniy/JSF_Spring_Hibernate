@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+	<link rel="icon" type="image/x-icon"
+		href="#{request.contextPath}/images/favicon.ico" />
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+	<link href="https://fonts.googleapis.com/css?family=Fira+Sans"
+		rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Oswald"
+		rel="stylesheet" />
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" />
+	<h:outputStylesheet library="css" name="main.css" />
+	<h:outputStylesheet library="css" name="topMenu.css" />
+	<h:outputStylesheet library="css" name="leftMenu.css" />
+	<h:outputStylesheet library="css" name="editProfileMenu.css" />
+	<h:outputStylesheet library="css" name="mainView.css" />
+	<h:outputStylesheet library="css" name="footable.bootstrap.css" />
+	<h:outputScript library="js" name="leftMenu.js" />
+	<h:outputScript library="js" name="footable.js" />
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+	<title>Admin Dashboard</title>
+
+</h:head>
+
+<h:body>
+	
+	<!-- Top left info message -->
+	<p:growl id="message" showDetail="false" />
+	
+	<!-- Top navbar template -->
+	<ui:insert name="navbar">
+	
+		<ui:include src="admin_navbar.xhtml" />
+		
+	</ui:insert>
+
+	<div id="wrapper">
+		
+			<!-- Left menu  -->
+		<h:form id="leftMenu">
+		
+			<ui:insert name="lef_menu">
+			
+				<ui:include src="admin_left_menu.xhtml" />
+				
+			</ui:insert>
+			
+		</h:form>
+
+		<h:form id="mainViewForm">
+		
+			<div class="mainView">
+				
+				<!-- Main view  -->
+				<ui:insert name="footer">
+				
+					<ui:include src="#{leftMenuBean.showView}" />
+					
+				</ui:insert>
+				
+			</div>
+				
+				<!-- Auto ajax updater every 120 sceond -->
+			<p:poll interval="120" update=":mainViewForm" />
+			
+		</h:form>
+		
+	</div>
+
+</h:body>
+
+</html>
