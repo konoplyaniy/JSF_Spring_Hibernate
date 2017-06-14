@@ -24,16 +24,16 @@
 		<p:dialog header="Add new user"
 		 id="createDialog"
 		 widgetVar="createUserPopup"
-		 width="350"
+		 width="400"
 		 resizable="false"
 		 showEffect="fade"
 		 hideEffect="fade">
 		 
 			<h:panelGrid columns="2">
 			
-				<h:outputText value="First name:"/>
+				<h:outputLabel for="firstName" value="First name" style="padding: 5px;"/>
 				
-				<p:inputText value="#{createUserBean.firstName}"
+				<p:inputText value="#{createUserBean.firstName}" id="firstName"
 					maxlength="40"
 					size="32">
 					
@@ -42,8 +42,8 @@
 
 				</p:inputText>
 				
-				<h:outputText value="Last name:"/>
-				<p:inputText value="#{createUserBean.lastName}"
+				<h:outputLabel for="lastName" value="Last name" style="padding: 5px;"/>
+				<p:inputText value="#{createUserBean.lastName}" id="lastName"
 				maxlength="40"
 				size="32">
 				
@@ -52,9 +52,9 @@
 					
 				</p:inputText>
 				
-				<h:outputText value="User email:" />
+				<h:outputLabel for="email" value="User email" style="padding: 5px;"/>
 				
-				<p:inputText value="#{createUserBean.email}"
+				<p:inputText value="#{createUserBean.email}" id="email"
 				size="32"
 				validatorMessage="Invalid email">
 
@@ -69,7 +69,7 @@
 			
 				<p:toolbar>
 				
-					<f:facet name="left">
+					<f:facet name="right">
 					
 						<p:commandButton action="#{createUserBean.createUser()}"
 							value="Create"
@@ -79,7 +79,7 @@
 							<f:ajax render="message,:mainViewForm"/>
 						</p:commandButton>
 						<p:commandButton icon="fa fa-close" value="Close"
-							oncomplete="PF('createUserPopup').hide()" />
+							oncomplete="PF('createUserPopup').hide()"/>
 					</f:facet>
 				</p:toolbar>
 			</f:facet>
