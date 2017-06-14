@@ -311,6 +311,7 @@ public class EditProfileBean implements Serializable {
 	 *            - UserEntity
 	 */
 	public void updadteUser(UserEntity user) {
+		boolean isPasswordChanged = false;
 		if (croppedImage != null) {
 		setNewImageName(getRandomImageName());
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -340,7 +341,8 @@ public class EditProfileBean implements Serializable {
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Cropping finished."));
 		}
 		if(!password.equals("")){
-		user.setPassword(SupportUtils.MD5(password));
+			isPasswordChanged = true;
+			user.setPassword(SupportUtils.MD5(password));
 		}
 		if (avatar != null) {
 			user.setUser_avatar(avatar);
@@ -348,10 +350,14 @@ public class EditProfileBean implements Serializable {
 		userService.updateUser(user);
 		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User updated",
 				user.getUser_first_name() + " " + user.getUser_last_name());
-		mail.sendThreadEmail(
-				"Update user for Dreamscape QA", "Hi ! \n" + user.getUser_first_name() + "\n" + user.getUser_last_name()
-						+ "\n" + user.getUser_email() + "\n" + user.getUsername() + "\n" + password + "\n",
-				user.getUser_email());
+		if (isPasswordChanged){
+			mail.sendThreadEmail("Dreamscape.QA notification",
+					"Hello "+ user.getUser_first_name()+ " " + user.getUser_last_name() + "!"+
+					"\nYour password was changed for Dreamscape QA portal\n"+
+					"Login: " + user.getUsername() +
+					"\nYour new Password: " + password,
+					user.getUser_email());
+		}
 		FacesContext.getCurrentInstance().addMessage(null, message);
 		imagemUploadName = "";
 	}

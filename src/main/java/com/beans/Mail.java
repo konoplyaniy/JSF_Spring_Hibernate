@@ -2,12 +2,7 @@ package com.beans;
 
 import java.io.Serializable;
 import java.util.Properties;
-
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -45,7 +40,7 @@ public class Mail implements Serializable {
 		this.mailAddress = mailAddress;
 	}
 
-	public void sendMail(String header,String text,String email) {
+	public void sendMail(String header, String text, String email){
 		final String username = "testobjectsdream@gmail.com";
 		final String password = ";jkelm01@";
 

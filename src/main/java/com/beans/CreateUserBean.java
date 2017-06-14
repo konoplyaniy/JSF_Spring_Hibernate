@@ -70,7 +70,7 @@ public class CreateUserBean implements Serializable {
 	}
 
 	public void createUser() {
-		if (!firstName.equals("") && !lastName.equals("") && email.equals("")) {
+		if (firstName.length()!=0 && lastName.length()!=0 && email.length()!=0) {
 			String username = SupportUtils.getUsernameFromEmail(email);
 			String password = SupportUtils.generatePassword();
 			UserEntity userEntity = new UserEntity();
@@ -81,8 +81,15 @@ public class CreateUserBean implements Serializable {
 			userEntity.setUser_role("user");
 			userEntity.setUser_email(email);
 			userService.createUser(userEntity);
-			mail.sendThreadEmail("Create user for Dreamscape.QA", "Hi ! " + System.lineSeparator() +
-					"Login: " + username + System.lineSeparator() + "Password: " + password, email);
+			mail.sendThreadEmail("Dreamscape.QA notification", "Hi ! " + System.lineSeparator() +
+					firstName + " " + lastName + System.lineSeparator() +
+					"Congrats! You was successfully registered on Dreamscape.QA portal" + System.lineSeparator() +
+					"Your credentials:" + System.lineSeparator() +
+					"Login: " + username + System.lineSeparator() +
+					"Password: " + password + System.lineSeparator() +
+					System.lineSeparator() +
+					"Dreamscape.QA portal: selenium-au.internal.dremscapeneworks.com"
+					, email);
 			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User created", firstName + " " + lastName);
 		} else {
 			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Validation error", "Fields should not be empty");
