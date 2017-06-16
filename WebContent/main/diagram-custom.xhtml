@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <link rel="icon" type="image/x-icon" href="/resources/images/favicon-16x16.png"/>
+</h:head>
+<h:body>
+
+    <ui:composition template="/resources/templates/template.xhtml">
+        <ui:define name="title">
+            All Events Diagrams | QA | Dreamscape Networks
+        </ui:define>
+
+        <ui:define name="content">
+            <h:body onload="document.getElementById('hiddenForm:initDropdowns').click();">
+                <h:form id="hiddenForm" style="display: none">
+                    <h:commandButton id="initDropdowns" action="#{custom_diagram.initDropdownsData}" value="Refresh">
+                        <f:ajax render=":searchFields"/>
+                    </h:commandButton>
+                </h:form>
+
+                <h:form id="searchFields">
+                    <p:panel header="Select options for build diagram" styleClass="MyPanelStyleClass">
+                        <h:form id="options_form">
+                            <div class="ui-g">
+                                <div class="ui-g-3" style="width: auto">
+                                    <p:outputLabel for="startDate" value="Start Date"/><br></br>
+                                    <p:calendar id="startDate"
+                                                styleClass="MyCalendarClass"
+                                                required="true"
+                                                value="#{custom_diagram.startDate}"
+                                                pattern="MM-dd-yyyy HH:mm:ss"
+                                                placeholder="Start Date"/>
+                                    <div>
+                                        <p:outputLabel for="endDate" value="End Date"/><br></br>
+                                        <p:calendar id="endDate"
+                                                    required="true"
+                                                    styleClass="MyCalendarClass"
+                                                    value="#{custom_diagram.endDate}"
+                                                    pattern="MM-dd-yyyy HH:mm:ss"
+                                                    placeholder="End Date"/>
+                                    </div>
+                                </div>
+                                <div class="ui-g-3" style="width: auto">
+                                    <p:outputLabel for="websiteDropDown" value="Website"/><br></br>
+                                    <p:selectOneMenu id="websiteDropDown" value="#{custom_diagram.website}"
+                                                     effect="fold"
+                                                     styleClass="MyDropDown">
+                                        <p:ajax listener="#{custom_diagram.onWebSiteChange}"
+                                                update="localeDropDown syswebDropDown"/>
+                                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                        <f:selectItems value="#{custom_diagram.websites}"/>
+                                    </p:selectOneMenu>
+                                    <div>
+                                        <p:outputLabel for="classNameDropDown" value="Class name"/><br></br>
+                                        <p:selectOneMenu id="classNameDropDown" value="#{custom_diagram.clazzName}"
+                                                         effect="fold"
+                                                         styleClass="MyDropDown">
+                                            <p:ajax listener="#{custom_diagram.onClassNameChange}"
+                                                    update="testNameDropDown"/>
+                                            <f:selectItem itemValue="" noSelectionOption="true"/>
+                                            <f:selectItems value="#{custom_diagram.clazzNames}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+
+                                <div class="ui-g-3" style="width: auto">
+                                    <p:outputLabel for="testNameDropDown" value="Test name"/><br></br>
+                                    <p:selectOneMenu id="testNameDropDown" value="#{custom_diagram.testName}"
+                                                     effect="fold"
+                                                     styleClass="MyDropDown">
+                                        <f:selectItem itemValue=""/>
+                                        <f:selectItems value="#{custom_diagram.testNames}"/>
+                                    </p:selectOneMenu>
+                                    <div>
+                                        <p:outputLabel for="syswebDropDown" value="Sysweb"/><br></br>
+                                        <p:selectOneMenu id="syswebDropDown" value="#{custom_diagram.sysweb}"
+                                                         effect="fold"
+                                                         styleClass="MyDropDown">
+                                            <f:selectItem itemValue=""/>
+                                            <f:selectItems value="#{custom_diagram.syswebs}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="ui-g-3" style="width: auto">
+                                    <p:outputLabel for="localeDropDown" value="Locale"/><br></br>
+                                    <p:selectOneMenu id="localeDropDown" value="#{custom_diagram.locale}" effect="fold"
+                                                     styleClass="MyDropDown"
+                                                     disabled="#{custom_diagram.website eq 'austdomains.com.au'
+                                                 or custom_diagram.website eq 'general'}">
+                                        <f:selectItem itemValue=""/>
+                                        <f:selectItems value="#{custom_diagram.locales}"/>
+                                    </p:selectOneMenu>
+                                    <div>
+                                    </div>
+                                </div>
+                                <div class="ui-g-3" style="width: auto">
+                                    <p:outputLabel for="submitButton" value=""/><br></br>
+                                    <p:commandButton value="Build" id="submitButton" icon="ui-icon-circle-triangle-e"
+                                                     style="height: 41px; padding: 5px !important;"
+                                                     update="custom_diagrams"
+                                                     action="#{custom_diagram.clickBuildButton()}">
+                                    </p:commandButton>
+
+                                </div>
+                            </div>
+                        </h:form>
+                    </p:panel>
+
+                    <!--Popup with calendar-->
+
+                    <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold"
+                              rendered="">
+
+                        <p:panelGrid id="display" columns="2" columnClasses="label,value">
+                            <h:outputText value="Datetime start:"/>
+                            <h:outputText value="#{custom_diagram.startDate}">
+                                <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
+                            </h:outputText>
+                            <h:outputText value="Datetime end:"/>
+                            <h:outputText value="#{custom_diagram.endDate}">
+                                <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
+                            </h:outputText>
+                        </p:panelGrid>
+                    </p:dialog>
+                </h:form>
+
+                <!--DIAGRAMS-->
+                <h:panelGroup id="custom_diagrams">
+                    <!--<h:form>-->
+                    <h:form rendered="#{custom_diagram.clickedBuild}" id="results">
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 750px; width: 550px;">
+                                <p:panel header="Failed tests by dates" style="margin: 10px;"
+                                         rendered="#{custom_diagram.dataLoad}">
+                                    <p:chart type="line" model="#{custom_diagram.lineChartModelCustom}"
+                                             style="height:300px; width: 700px;"
+                                             id="date_line_chart"/>
+                                </p:panel>
+                            </div>
+                            <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
+                                <p:panel header="Failed tests by locales" style="margin-bottom:10px;"
+                                         rendered="#{custom_diagram.dataLoad}">
+                                    <h:graphicImage name="images/preloader_blue.gif"
+                                                    rendered="#{custom_diagram.dataLoad eq false}"/>
+                                    <p:chart type="bar" model="#{custom_diagram.modelByLocaleCustom}"
+                                             style="height:300px; width: 500px;"
+                                             id="locale_bar_chart"/>
+                                </p:panel>
+                            </div>
+                            <div class="ui-g-12 ui-md-4 ui-lg-4" style="height:320px; min-width: 550px; width: 550px;">
+                                <p:panel header="Failed tests by syswebs" style="margin-bottom:10px;"
+                                         rendered="#{custom_diagram.dataLoad}">
+                                    <h:graphicImage name="images/preloader_blue.gif"
+                                                    rendered="#{custom_diagram.dataLoad eq false}"/>
+                                    <p:chart type="bar" model="#{custom_diagram.modelBySyswebCustom}"
+                                             style="height:300px; width: 500px;"
+                                             id="sysweb_bar_chart"/>
+                                </p:panel>
+                            </div>
+                        </div>
+                    </h:form>
+                </h:panelGroup>
+                <!--Not working correctly-->
+                <!--Loader-->
+                <!--<h:form rendered="#{not custom_diagram.dataLoad}">
+                    <div style="padding: 10em;" align="center">
+                        <h:outputLabel for="data-loader"
+                                       value="Loading data"
+                                       style="font-size: 2em"/><br></br>
+                        <p:graphicImage value="/resources/images/row-loader.gif"
+                                        id="data-loader"/>
+                    </div>
+                </h:form>-->
+            </h:body>
+        </ui:define>
+    </ui:composition>
+
+</h:body>
+</html>

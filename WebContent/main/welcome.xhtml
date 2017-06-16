@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:body onload="document.getElementById('hiddenForm:update_event_form').click();">
+
+    <ui:composition template="/resources/templates/template.xhtml">
+        <ui:define name="title">
+            Main | QA | Dreamscape Networks
+        </ui:define>
+
+        <ui:define name="content">
+            <div class="ui-g" align="center" style="align-self: center">
+                <div class="ui-g-4" style="width: auto; margin: auto">
+                    <h:link outcome="/main/report.xhtml">
+                        <p:outputLabel for="selenium_image" value="Selenium results"
+                                       style="font-size: 3em !important; font-family: monospace;"/><br></br>
+                        <h:graphicImage id="selenium_image" name="images/selenium_image.png" width="450" height="450"
+                                        style="border: medium dotted; padding: 5px; margin: 5px"/>
+                    </h:link>
+                </div>
+
+                <div class="ui-g-4" style="width: auto; margin: auto">
+                    <h:link onclick="goToUrl('/jenkins/')" disabled="true">
+                        <p:outputLabel for="jenkins_image" value="Selenium Jenkins Integration"
+                                       style="font-size: 3em !important; font-family: monospace;"/><br></br>
+                        <h:graphicImage id="jenkins_image" name="images/jenkins_image.png" width="450" height="450"
+                                        style="border: medium dotted; padding: 5px; margin: 5px"/>
+                    </h:link>
+
+                </div>
+                <div class="ui-g-4" style="width: auto; margin: auto">
+                    <h:link onclick="goToUrl('/qa-statistic/')" disabled="true">
+                        <p:outputLabel for="statistic_image" value="QA Statistics"
+                                       style="font-size: 3em !important; font-family: monospace;"/><br></br>
+                        <h:graphicImage id="statistic_image" name="images/statistics_image.jpg" width="450" height="450"
+                                        style="border: medium dotted; padding: 5px;  margin: 5px"/>
+                    </h:link>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+
+
+</h:body>
+</html>

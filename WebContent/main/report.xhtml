@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:body>
+
+    <ui:composition template="/resources/templates/template.xhtml">
+        <ui:define name="title">
+            All Events | QA | Dreamscape Networks
+        </ui:define>
+
+        <ui:define name="content">
+            <h:body  onload="document.getElementById('hiddenForm:update_event_form').click()">
+            <h:form id="hiddenForm" style="display:none">
+                <h:commandButton id="update_event_form" action="#{report_exporter.init()}">
+                    <f:ajax render=":event_form"/>
+                </h:commandButton>
+            </h:form>
+
+            <script type="text/javascript">
+                setInterval(function () {
+                    var $form = $('#event_form');
+
+                    if ($form.length) {
+                        document.getElementById("hiddenForm:update_event_form").click();
+                    }
+                }, 60000);
+            </script>
+
+            <h:form id="event_form">
+                <p:dataTable id="event_table" var="reportRow"
+                             value="#{report_exporter.reportRowArrayList}"
+                             rows="#{report_exporter.reportRowArrayList.size()}"
+                             style="margin-bottom:15px"
+                             showDetail="true"
+                             widgetVar="eventTable"
+                             rendered="#{report_exporter.dataLoaded}">
+                    <p:column headerText="Site"
+                              style="height: 20px; font-size: 3em; font-style: italic;">
+                        <h:outputText value="#{reportRow.website}"/>
+                    </p:column>
+
+                    <p:column headerText="Locale"
+                              style="height: 20px; font-size: 3em; font-style: italic;"
+                              sortBy="#{reportRow.locale}">
+                        <h:outputText value="#{reportRow.locale}"/>
+                    </p:column>
+
+                    <p:column headerText="Checked"
+                              style="color: green; text-align: center; font-size: 3em;">
+                        <h:outputText value="#{reportRow.checked}"/>
+                    </p:column>
+
+                    <p:column headerText="Unchecked"
+                              style="color: brown; text-align: center; font-size: 3em;">
+                        <h:outputText value="#{reportRow.unchecked}"/>
+                    </p:column>
+
+                    <p:column headerText="Checked Issue"
+                              style="color: red; text-align: center; font-size: 3em;">
+                        <h:outputText value="#{reportRow.checkedIssue}"/>
+                    </p:column>
+
+                    <p:column headerText="Checked fixed"
+                              style="color: blue; text-align: center; font-size: 3em;">
+                        <h:outputText value="#{reportRow.checkedFixed}"/>
+                    </p:column>
+
+                    <p:column headerText="Total"
+                              style="color: black; text-align: center; font-size: 3em;">
+                        <h:outputText value="#{reportRow.failedCount}"/>
+                    </p:column>
+                </p:dataTable>
+                <!--Loader-->
+                <!--<h:form rendered="#{not report_exporter.dataLoaded}">-->
+                    <div style="padding: 10em;" align="center">
+                        <h:outputLabel for="data-loader"
+                                       value="Loading data"
+                                       style="font-size: 2em"
+                                       rendered="#{not report_exporter.dataLoaded}"
+                        /><br></br>
+                        <p:graphicImage value="/resources/images/row-loader.gif"
+                                        rendered="#{not report_exporter.dataLoaded}"
+                                        id="data-loader"/>
+                    </div>
+                <!--</h:form>-->
+            </h:form>
+            </h:body>
+        </ui:define>
+    </ui:composition>
+
+</h:body>
+</html>

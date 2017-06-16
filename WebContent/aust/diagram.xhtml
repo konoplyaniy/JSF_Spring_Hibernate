@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+
+    <ui:composition template="/resources/templates/template.xhtml">
+        <ui:define name="title">
+            Aust Events Diagrams | QA | Dreamscape Networks
+        </ui:define>
+
+        <ui:define name="content">
+            <h:body onload="document.getElementById('hiddenForm:update_diagram_form').click()">
+                <h:form id="hiddenForm" style="display: none">
+                    <h:commandButton id="update_diagram_form" action="#{austDiagramView.init()}" value="Refresh">
+                        <f:ajax render=":diagram_form"/>
+                    </h:commandButton>
+                </h:form>
+
+                <div>
+                    <h:panelGroup id="diagram_forms">
+                        <h:form id="diagram_form">
+                            <div class="ui-g" style="height: 400px">
+                                <div class="ui-g-12 ui-md-4 ui-lg-4"
+                                     style="height:320px; min-width: 750px; width: 550px;">
+                                    <p:panel header="AUSTDOMAINS: failed test by dates" style="margin-bottom:10px;">
+                                        <p:chart type="line" model="#{austDiagramView.modelPerDate}"
+                                                 style="height:300px; width: 700px;"
+                                                 id="chart"/>
+                                    </p:panel>
+                                </div>
+                                <div class="ui-g-12 ui-md-4 ui-lg-4"
+                                     style="height:320px; min-width: 550px; width: 550px;">
+                                    <p:panel header="AUSTDOMAINS: failed tests by locales (Current month)"
+                                             style="margin-bottom:10px;">
+                                        <p:chart type="bar" model="#{austDiagramView.modelByLocale}"
+                                                 style="height:300px; width: 500px;"
+                                                 id="bar_chart"/>
+                                    </p:panel>
+                                </div>
+                                <div class="ui-g-12 ui-md-4 ui-lg-4"
+                                     style="height:320px; min-width: 550px; width: 550px;">
+                                    <p:panel header="AUSTDOMAINS: failed tests by syswebs (Current month)"
+                                             style="margin-bottom:10px;">
+                                        <p:chart type="bar" model="#{austDiagramView.modelBySysweb}"
+                                                 style="height:300px;width: 500px;"
+                                                 id="chart_sysweb"/>
+                                    </p:panel>
+                                </div>
+                            </div>
+                        </h:form>
+                        <!--Loader-->
+                        <h:form rendered="#{not austDiagramView.dataLoaded}">
+                            <div style="padding: 10em;" align="center">
+                                <h:outputLabel for="data-loader"
+                                               value="Loading data"
+                                               style="font-size: 2em"
+                                /><br></br>
+                                <p:graphicImage value="/resources/images/row-loader.gif"
+                                                id="data-loader"/>
+                            </div>
+                        </h:form>
+                    </h:panelGroup>
+                </div>
+            </h:body>
+        </ui:define>
+    </ui:composition>
+
+</h:body>
+</html>

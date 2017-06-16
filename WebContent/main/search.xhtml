@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <h:outputScript library="js" name="dateValidation.js"/>
+</h:head>
+
+<h:body>
+
+
+    <ui:composition template="/resources/templates/template.xhtml">
+        <ui:define name="title">
+            Search Event | QA | Dreamscape Networks
+        </ui:define>
+
+        <ui:define name="content">
+            <p:panel header="Select options for search" styleClass="MyPanelStyleClass">
+                <h:form id="options_form">
+                    <div class="ui-g">
+                        <div class="ui-g-3" style="width: auto">
+                            <p:outputLabel for="startDate" value="Start Date"/><br></br>
+                            <p:calendar id="startDate"
+                                        styleClass="MyCalendarClass"
+                                        required="true"
+                                        value="#{searchView.startDate}"
+                                        pattern="MM-dd-yyyy HH:mm:ss"
+                                        placeholder="Start Date"/>
+                            <div>
+                                <p:outputLabel for="endDate" value="End Date"/><br></br>
+                                <p:calendar id="endDate"
+                                            required="true"
+                                            styleClass="MyCalendarClass"
+                                            value="#{searchView.endDate}"
+                                            pattern="MM-dd-yyyy HH:mm:ss"
+                                            placeholder="End Date" style="height: 30px"/>
+                            </div>
+                        </div>
+                        <div class="ui-g-3" style="width: auto">
+                            <p:outputLabel for="websiteDropDown" value="Website"/><br></br>
+                            <p:selectOneMenu id="websiteDropDown" value="#{searchView.website}" effect="fold"
+                                             styleClass="MyDropDown">
+                                <p:ajax listener="#{searchView.onWebSiteChange}"
+                                        update="localeDropDown syswebDropDown"/>
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{searchView.websites}"/>
+                            </p:selectOneMenu>
+                            <div>
+                                <p:outputLabel for="classNameDropDown" value="Class name"/><br></br>
+                                <p:selectOneMenu id="classNameDropDown" value="#{searchView.clazzName}" effect="fold"
+                                                 styleClass="MyDropDown">
+                                    <p:ajax listener="#{searchView.onClassNameChange}" update="testNameDropDown"/>
+                                    <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItems value="#{searchView.clazzNames}"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="ui-g-3" style="width: auto">
+                            <p:outputLabel for="testNameDropDown" value="Test name"/><br></br>
+                            <p:selectOneMenu id="testNameDropDown" value="#{searchView.testName}" effect="fold"
+                                             styleClass="MyDropDown">
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{searchView.testNames}"/>
+                            </p:selectOneMenu>
+                            <div>
+                                <p:outputLabel for="syswebDropDown" value="Sysweb"/><br></br>
+                                <p:selectOneMenu id="syswebDropDown" value="#{searchView.sysweb}" effect="fold"
+                                                 styleClass="MyDropDown">
+                                    <f:selectItem itemLabel="" itemValue=""/>
+                                    <f:selectItems value="#{searchView.syswebs}"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="ui-g-3" style="width: auto">
+                            <p:outputLabel for="localeDropDown" value="Locale"/><br></br>
+                            <p:selectOneMenu id="localeDropDown" value="#{searchView.locale}" effect="fold"
+                                             styleClass="MyDropDown"
+                                             disabled="#{searchView.website eq 'austdomains.com.au'
+                                             or searchView.website eq 'general'}">
+                                <f:selectItem itemLabel="" itemValue=""/>
+                                <f:selectItems value="#{searchView.locales}"/>
+                            </p:selectOneMenu>
+                        </div>
+                        <div></div>
+
+                        <div class="ui-g-3" style="width: auto">
+                            <p:outputLabel for="submitButton" value=""/><br></br>
+                            <p:commandButton value="Search" id="submitButton" icon="ui-icon-circle-triangle-e"
+                                             style="height: 40px; padding: 5px !important; border: none"
+                                             update="search_result"
+                                             action="#{searchView.clickSearchButton()}" onclick="compareDate()">
+                                <!--ajax="false"-->
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </h:form>
+                <!--POPUP WITH CALENDAR-->
+                <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold"
+                          rendered="">
+
+                    <p:panelGrid id="display" columns="2" columnClasses="label,value">
+                        <h:outputText value="Datetime start:"/>
+                        <h:outputText value="#{buildDiagramView.startDate}">
+                            <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
+                        </h:outputText>
+                        <h:outputText value="Datetime end:"/>
+                        <h:outputText value="#{buildDiagramView.endDate}">
+                            <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
+                        </h:outputText>
+                    </p:panelGrid>
+                </p:dialog>
+                <!--SEARСH RESULTS-->
+                <h:panelGroup id="search_result">
+                    <p:dataTable id="event_form"
+                                 scrollable="true" scrollHeight="300"
+                                 var="reportRow"
+                                 value="#{searchView.resultEventsList}"
+                                 rendered="#{searchView.visibleResultsForm}"
+                                 rowIndexVar="rCount"
+                                 style="margin-bottom:15px">
+
+                        <!--SEARCH RESULTS HEADER-->
+                        <f:facet name="header">
+                            <h:outputText value="Search results for period: " style="font-size: large"/>
+                            <h:outputText value="#{searchView.startDate}" style="font-size: large">
+                                <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
+                            </h:outputText>
+                            <h:outputText value=" - "/>
+                            <h:outputText value="#{searchView.endDate}" style="font-size: large">
+                                <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
+                            </h:outputText>
+                        </f:facet>
+                        <!--END-->
+
+                        <p:column style="width: 20px;">
+                            <f:facet name="header">
+                                <h:outputText value="№"/>
+                            </f:facet>
+                            <h:outputText value="#{rCount + 1}"/>
+                        </p:column>
+                        <p:column sortBy="#{reportRow.data}">
+                            <f:facet name="header">
+                                <h:outputText value="Date"/>
+                            </f:facet>
+                            <h:outputText value="#{reportRow.data}">
+                                <f:convertDateTime pattern="MM-dd-yyyy HH:mm:ss"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column sortBy="#{reportRow.localeByLocaleId.locale}">
+                            <f:facet name="header">
+                                <h:outputText value="Locale"/>
+                            </f:facet>
+                            <h:outputText value="#{reportRow.localeByLocaleId.locale}"/>
+                        </p:column>
+                        <p:column sortBy="#{reportRow.testByTestId.clazzByClassId.name}">
+                            <f:facet name="header">
+                                <h:outputText value="Class name"/>
+                            </f:facet>
+                            <h:outputText var="id" value="#{reportRow.testByTestId.clazzByClassId.name}"/>
+                        </p:column>
+                        <p:column sortBy="#{reportRow.testByTestId.name}">
+                            <f:facet name="header">
+                                <h:outputText value="Test name"/>
+                            </f:facet>
+                            <h:outputText var="id" value="#{reportRow.testByTestId.name}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Group name"/>
+                            </f:facet>
+                            <h:outputText var="id" value="#{reportRow.testByTestId.groupByGroupId.name}"/>
+                        </p:column>
+                        <p:column sortBy="#{reportRow.syswebBySyswebId.name}">
+                            <f:facet name="header">
+                                <h:outputText value="Sysweb"/>
+                            </f:facet>
+                            <h:outputText value="#{reportRow.syswebBySyswebId.name}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Params"/>
+                            </f:facet>
+                            <h:outputText value="#{reportRow.params}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="URL"/>
+                            </f:facet>
+                            <h:outputText value="#{reportRow.url}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <!--uncorrect wotking-->
+                    <!--Loader-->
+                    <!--<h:form rendered="#{not searchView.dataLoaded }">
+                        <div style="padding: 10em;" align="center">
+                            <h:outputLabel for="data-loader"
+                                           value="Loading data"
+                                           style="font-size: 2em"
+                            /><br></br>
+                            <p:graphicImage value="/resources/images/row-loader.gif"
+                                            id="data-loader"/>
+                        </div>
+                    </h:form>-->
+                </h:panelGroup>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+
+</h:body>
+</html>

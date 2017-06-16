@@ -1,9 +1,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:task="http://www.springframework.org/schema/task"
-	xsi:schemaLocation="http://www.springframework.org/schema/aop
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
 	http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
@@ -16,41 +17,59 @@
 	http://www.springframework.org/schema/task
 	http://www.springframework.org/schema/task/spring-task-3.2.xsd">
 
-	<context:component-scan base-package="com" />
-	<context:annotation-config />
-	<tx:annotation-driven transaction-manager="transactionManager" />
+    <context:component-scan base-package="com"/>
+    <context:annotation-config/>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/test" />
-		<property name="username" value="root" />
-		<property name="password" value="root" />
-	</bean>
+    <bean id="engineer" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/test"/>
+        <property name="username" value="root"/>
+        <property name="password" value="Selenium2015DreamTest"/>
+    </bean>
 
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"></property>
-		<property name="annotatedClasses">
-			<list>
-				<value>com.entity.UserEntity</value>
-				<value>com.entity.CreateTicketEntity</value>
-				<value>com.entity.SolvedTicketEntity</value>
-				<value>com.entity.UpdateControlEntity</value>
-				<value>com.entity.OvertimeEntity</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-				<prop key="hibernate.show_sql">true</prop>
-			</props>
-		</property>
-	</bean>
+    <bean id="reporter" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/crazydomains"/>
+        <property name="username" value="root"/>
+        <property name="password" value="Selenium2015DreamTest"/>
+    </bean>
 
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager"
-		p:sessionFactory-ref="sessionFactory">
-	</bean>
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="engineer"/>
+        <property name="annotatedClasses">
+            <list>
+                <value>com.entity.UserEntity</value>
+                <value>com.entity.CreateTicketEntity</value>
+                <value>com.entity.SolvedTicketEntity</value>
+                <value>com.entity.UpdateControlEntity</value>
+                <value>com.entity.OvertimeEntity</value>
+
+                <value>com.reporter.hibernate.entities.TestEntity</value>
+                <value>com.reporter.hibernate.entities.BrowserEntity</value>
+                <value>com.reporter.hibernate.entities.ClazzEntity</value>
+                <value>com.reporter.hibernate.entities.EventEntity</value>
+                <value>com.reporter.hibernate.entities.GroupEntity</value>
+                <value>com.reporter.hibernate.entities.LocaleEntity</value>
+                <value>com.reporter.hibernate.entities.PcEntity</value>
+                <value>com.reporter.hibernate.entities.SyswebEntity</value>
+                <value>com.reporter.hibernate.entities.TestcaseEntity</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate4.HibernateTransactionManager"
+          p:sessionFactory-ref="sessionFactory">
+    </bean>
 </beans>

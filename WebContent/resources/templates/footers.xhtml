@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:body>
+    <h:outputScript library="js" name="goTo.js"/>
+    <p:separator style="width:100%; height:5px; background-color: black; opacity: 0.4;"/>
+    <div class="ui-g" style="background-color: aliceblue">
+        <div class="ui-g-12" style="align-self: center; text-align: center;">
+            <div class="ui-g-12" align="center">
+                <p:link outcome="/main/welcome" styleClass="linksStyle"> Home </p:link> |
+                <p:link outcome="/main/report" styleClass="linksStyle"> Short report </p:link>|
+                <p:link outcome="/main/allevents" styleClass="linksStyle"> Results </p:link>|
+                <p:link outcome="/main/search" styleClass="linksStyle"> Search </p:link>|
+                <p:link outcome="/main/diagram" styleClass="linksStyle"> Diagram </p:link>|
+                <p:link outcome="/main/testcases" styleClass="linksStyle"> Test Cases </p:link>
+            </div>
+            <div class="ui-g-12" align="center">
+                <p:link outcome="/main/welcome">
+                    <h:graphicImage name="images/qa_logo.png"/>
+                </p:link>
+            </div>
+            <h:outputLabel value="2017 Developed by QA | Dreamscape Networks Limited"/>
+        </div>
+    </div>
+</h:body>
+</html>

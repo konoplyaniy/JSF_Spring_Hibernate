@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:body>
+
+    <ui:composition template="/resources/templates/template.xhtml">
+        <ui:define name="title">
+            Test cases | QA | Dreamscape Networks
+        </ui:define>
+
+        <ui:define name="content">
+            <div>
+            <p:panel header="Select class name and test name for search" styleClass="MyPanelStyleClass">
+                <h:form id="options_form">
+                    <div class="ui-g">
+                        <!--INPUT FIELDS-->
+                        <div class="ui-g-2" style="width: auto">
+                            <p:outputLabel for="classNameDropDown" value="Class name"/><br></br>
+                            <p:selectOneMenu id="classNameDropDown" value="#{testCasesView.clazzName}" effect="fold"
+                                             styleClass="MyDropDown" required="true"
+                                             requiredMessage="Class name can't be empty">
+                                <p:ajax listener="#{testCasesView.onClassNameChange}" update="testNameDropDown"/>
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{testCasesView.clazzNames}"/>
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="ui-g-2" style="width: auto">
+                            <p:outputLabel for="testNameDropDown" value="Test name"/><br></br>
+                            <p:selectOneMenu id="testNameDropDown" value="#{testCasesView.testName}" effect="fold"
+                                             styleClass="MyDropDown" required="true"
+                                             requiredMessage="Test name can't be empty">
+                                <f:selectItem itemLabel="Select test name" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{testCasesView.testNames}"/>
+                            </p:selectOneMenu>
+                        </div>
+
+                        <!--BUTTONS-->
+                        <div class="ui-g-2" style="width: 8em">
+                            <p:outputLabel for="searchButton" value="" style="display: none"/><br></br>
+                            <p:commandButton value="Search" id="searchButton" icon="ui-icon-search"
+                                             style="width: 7em; height: 40px; padding: 5px !important; "
+                                             update="search_results addNewTestCaseForm editTestCaseForm"
+                                             ajax="false"
+                                             action="#{testCasesView.clickSearchButton()}">
+                            </p:commandButton>
+                        </div>
+                        <div class="ui-g-2" style="width: 8em">
+                            <p:outputLabel for="editButton" value="" style="display: none"/><br></br>
+                            <p:commandButton value="Edit" id="editButton" icon="ui-icon-pencil"
+                                             update="search_results addNewTestCaseForm editTestCaseForm"
+                                             style="width: 7em; height: 40px; padding: 5px !important; vertical-align: text-bottom !important"
+                                             ajax="false"
+                                             action="#{testCasesView.clickEditButton()}">
+                            </p:commandButton>
+                        </div>
+                        <!--immediate="true" - ignore required fields-->
+                        <div class="ui-g-2" style="width: 8em">
+                            <p:outputLabel for="addButton" value="" style="display: none"/><br></br>
+                            <p:commandButton value="Add" id="addButton" icon="ui-icon-plus"
+                                             style="width: 7em; height: 40px; padding: 5px !important; "
+                                             update="search_results addNewTestCaseForm editTestCaseForm"
+                                             immediate="true"
+                                             action="#{testCasesView.clickAddButton()}">
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </h:form>
+
+                <!--SEARH RESULTS-->
+                <h:panelGroup id="search_results">
+                    <p:panel header="Test case" rendered="#{testCasesView.visibleResultsForm}">
+                        <h:panelGrid id="deleteBrowser" columns="2" border="1"
+                                     cellpadding="5" cellspacing="1" style="font-size: 14px">
+                            <h:outputLabel value="Test name" style="font-weight: bold"/>
+                            <h:outputLabel value="#{testCasesView.testcaseEntity.getTestName()}"
+                                           styleClass="preformatted"
+                                           escape="false"/>
+
+                            <h:outputLabel value="Description" style="font-weight: bold"/>
+                            <h:outputLabel value="#{testCasesView.testcaseEntity.getDescription()}"
+                                           styleClass="preformatted"
+                                           escape="false"/>
+
+                            <h:outputLabel value="Parameters" style="font-weight: bold"/>
+                            <h:outputLabel value="#{testCasesView.testcaseEntity.getParameters()}"
+                                           styleClass="preformatted"
+                                           escape="false"/>
+
+                            <h:outputLabel value="Steps" style="font-weight: bold"/>
+                            <h:outputLabel value="#{testCasesView.testcaseEntity.getSteps()}" styleClass="preformatted"
+                                           escape="false"/>
+
+                            <h:outputLabel value="Expected" style="font-weight: bold"/>
+                            <h:outputLabel value="#{testCasesView.testcaseEntity.getExpectedResult()}"
+                                           styleClass="preformatted" escape="false"/>
+
+                            <h:outputLabel value="Additional info" style="font-weight: bold"/>
+                            <h:outputLabel value="#{testCasesView.testcaseEntity.getAditionalInfo()}"
+                                           styleClass="preformatted" escape="false"/>
+
+                            <h:outputLabel value="Maven run command" style="font-weight: bold"/>
+                            <h:outputLabel value="#{testCasesView.testcaseEntity.getMavenFront()}"
+                                           styleClass="preformatted"
+                                           escape="false"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:panelGroup>
+            </p:panel>
+
+            <!--ADD NEW TEST CASE-->
+            <h:form id="addNewTestCaseForm">
+                <h:panelGrid>
+                    <p:panel header="Add new Test case" styleClass="MyPanelStyleClass" style="height: auto"
+                             rendered="#{testCasesView.visibleAddNewTestCaseForm}">
+
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Class name" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px">
+                                    <p:inputText placeholder="Class name (JAVA class)"
+                                                 value="#{testCasesView.clazzNameNew}"
+                                                 required="true" requiredMessage="Class name can't be empty"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Test name" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px">
+                                    <p:inputText placeholder="Test name (JAVA method)"
+                                                 value="#{testCasesView.testNameNew}"
+                                                 required="true" requiredMessage="Test name can't be empty"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Description" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px">
+                                    <p:inputText placeholder="Simple test description"
+                                                 value="#{testCasesView.descriptionNew}"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Parameters" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px;">
+                                    <p:inputTextarea rows="6" cols="33" placeholder="Test parameters"
+                                                     styleClass="TestParametersTextArea"
+                                                     value="#{testCasesView.parametersNew}"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Steps" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px;">
+                                    <p:inputTextarea rows="6" cols="33" placeholder="Steps to reproduce"
+                                                     styleClass="StepsTextArea" value="#{testCasesView.stepsNew}"
+                                                     required="true" requiredMessage="Steps can't be empty"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Expected" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px">
+                                    <p:inputTextarea rows="6" cols="33" placeholder="Expected conditions"
+                                                     styleClass="ExpectedConditionsTextArea"
+                                                     value="#{testCasesView.expectedResultNew}"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px;">
+                                    <h:outputLabel value="Additional info" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px;">
+                                    <p:inputTextarea rows="6" cols="33" placeholder="Additional information"
+                                                     styleClass="AdditionalInfoTextArea"
+                                                     value="#{testCasesView.aditionalInfoNew}"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Maven run command" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px">
+                                    <p:inputText placeholder="Maven command for run test"
+                                                 value="#{testCasesView.mavenFrontNew}"/>
+                                </div>
+                            </div>
+                            <div class="ui-g-12">
+                                <p:commandButton value="SAVE" id="saveButton"
+                                                 style="height: 40px; padding: 5px !important; border: double"
+                                                 ajax="false"
+                                                 update="addNewTestCaseForm"
+                                                 action="#{testCasesView.clickSaveButton()}">
+                                    <p:ajax disabled="true"/>
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </p:panel>
+                </h:panelGrid>
+            </h:form>
+
+            <!--EDIT TEST CASE-->
+            <h:form id="editTestCaseForm">
+                <h:panelGrid>
+                    <p:panel header="Edit test case" styleClass="MyPanelStyleClass" style="height: auto"
+                             rendered="#{testCasesView.visibleEditTestCaseForm}">
+
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Class name" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px">
+                                    <p:inputText placeholder="Class name (JAVA class)"
+                                                 value="#{testCasesView.testcaseEntity.className}"
+                                                 required="true" requiredMessage="Class name can't be empty"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Test name" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px">
+                                    <p:inputText placeholder="Test name (JAVA method)"
+                                                 value="#{testCasesView.testcaseEntity.testName}"
+                                                 required="true" requiredMessage="Test name can't be empty"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Description" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px">
+                                    <p:inputText placeholder="Simple test description"
+                                                 value="#{testCasesView.testcaseEntity.description}"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Parameters" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px;">
+                                    <p:inputTextarea rows="6" cols="33" placeholder="Test parameters"
+                                                     styleClass="TestParametersTextArea"
+                                                     value="#{testCasesView.testcaseEntity.parameters}"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Steps" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px;">
+                                    <p:inputTextarea rows="6" cols="33" placeholder="Steps to reproduce"
+                                                     styleClass="StepsTextArea"
+                                                     value="#{testCasesView.testcaseEntity.steps}"
+                                                     required="true" requiredMessage="Steps can't be empty"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Expected" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px">
+                                    <p:inputTextarea rows="6" cols="33" placeholder="Expected conditions"
+                                                     styleClass="ExpectedConditionsTextArea"
+                                                     value="#{testCasesView.testcaseEntity.expectedResult}"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px;">
+                                    <h:outputLabel value="Additional info" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px;">
+                                    <p:inputTextarea rows="6" cols="33" placeholder="Additional information"
+                                                     styleClass="AdditionalInfoTextArea"
+                                                     value="#{testCasesView.testcaseEntity.aditionalInfo}"/>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="ui-g-12" style="width: 200px">
+                                    <h:outputLabel value="Maven run command" style="font-weight: bold"/>
+                                </div>
+                                <div class="ui-g-9" style="width: 500px">
+                                    <p:inputText placeholder="Maven command for run test"
+                                                 value="#{testCasesView.testcaseEntity.mavenFront}"/>
+                                </div>
+                            </div>
+                            <div class="ui-g-12">
+                                <p:commandButton value="Save Changes" id="saveChangesButton"
+                                                 style="height: 40px; padding: 5px !important; border: double"
+                                                 ajax="false"
+                                                 update="editTestCaseForm"
+                                                 action="#{testCasesView.clickSaveChangesButton()}">
+                                    <p:ajax disabled="true"/>
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </p:panel>
+                </h:panelGrid>
+            </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>
