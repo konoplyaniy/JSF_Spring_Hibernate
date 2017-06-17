@@ -26,10 +26,10 @@ public class HibernateTest {
 
 	@Test
 	public void hibernateGetAllUsers() {
-		for (UserEntity user : userDAO.getAllUSers()) {
+		for (UserEntity user : userDAO.getAllUsers()) {
 			LOGGER.info("Get user name " + user.getFirst_name() + " ,sunname " + user.getLast_name());
 		}
-		Assert.assertTrue(userDAO.getAllUSers().size() > 0);
+		Assert.assertTrue(userDAO.getAllUsers().size() > 0);
 	}
 
 	@Test

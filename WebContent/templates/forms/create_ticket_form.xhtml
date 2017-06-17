@@ -8,13 +8,11 @@
 
 <h:body>
 	<!-- Create ticket popup form -->
-
 			<!-- Create ticket button -->
 			<p:commandButton
 			 value="+" 					
 			 oncomplete="PF('createTicketDialog').show();"
 			 disabled="#{not calendarBean.itsCurrentMonth()}" />
-					
 					<!-- Create ticket popup -->
 					<p:dialog header="Create ticket form"
 						widgetVar="createTicketDialog"
@@ -22,24 +20,17 @@
 						resizable="false"
 						showEffect="fade"
 						hideEffect="fade">
-						
 						<!-- Area multi selct table -->
 						<p:dataTable id="checkboxDT"
 						 var="areas"
 						 value="#{createTicketBean.availableAreas}"
 						 selection="#{createTicketBean.selectedAreas}"
 						 rowKey="#{areas.id}">
-						 
 							<p:column headerText="Choose Area">
-							
 								<h:outputText value="#{areas}" />
-								
 							</p:column>
-							
 							<p:column selectionMode="multiple"	style="width:16px;text-align:center" />
-								
 						</p:dataTable>
-						
 						<!-- Product single select scroll table -->
 						<p:dataTable id="singleDT"
 						 var="product"
@@ -49,22 +40,22 @@
 						 rowKey="#{product.id}"
 						 scrollable="true"
 						 scrollHeight="300">
-						 
 							<p:column headerText="Choose Product">
-							
 								<h:outputText value="#{product}" />
-								
 							</p:column>
-
 						</p:dataTable>
-						
+						<p:column headerText="ZenDesk ticket ID:">
+							<p:watermark for="zendeskId" value="Zendesk ID"/>
+							<h:inputText value="#{createTicketBean.zendeskId}" id="zendeskId"/>
+						</p:column>
+						<p:column headerText="ZenDesk ticket URL:">
+							<p:watermark for="zendeskURL" value="Zendesk URL"/>
+							<h:inputText value="#{createTicketBean.zendeskUrl}" id="zendeskURL"/>
+						</p:column>
 						<!-- Footer -->
 						<f:facet name="footer">
-						
 							<p:toolbar>
-							
 								<f:facet name="left">
-								
 									<p:commandButton action="#{createTicketBean.createTicket}"
 									    onclick="PF('createTicketButton').disable();"
 									    widgetVar="createTicketButton"
@@ -72,24 +63,14 @@
 										icon="fa fa-bug"
 										oncomplete="PF('createTicketButton').enable();if (args &amp;&amp; !args.validationFailed) PF('createTicketDialog').hide();"
 										update=":mainViewForm,message">
-										
 										<f:ajax render=":mainViewForm"/>
-										
 									</p:commandButton>
-									
 									<p:commandButton icon="fa fa-close"
 									 value="Close"
 									 oncomplete="PF('createTicketDialog').hide()" />
-									 
 								</f:facet>
-								
 							</p:toolbar>
-							
 						</f:facet>
-						
 					</p:dialog>
-
-
 </h:body>
-
 </html>

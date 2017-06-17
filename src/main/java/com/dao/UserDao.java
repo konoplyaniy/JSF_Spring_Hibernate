@@ -64,10 +64,10 @@ public class UserDao {
         System.out.println("user deleted");
     }
 
-    public ArrayList<UserEntity> getAllUSers() {
+    public ArrayList<UserEntity> getAllUsers() {
         @SuppressWarnings("unchecked")
-        ArrayList<UserEntity> users = (ArrayList<UserEntity>) sessionFactory.getCurrentSession().createQuery("from UserEntity");
-//        ArrayList<UserEntity> users = (ArrayList<UserEntity>) sessionFactory.getCurrentSession().createCriteria(UserEntity.class).list();
+/*        ArrayList<UserEntity> users = (ArrayList<UserEntity>) sessionFactory.getCurrentSession().createQuery("from UserEntity");*/
+        ArrayList<UserEntity> users = (ArrayList<UserEntity>) sessionFactory.getCurrentSession().createCriteria(UserEntity.class).list();
         return users;
     }
 

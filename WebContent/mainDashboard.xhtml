@@ -38,92 +38,49 @@
 <h:body>
 	<ui:composition>
 		<h:form id="dashboard">
-
 			<!-- Calendar form -->
-
 			<ui:insert name="calendar_form">
-			
 				<ui:include src="templates/forms/calendar_form.xhtml" />
-				
 			</ui:insert>
-
 			<p:panel id="boxPanel">
-			
 				<div class="ui-g">
-				
 					<div class="ui-g-12 ui-md-6 ui-lg-9">
-
 						<!-- Ticket top panel form -->
-
 						<ui:insert name="calendar_form">
-						
 							<ui:include src="templates/forms/ticket_top_panel_form.xhtml" />
-							
 						</ui:insert>
-
 						<!-- Ticket top panel form -->
-
 						<div class="ui-g-12 ui-md-12 ui-lg-12">
-						
 							<h3>TICKETS BY DAYS</h3>
-							
 							<p:chart type="line" model="#{chartsBean.lineChart}"
 								responsive="true" id="resizable1" style="height:500px;" />
-								
 						</div>
-
 						<div class="ui-g-12 ui-md-6 ui-lg-6">
-					
 					<!-- User statistic table -->
 							<ui:insert name="user_statistic_form">
-							
 								<ui:include src="templates/forms/user_statistic.xhtml" />
-								
 							</ui:insert>
-
 						</div>
-						
 						<div class="ui-g-12 ui-md-6 ui-lg-6">
-						
 							<h3>CHART STATISTIC</h3>
-								
 										<!-- User statistic bar -->
 							<p:chart type="bar" model="#{chartsBean.barChartModel}"	style="height:450px" />
-
 						</div>
-
 					</div>
-					
 					<div class="ui-g-12 ui-md-6 ui-lg-3">
-
 						<!-- Overtime table form -->
-
 						<ui:insert name="overtime_form">
-						
 							<ui:include src="templates/forms/overtime_table_form.xhtml" />
-							
 						</ui:insert>
-						
 						<div class="fade_line"></div>
-
 						<ui:insert name="calendar_form">
-						
 							<!-- Pie chart -->
 							<ui:include src="templates/forms/ticket_pie_chart.xhtml" />
-							
 						</ui:insert>
-
 						<!-- Overtime table form -->
-
 					</div>
-					
 				</div>
-				
 			</p:panel>
-			
- 
-
-	
 	
 	<!-- Scripts for customize charts -->
 			<script>
@@ -177,11 +134,7 @@
 
 				}
 			</script>
-
 		</h:form>
-
 	</ui:composition>
-	
 </h:body>
-
 </html>

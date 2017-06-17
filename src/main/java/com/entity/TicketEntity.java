@@ -22,6 +22,7 @@ public class TicketEntity implements Serializable {
 
     @Id
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -51,7 +52,7 @@ public class TicketEntity implements Serializable {
     }
 
     @Basic
-    @Column(name = "product", nullable = false, insertable = true, updatable = true, length = 45)
+    @Column(name = "product")
     public String getProduct() {
         return product;
     }
@@ -61,7 +62,7 @@ public class TicketEntity implements Serializable {
     }
 
     @Basic
-    @Column(name = "front", nullable = false, insertable = true, updatable = true, length = 45)
+    @Column(name = "front")
     public int getFront() {
         return front;
     }
@@ -71,7 +72,7 @@ public class TicketEntity implements Serializable {
     }
 
     @Basic
-    @Column(name = "members", nullable = false, insertable = true, updatable = true, length = 45)
+    @Column(name = "members")
     public int getMembers() {
         return members;
     }
@@ -110,33 +111,4 @@ public class TicketEntity implements Serializable {
         this.zendesk_id = zendeskId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        TicketEntity that = (TicketEntity) o;
-
-        if (id != that.id) return false;
-        if (close_user_id != null ? !close_user_id.equals(that.close_user_id) : that.close_user_id != null) return false;
-        if (date != null ? !date.equals(that.date) : that.date != null) return false;
-        if (open_user_id != null ? !open_user_id.equals(that.open_user_id) : that.open_user_id != null) return false;
-        if (product != null ? !product.equals(that.product) : that.product != null) return false;
-        if (url != null ? !url.equals(that.url) : that.url != null) return false;
-        if (zendesk_id != null ? !zendesk_id.equals(that.zendesk_id) : that.zendesk_id != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (url != null ? url.hashCode() : 0);
-        result = 31 * result + (date != null ? date.hashCode() : 0);
-        result = 31 * result + (product != null ? product.hashCode() : 0);
-        result = 31 * result + (open_user_id != null ? open_user_id.hashCode() : 0);
-        result = 31 * result + (close_user_id != null ? close_user_id.hashCode() : 0);
-        result = 31 * result + (zendesk_id != null ? zendesk_id.hashCode() : 0);
-        return result;
-    }
 }

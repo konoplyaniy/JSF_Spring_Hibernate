@@ -24,6 +24,33 @@ public class CreateTicketBean implements Serializable {
 	private List<Areas> selectedAreas;
 	private Products selectedProduct;
 	private FacesMessage message;
+	private int zendeskId;
+	private int zendeskIdClosed;
+	private String zendeskUrl;
+
+	public int getZendeskIdClosed() {
+		return zendeskIdClosed;
+	}
+
+	public void setZendeskIdClosed(int zendeskIdClosed) {
+		this.zendeskIdClosed = zendeskIdClosed;
+	}
+
+	public String getZendeskUrl() {
+		return zendeskUrl;
+	}
+
+	public void setZendeskUrl(String zendeskUrl) {
+		this.zendeskUrl = zendeskUrl;
+	}
+
+	public int getZendeskId() {
+		return zendeskId;
+	}
+
+	public void setZendeskId(int zendeskId) {
+		this.zendeskId = zendeskId;
+	}
 
 	@ManagedProperty(value = "#{ticketService}")
 	TicketService ticketService;
@@ -153,8 +180,8 @@ public class CreateTicketBean implements Serializable {
 	 * Method for create new ticket and save it in data base
 	 */
 	public void createTicket() {
-		Integer front_area = 0;
-		Integer members_area = 0;
+		int front_area = 0;
+		int members_area = 0;
 		String areaMessage = "";
 		if (selectedAreas.size() != 0 && selectedProduct.name().length() != 0) {
 			for (Areas area : selectedAreas) {
@@ -173,6 +200,10 @@ public class CreateTicketBean implements Serializable {
 			createTicketEntity.setFront(front_area);
 			createTicketEntity.setMembers(members_area);
 			createTicketEntity.setProduct(selectedProduct.name());
+			createTicketEntity.setOpen_user_id(loginBean.getUser_id());
+			createTicketEntity.setZendesk_id(zendeskId);
+			createTicketEntity.setUrl(zendeskUrl);
+
 			ticketService.createTicket(createTicketEntity);
 			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Ticket created",
 					selectedProduct.name() + "\n" + areaMessage);
@@ -256,17 +287,15 @@ public class CreateTicketBean implements Serializable {
 	/**
 	 * Method for solved ticket
 	 */
-	//TODO Need inspect..
+	//TODO
 	public void createSolvedTicket() {
 		TicketEntity solvedTicketEntity = new TicketEntity();
-		solvedTicketEntity.setId(loginBean.getUser_id());
-		//TODO need add field for ZenDesk ticket ID
-		solvedTicketEntity.setZendesk_id(12132131);
 		solvedTicketEntity.setDate(calendarBean.getDate());
-		//TODO here need add getter for user ID
-//		solvedTicketEntity.setOpen_user_id();
+		solvedTicketEntity.setClose_user_id(loginBean.getUser_id());
+		solvedTicketEntity.setZendesk_id(zendeskIdClosed);
+
 		ticketService.createTicket(solvedTicketEntity);
-		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Solved ticket", "");
+		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Ticket " + zendeskIdClosed + " closed", "");
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
@@ -293,7 +322,7 @@ public class CreateTicketBean implements Serializable {
 		} else if (loginBean.getUserRole().equals("user")) {
 			return updateControlService.getUserUpdateControlByDate(loginBean.getUser_id(), calendarBean.getDate()).size();
 		} else {*/
-			return 0;
+			return 4;
 		/*}*/
 	}
 

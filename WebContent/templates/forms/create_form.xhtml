@@ -9,7 +9,6 @@
 <h:body>
 	<!-- Create user popup form -->
 	<h:form id="createUserForm">
-		
 		<p:commandButton value="Create User"
 		process="@this"
 		oncomplete="PF('createUserPopup').show();"
@@ -19,7 +18,6 @@
 		update="createDialog">
 		<p:resetInput target="createDialog"/>
 		</p:commandButton>
-		
 		<!-- Create user popup -->
 		<p:dialog header="Add new user"
 		 id="createDialog"
@@ -28,50 +26,34 @@
 		 resizable="false"
 		 showEffect="fade"
 		 hideEffect="fade">
-		 
 			<h:panelGrid columns="2">
-			
 				<h:outputLabel for="firstName" value="First name" style="padding: 5px;"/>
-				
 				<p:inputText value="#{createUserBean.firstName}" id="firstName"
 					maxlength="40"
 					size="32">
-					
 					<f:validateLength minimum="1" maximum="40"/>
 					<f:validateRegex pattern="^[a-zA-Z]+$"/>
-
 				</p:inputText>
-				
 				<h:outputLabel for="lastName" value="Last name" style="padding: 5px;"/>
 				<p:inputText value="#{createUserBean.lastName}" id="lastName"
 				maxlength="40"
 				size="32">
-				
 					<f:validateLength minimum="1" maximum="40"/>
 					<f:validateRegex pattern="^[a-zA-Z]+$"/>
-					
 				</p:inputText>
-				
 				<h:outputLabel for="email" value="User email" style="padding: 5px;"/>
-				
 				<p:inputText value="#{createUserBean.email}" id="email"
 				size="32"
 				validatorMessage="Invalid email">
-
 					<f:validateRegex 
 					pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 					
 				</p:inputText>
-				
 			</h:panelGrid>
-
 			<f:facet name="footer">
-			
 				<p:toolbar>
-				
 					<f:facet name="right">
 						<!--<p:commandButton action="#{createUserBean.createUser()}"-->
-
 						<p:commandButton
 							value="Create"
 							icon="fa fa-user-plus"
@@ -84,11 +66,7 @@
 					</f:facet>
 				</p:toolbar>
 			</f:facet>
-
-
 		</p:dialog>
 	</h:form>
-
 </h:body>
-
 </html>

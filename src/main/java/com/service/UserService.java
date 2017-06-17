@@ -58,8 +58,9 @@ public class UserService {
         userDao.createUser(user);
     }
 
+    @Transactional
     public ArrayList<UserEntity> getAllUsers(){
-        return  userDao.getAllUSers();
+        return  userDao.getAllUsers();
     }
 
 }

@@ -7,207 +7,139 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <h:body>
-
 	<div class="wrap">
-	
 		<div class="ui-g">
-			
 			<!-- Top create ticket total statistic box -->
 			<div class="ui-g-12 ui-md-6 ui-lg-4 box box5 shadow5">
-				
 				<!-- Describe panel -->
 				<div class="ui-g-4">
-				
 					<h:outputText value="CREATED TICKETS"/>
-
 				</div>
-				
 				<!-- Value panel -->
 				<div class="ui-g-3 box-value">
-				
 					<h:outputText value="#{createTicketBean.createdTicketsCount}" />
-					
 				</div>
-				
 				<!-- Create/Delete tickets buttons with forms -->
 				<div class="ui-g-5">
-				
 				<ui:include src="create_ticket_form.xhtml" />
 				<ui:include src="delete_ticket_form.xhtml" />
-					
 				</div>
-				
 			</div>
-			
 			<!-- Top solved ticket total statistic box -->
 			<div class="ui-g-12 ui-md-6 ui-lg-4 box box5 shadow5">
-				
 				<!-- Describe panel -->
 				<div class="ui-g-4">
-				
-					<h:outputText value="SOLVED TICKETS" />
-					
+					<h:outputText value="CLOSED TICKETS" />
 				</div>
-				
 				<!-- Value panel -->
 				<div class="ui-g-3 box-value">
-				
 					<h:outputText value="#{createTicketBean.solvedTicketsCount}" />
-					
 				</div>
-				
 				<!-- Create/Delete solved tickets buttons with forms -->
 				<div class="ui-g-5">
-				
 					<p:commandButton value="+"
 						onclick="PF('solvedTicketDialog').show();"
 						disabled="#{not calendarBean.itsCurrentMonth()}" />
-					
 					<!-- Solved ticket popup -->
-					<p:dialog header="Do you really want to solved ticket?"
+					<p:dialog header="Close ticket"
 						widgetVar="solvedTicketDialog"
-						width="150"
+						width="250"
 						resizable="false"
 						showEffect="fade">
-						
-						<h:panelGrid columns="2">
-						
-							<p:commandButton value="YES"
-								widgetVar="createSolvedTicketButton"
-								onclick="PF('createSolvedTicketButton').disable();"
-								oncomplete="PF('createSolvedTicketButton').enable();"
-								action="#{createTicketBean.createSolvedTicket}"
-								update=":mainViewForm,message">
-								
-								<f:ajax render=":mainViewForm,message"/>
-								
-							</p:commandButton>
-							
-							<p:commandButton onclick="PF('solvedTicketDialog').hide();"	value="NO" />
-							
+						<h:panelGrid columns="1">
+								<p:outputLabel for="zendeskIdClosed" value="ZenDesk ticket ID"/>
+								<h:inputText value="#{createTicketBean.zendeskIdClosed}" id="zendeskIdClosed"/>
+							<p:column>
+								<p:commandButton value="YES"
+												 widgetVar="createSolvedTicketButton"
+												 onclick="PF('createSolvedTicketButton').disable();"
+												 oncomplete="PF('createSolvedTicketButton').enable();"
+												 action="#{createTicketBean.createSolvedTicket}"
+												 update=":mainViewForm,message">
+									<f:ajax render=":mainViewForm,message"/>
+								</p:commandButton>
+								<p:commandButton onclick="PF('solvedTicketDialog').hide();"	value="NO" />
+							</p:column>
+
 						</h:panelGrid>
-						
 					</p:dialog>
-					
-					
 							<p:commandButton value="-"
 						      onclick="PF('deleteSolvedDialog').show();"
 						      disabled="#{not calendarBean.itsCurrentMonth() or createTicketBean.solvedTicketsCount==0}" />
-						
 						<!-- Abort Solved ticket popup -->
 					<p:dialog header="Do you really want to abort solved ticket?"
 						widgetVar="deleteSolvedDialog"
 						width="150"
 						resizable="false"
 						showEffect="fade">
-						
 						<h:panelGrid columns="2">
-						
 							<p:commandButton value="YES"
 								action="#{createTicketBean.deleteSolvedTickets}"
 								update=":mainViewForm,message"
 								widgetVar="deleteSolvedTicketButton"
 								onclick="PF('deleteSolvedTicketButton').disable();"
 								oncomplete="PF('deleteSolvedTicketButton').enable();">
-								
 								<f:ajax render=":mainViewForm,message"/>
-								
 							</p:commandButton>
-							
 							<p:commandButton onclick="PF('deleteSolvedDialog').hide();"	value="NO" />
-							
 						</h:panelGrid>
-						
 					</p:dialog>
-					
 				</div>
-				
 			</div>
-			
 			<div class="ui-g-12 ui-md-6 ui-lg-4 box box5 shadow5">
-				
 					<!-- Describe panel -->
 				<div class="ui-g-4">
-				
 					<h:outputText value="UPDATE CONTROL" />
-					
 				</div>
-				
 					<!-- Value panel -->
 				<div class="ui-g-3 box-value">
-				
 					<h:outputText value="#{createTicketBean.updateControlCount}" />
-					
 				</div>
-				
 				<!-- Create/Delete update control buttons with forms -->
 				<div class="ui-g-5">
-				
 					<p:commandButton value="+"
 						onclick="PF('updateControlDialog').show();"
 						disabled="#{not calendarBean.itsCurrentMonth()}" />
-						
 					<p:dialog header="Do you really want to create Update Control?"
 						widgetVar="updateControlDialog"
 						width="150"
 						resizable="false"
 						showEffect="fade">
-						
 						<h:panelGrid columns="2">
-						
 							<p:commandButton value="YES"
 								action="#{createTicketBean.createUpdateControl}"
 								update=":mainViewForm,message"
 								widgetVar="createUpdateControlButton"
 								onclick="PF('createUpdateControlButton').disable();"
 								oncomplete="PF('createUpdateControlButton').enable();">
-								
 								<f:ajax render=":mainViewForm,message"/>
-								
 							</p:commandButton>
-							
 							<p:commandButton onclick="PF('updateControlDialog').hide();" value="NO" />
-							
 						</h:panelGrid>
-						
 					</p:dialog>
-					
 					<p:commandButton value="-"
 						onclick="PF('deleteUpdateDialog').show();"
 						disabled="#{not calendarBean.itsCurrentMonth() or createTicketBean.updateControlCount==0}" />
-						
 					<p:dialog header="Do you really want to abort Update Control?"
 						widgetVar="deleteUpdateDialog"
 						width="150"
 						resizable="false"
 						showEffect="fade">
-						
 						<h:panelGrid columns="2">
-						
 							<p:commandButton value="YES"
 								action="#{createTicketBean.deleteUpdateControl}"
 								update=":mainViewForm,message"
 								widgetVar="deleteUpdateControlButton"
 								onclick="PF('deleteUpdateControlButton').disable();"
 								oncomplete="PF('deleteUpdateControlButton').enable();">
-								
 								<f:ajax render=":mainViewForm,message"/>
-								
 							</p:commandButton>
-							
 							<p:commandButton onclick="PF('deleteUpdateDialog').hide();"	value="NO" />
-							
 						</h:panelGrid>
-						
 					</p:dialog>
-					
 				</div>
-				
 			</div>
-			
 		</div>
 	</div>
-	
 </h:body>
-
 </html>
