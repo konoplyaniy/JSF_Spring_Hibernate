@@ -1,57 +1,53 @@
 package com.service;
 
-import java.util.Date;
-import java.util.List;
-
+import com.dao.OvertimeDao;
+import com.entity.OvertimeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dao.OvertimeDAO;
-import com.entity.OvertimeEntity;
+import java.util.ArrayList;
+import java.util.Date;
 
-@Service("overtimeService")
+/**
+ * Created by geser on 16.06.17.
+ */
+@Service("OvertimeService")
 public class OvertimeService {
+    @Autowired
+    OvertimeDao overtimeDao;
 
-	@Autowired
-	OvertimeDAO overtimeDAO;
+    public OvertimeDao getOvertimeDao() {
+        return overtimeDao;
+    }
 
-	public OvertimeDAO getOvertimeDAO() {
-		return overtimeDAO;
-	}
+    public void setOvertimeDao(OvertimeDao overtimeDao) {
+        this.overtimeDao = overtimeDao;
+    }
 
-	public void setOvertimeDAO(OvertimeDAO overtimeDAO) {
-		this.overtimeDAO = overtimeDAO;
-	}
+    @Transactional
+    public ArrayList<OvertimeEntity> getOvertimesByDateUserId(int  userId, Date date){
+        return overtimeDao.getOvertimesByDateUserId(userId, date);
+    }
 
-	@Transactional
-	public void create(OvertimeEntity overtimeEntity) {
-		overtimeDAO.create(overtimeEntity);
-	}
+    @Transactional
+    public ArrayList<OvertimeEntity> getAllOvertimes(Date date){
+        return overtimeDao.getAllOvertimes(date);
+    }
 
-	@Transactional
-	public void delete(OvertimeEntity overtimeEntity) {
-		overtimeDAO.delete(overtimeEntity);
-	}
+    @Transactional
+    public void createOvertime(OvertimeEntity overtime){
+        overtimeDao.create(overtime);
+    }
 
-	@Transactional
-	public void update(OvertimeEntity overtimeEntity) {
-		overtimeDAO.update(overtimeEntity);
-	}
+    @Transactional
+    public void updateOvertime(OvertimeEntity overtime){
+        overtimeDao.update(overtime);
+    }
 
-	@Transactional
-	public List<OvertimeEntity> getUserEntities(Integer user_id, Date date) {
-		return overtimeDAO.getOvertimes(user_id, date);
-	}
-
-	@Transactional
-	public List<OvertimeEntity> getAllEntities(Date date) {
-		return overtimeDAO.getAllOvertimes(date);
-	}
-	
-	@Transactional
-	public List<OvertimeEntity> getAllEntities() {
-		return overtimeDAO.getAllOvertimes();
-	}
+    @Transactional
+    public void deleteteOvertime(OvertimeEntity overtime){
+        overtimeDao.delete(overtime);
+    }
 
 }

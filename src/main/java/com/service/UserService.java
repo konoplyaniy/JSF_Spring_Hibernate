@@ -1,62 +1,65 @@
 package com.service;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.transaction.Transactional;
-
+import com.dao.UserDao;
+import com.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.dao.UserDAO;
-import com.entity.UserEntity;
+import java.util.ArrayList;
 
+/**
+ * Created by geser on 16.06.17.
+ */
 @Service
-public class UserService{
+public class UserService {
+    @Autowired
+    UserDao userDao;
 
-	@Autowired
-	UserDAO userDAO;
+    public UserService (){
 
-	public UserDAO getUserDAO() {
-		return userDAO;
-	}
+    }
 
-	public UserService() {
+    public UserDao getUserDao() {
+        return userDao;
+    }
 
-	}
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
-	public void setUserDAO(UserDAO userDAO) {
-		this.userDAO = userDAO;
-	}
+    @Transactional
+    public UserEntity getUser(int id){
+        return userDao.getUser(id);
+    }
 
-	@org.springframework.transaction.annotation.Transactional
-	public void createUser(UserEntity userEntity) {
-		userDAO.create(userEntity);
-	}
+    @Transactional
+    public boolean isExist(String login, String password){
+        return userDao.isExist(login, password);
+    }
 
-	@org.springframework.transaction.annotation.Transactional
-	public void deleteUser(UserEntity userEntity) {
-		userDAO.delete(userEntity);
-	}
+    @Transactional
+    public UserEntity validateUser(String login, String password){
+        return userDao.validateUser(login, password);
+    }
 
-	@org.springframework.transaction.annotation.Transactional
-	public void updateUser(UserEntity userEntity) {
-		userDAO.update(userEntity);
-	}
+    @Transactional
+    public void createUser(UserEntity newUser){
+        userDao.createUser(newUser);
+    }
 
-	@org.springframework.transaction.annotation.Transactional
-	public UserEntity getUser(Integer id) {
-		return userDAO.getUser(id);
-	}
+    @Transactional
+    public void updateUser(UserEntity updatedUser){
+        userDao.createUser(updatedUser);
+    }
 
-	@org.springframework.transaction.annotation.Transactional
-	public List<UserEntity> getAllUsers() {
-		return userDAO.getAllUSers();
-	}
+    @Transactional
+    public void deleteUser(UserEntity user){
+        userDao.createUser(user);
+    }
 
-	@org.springframework.transaction.annotation.Transactional
-	public UserEntity validateUser(String username, String password) {
-		return userDAO.validateUser(username, password);
-	}
+    public ArrayList<UserEntity> getAllUsers(){
+        return  userDao.getAllUSers();
+    }
 
 }

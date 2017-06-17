@@ -1,17 +1,11 @@
 package com.beans;
 
-import java.awt.image.RenderedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,13 +15,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.imageio.ImageIO;
 
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.ItemSelectEvent;
+import com.entity.TicketEntity;
+import com.entity.UserEntity;
+import com.service.TicketService;
+import com.service.UpdateControlService;
+import com.service.UserService;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
@@ -38,12 +32,6 @@ import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 
-import com.entity.CreateTicketEntity;
-import com.entity.UserEntity;
-import com.service.CreateTicketService;
-import com.service.SolvedTicketService;
-import com.service.UpdateControlService;
-
 @ManagedBean
 @RequestScoped
 public class ChartsBean implements Serializable {
@@ -52,14 +40,11 @@ public class ChartsBean implements Serializable {
 	private BarChartModel barChartModel;
 	private String option = "Both";
 
-	@ManagedProperty(value = "#{solvedTicketService}")
-	SolvedTicketService solvedTicketService;
-
 	@ManagedProperty(value = "#{updateControlService}")
 	UpdateControlService updateControlService;
 
-	@ManagedProperty(value = "#{createTicketService}")
-	CreateTicketService createTicketService;
+	@ManagedProperty(value = "#{ticketService}")
+	TicketService ticketService;
 
 	@ManagedProperty(value = "#{calendarBean}")
 	CalendarBean calendarBean;
@@ -68,7 +53,7 @@ public class ChartsBean implements Serializable {
 	LoginBean loginBean;
 
 	@ManagedProperty(value = "#{userService}")
-	com.service.UserService userService;
+	UserService userService;
 
 	public CalendarBean getCalendarBean() {
 		return calendarBean;
@@ -78,12 +63,12 @@ public class ChartsBean implements Serializable {
 		this.calendarBean = calendarBean;
 	}
 
-	public CreateTicketService getCreateTicketService() {
-		return createTicketService;
+	public TicketService getTicketService() {
+		return ticketService;
 	}
 
-	public void setCreateTicketService(CreateTicketService createTicketService) {
-		this.createTicketService = createTicketService;
+	public void setTicketService(TicketService ticketService) {
+		this.ticketService = ticketService;
 	}
 
 	public PieChartModel getPieModel() {
@@ -110,11 +95,11 @@ public class ChartsBean implements Serializable {
 		this.lineChart = lineChart;
 	}
 
-	public com.service.UserService getUserService() {
+	public UserService getUserService() {
 		return userService;
 	}
 
-	public void setUserService(com.service.UserService userService) {
+	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
 
@@ -124,14 +109,6 @@ public class ChartsBean implements Serializable {
 
 	public void setBarChartModel(BarChartModel barChartModel) {
 		this.barChartModel = barChartModel;
-	}
-
-	public SolvedTicketService getSolvedTicketService() {
-		return solvedTicketService;
-	}
-
-	public void setSolvedTicketService(SolvedTicketService solvedTicketService) {
-		this.solvedTicketService = solvedTicketService;
 	}
 
 	public UpdateControlService getUpdateControlService() {
@@ -202,32 +179,32 @@ public class ChartsBean implements Serializable {
 	}
 	
 	public HashMap<String, Integer> getHashing() {
-		List<CreateTicketEntity> ticketsBefore;
-		List<CreateTicketEntity> tickets = new ArrayList<>();
+		ArrayList<TicketEntity> ticketsBefore;
+		ArrayList<TicketEntity> tickets = new ArrayList<>();
 		if (loginBean.getUserRole().equals("admin")) {
-			ticketsBefore = createTicketService.getAllTickets(calendarBean.getDate());
+			ticketsBefore = ticketService.getAllUsersTicketsByDate(calendarBean.getDate());
 		} else if (loginBean.getUserRole().equals("user")) {
-			ticketsBefore = createTicketService.getTickets(loginBean.getUser_id(), calendarBean.getDate());
+			ticketsBefore = ticketService.getTicketsByDateUserId(loginBean.getUser_id(), calendarBean.getDate());
 		} else {
 			return null;
 		}
 		if (option.equals("Front")) {
-			for (CreateTicketEntity ticket : ticketsBefore) {
-				if (ticket.getFront_area() == 1) {
+			for (TicketEntity ticket : ticketsBefore) {
+				if (ticket.getFront() == 1) {
 					tickets.add(ticket);
 				}
 			}
 		} else if (option.equals("Members")) {
-			for (CreateTicketEntity ticket : ticketsBefore) {
-				if (ticket.getMembers_area() == 1) {
+			for (TicketEntity ticket : ticketsBefore) {
+				if (ticket.getMembers() == 1) {
 					tickets.add(ticket);
 				}
 			}
 		} else if (option.equals("Both")) {
-			for (CreateTicketEntity ticket : ticketsBefore) {
-				if (ticket.getMembers_area() == 1 ) {
+			for (TicketEntity ticket : ticketsBefore) {
+				if (ticket.getMembers() == 1 ) {
 					tickets.add(ticket);
-				}if (ticket.getFront_area() == 1) {
+				}if (ticket.getFront() == 1) {
 					tickets.add(ticket);
 				}
 			}
@@ -238,7 +215,7 @@ public class ChartsBean implements Serializable {
 			return productCount;
 		} else {
 
-			for (CreateTicketEntity ticket : tickets) {
+			for (TicketEntity ticket : tickets) {
 				if (!productCount.containsKey(ticket.getProduct())) {
 					productCount.put(ticket.getProduct(), 1);
 				} else if (productCount.containsKey(ticket.getProduct())) {
@@ -262,13 +239,13 @@ public class ChartsBean implements Serializable {
 			for (UserEntity user : users) {
 				LineChartSeries series1 = new LineChartSeries();
 				HashMap<Date, Integer> ticketCount = new HashMap<>();
-				series1.setLabel(user.getUser_first_name() + " " + user.getUser_last_name());
-				List<CreateTicketEntity> tickets = createTicketService.getTickets(user.getUser_id(),
+				series1.setLabel(user.getFirst_name() + " " + user.getLast_name());
+				ArrayList<TicketEntity> tickets = ticketService.getTicketsByDateUserId(user.getId(),
 						calendarBean.getDate());
 				if (tickets.size() == 0) {
 					series1.set(dateFormat.format(calendar.getTime()), 0);
 				} else {
-					for (CreateTicketEntity ticket : tickets) {
+					for (TicketEntity ticket : tickets) {
 						if (!ticketCount.containsKey(ticket.getDate())) {
 							ticketCount.put(ticket.getDate(), 1);
 						} else if (ticketCount.containsKey(ticket.getDate())) {
@@ -292,13 +269,13 @@ public class ChartsBean implements Serializable {
 			UserEntity user = loginBean.getUser();
 			LineChartSeries series1 = new LineChartSeries();
 			HashMap<Date, Integer> ticketCount = new HashMap<>();
-			series1.setLabel(user.getUser_first_name() + " " + user.getUser_last_name());
-			List<CreateTicketEntity> tickets = createTicketService.getTickets(user.getUser_id(),
+			series1.setLabel(user.getFirst_name() + " " + user.getLast_name());
+			ArrayList<TicketEntity> tickets = ticketService.getTicketsByDateUserId(user.getId(),
 					calendarBean.getDate());
 			if (tickets.size() == 0) {
 				series1.set(dateFormat.format(calendar.getTime()), 0);
 			} else {
-				for (CreateTicketEntity ticket : tickets) {
+				for (TicketEntity ticket : tickets) {
 					if (!ticketCount.containsKey(ticket.getDate())) {
 						ticketCount.put(ticket.getDate(), 1);
 					} else if (ticketCount.containsKey(ticket.getDate())) {
@@ -350,13 +327,13 @@ public class ChartsBean implements Serializable {
 		BarChartModel model = new BarChartModel();
 		for (UserEntity user : loginBean.getAllUsers()) {
 			ChartSeries chart = new ChartSeries();
-			chart.setLabel(user.getUser_first_name() + " " + user.getUser_last_name());
+			chart.setLabel(user.getFirst_name() + " " + user.getLast_name());
 			chart.set("Created Tickets",
-					createTicketService.getTickets(user.getUser_id(), calendarBean.getDate()).size());
+					ticketService.getCreatedTicketsByUserId(user.getId(), calendarBean.getDate()).size());
 			chart.set("Solved Tickets",
-					solvedTicketService.getSolvedTickets(user.getUser_id(), calendarBean.getDate()).size());
+					ticketService.getClosedTicketsByDatUserId(user.getId(), calendarBean.getDate()).size());
 			chart.set("Update Control",
-					updateControlService.getUpdateControl(user.getUser_id(), calendarBean.getDate()).size());
+					updateControlService.getUserTicketsByDate(user.getId(), calendarBean.getDate()).size());
 			model.addSeries(chart);
 		}
 

@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -22,25 +21,17 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
 
-import org.apache.commons.io.IOUtils;
 import org.imgscalr.Scalr;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.CroppedImage;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.entity.CreateTicketEntity;
-import com.entity.OvertimeEntity;
-import com.entity.SolvedTicketEntity;
-import com.entity.UpdateControlEntity;
 import com.entity.UserEntity;
-import com.service.CreateTicketService;
+import com.service.TicketService;
 import com.service.OvertimeService;
-import com.service.SolvedTicketService;
 import com.service.UpdateControlService;
 import com.utils.SupportUtils;
 
@@ -75,14 +66,11 @@ public class EditProfileBean implements Serializable {
 	@ManagedProperty(value = "#{overtimeService}")
 	OvertimeService overtimeService;
 
-	@ManagedProperty(value = "#{solvedTicketService}")
-	SolvedTicketService solvedTicketService;
-
 	@ManagedProperty(value = "#{updateControlService}")
 	UpdateControlService updateControlService;
 
-	@ManagedProperty(value = "#{createTicketService}")
-	CreateTicketService createTicketService;
+	@ManagedProperty(value = "#{ticketService}")
+	TicketService ticketService;
 
 	@ManagedProperty(value = "#{loginBean}")
 	LoginBean loginBean;
@@ -162,20 +150,12 @@ public class EditProfileBean implements Serializable {
 		this.overtimeService = overtimeService;
 	}
 
-	public CreateTicketService getCreateTicketService() {
-		return createTicketService;
+	public TicketService getTicketService() {
+		return ticketService;
 	}
 
-	public void setCreateTicketService(CreateTicketService createTicketService) {
-		this.createTicketService = createTicketService;
-	}
-
-	public SolvedTicketService getSolvedTicketService() {
-		return solvedTicketService;
-	}
-
-	public void setSolvedTicketService(SolvedTicketService solvedTicketService) {
-		this.solvedTicketService = solvedTicketService;
+	public void setTicketService(TicketService ticketService) {
+		this.ticketService = ticketService;
 	}
 
 	public UpdateControlService getUpdateControlService() {
@@ -310,6 +290,7 @@ public class EditProfileBean implements Serializable {
 	 * @param user
 	 *            - UserEntity
 	 */
+	//TODO inspect and rename
 	public void updadteUser(UserEntity user) {
 		boolean isPasswordChanged = false;
 		if (croppedImage != null) {
@@ -345,18 +326,18 @@ public class EditProfileBean implements Serializable {
 			user.setPassword(SupportUtils.MD5(password));
 		}
 		if (avatar != null) {
-			user.setUser_avatar(avatar);
+			user.setAvatar(avatar);
 		}
 		userService.updateUser(user);
 		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User updated",
-				user.getUser_first_name() + " " + user.getUser_last_name());
+				user.getFirst_name() + " " + user.getLast_name());
 		if (isPasswordChanged){
 			mail.sendThreadEmail("Dreamscape.QA notification",
-					"Hello "+ user.getUser_first_name()+ " " + user.getUser_last_name() + "!"+
+					"Hello "+ user.getFirst_name()+ " " + user.getLast_name() + "!"+
 					"\nYour password was changed for Dreamscape QA portal\n"+
-					"Login: " + user.getUsername() +
+					"Login: " + user.getLogin() +
 					"\nYour new Password: " + password,
-					user.getUser_email());
+					user.getEmail());
 		}
 		FacesContext.getCurrentInstance().addMessage(null, message);
 		imagemUploadName = "";
@@ -371,23 +352,24 @@ public class EditProfileBean implements Serializable {
 	public void deleteUser(UserEntity user) {
 		Integer adminId = 1;
 		for (UserEntity users : userService.getAllUsers()) {
-			if (users.getUser_role().equals("admin")) {
-				adminId = users.getUser_id();
+			if (users.getRole().equals("admin")) {
+				adminId = users.getId();
 				break;
 			}
 		}
-		if (user.getUser_role().equals("admin")) {
+		if (user.getRole().equals("admin")) {
 			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Admin can't be deleted", "");
 		} else {
-			for (OvertimeEntity overtime : overtimeService.getAllEntities()) {
-				if (user.getUser_id() == overtime.getUser_id()) {
-					overtimeService.delete(overtime);
+			//TODO inspect, possibly will be deleted
+			/*for (OvertimeEntity overtime : overtimeService.getAllOvertimes(new Date())) {
+				if (user.getId() == overtime.getUser_id()) {
+					overtimeService.deleteteOvertime(overtime);
 				}
 			}
-			for (CreateTicketEntity ticket : createTicketService.getAllTickets()) {
-				if (user.getUser_id() == ticket.getUser_id()) {
-					ticket.setUser_id(adminId);
-					createTicketService.updateTicket(ticket);
+			for (TicketEntity ticket : ticketService.getAllTickets()) {
+				if (user.getId() == ticket.getId()) {
+					ticket.setId(adminId);
+					ticketService.updateTicket(ticket);
 				}
 			}
 			for (SolvedTicketEntity solved : solvedTicketService.getAllSolvedTickets()) {
@@ -402,10 +384,10 @@ public class EditProfileBean implements Serializable {
 					update.setUser_id(adminId);
 					updateControlService.update(update);
 				}
-			}
+			}*/
 			userService.deleteUser(user);
 			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User deleted",
-					user.getUser_first_name() + " " + user.getUser_last_name());
+					user.getFirst_name() + " " + user.getLast_name());
 		}
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}

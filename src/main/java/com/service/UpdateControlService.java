@@ -1,58 +1,54 @@
 package com.service;
 
-import java.util.Date;
-import java.util.List;
-
+import com.dao.UpdateControlDao;
+import com.entity.UpdateControlEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dao.UpdateControlDAO;
-import com.entity.SolvedTicketEntity;
-import com.entity.UpdateControlEntity;
+import java.util.ArrayList;
+import java.util.Date;
 
-@Service("updateControlService")
+/**
+ * Created by geser on 16.06.17.
+ */
+@Service("UpdateControlService")
 public class UpdateControlService {
+    @Autowired
+    UpdateControlDao updateControlDao;
 
-	@Autowired
-	UpdateControlDAO updateControlDAO;
+    public UpdateControlDao getUpdateControlDao() {
+        return updateControlDao;
+    }
 
-	public UpdateControlDAO getUpdateControlDAO() {
-		return updateControlDAO;
-	}
+    public void setUpdateControlDao(UpdateControlDao updateControlDao) {
+        this.updateControlDao = updateControlDao;
+    }
 
-	public void setUpdateControlDAO(UpdateControlDAO updateControlDAO) {
-		this.updateControlDAO = updateControlDAO;
-	}
+    @Transactional
+    public ArrayList<UpdateControlEntity> getUserTicketsByDate(Integer userId, Date date){
+        return updateControlDao.getUserTicketsByDate(userId, date);
+    }
 
-	@Transactional
-	public void delete(UpdateControlEntity updateControlEntity) {
-		updateControlDAO.delete(updateControlEntity);
-	}
+    @Transactional
+    public ArrayList<UpdateControlEntity> getAllUsersTicketsByDate(Date date){
+        return updateControlDao.getAllUsersTicketsByDate(date);
+    }
 
-	@Transactional
-	public void create(UpdateControlEntity updateControlEntity) {
-		updateControlDAO.create(updateControlEntity);
-	}
+    @Transactional
+    public void createUpdateControl(UpdateControlEntity updateControlEntity){
+        updateControlDao.createUpdateControl(updateControlEntity);
+    }
 
-	@Transactional
-	public List<UpdateControlEntity> getUpdateControl(Integer user_id, Date date) {
-		return updateControlDAO.getSolvedTickets(user_id, date);
-	}
+    @Transactional
+    public void deleteUpdateControl(UpdateControlEntity updateControlEntity){
+        updateControlDao.deleteUpdateControl(updateControlEntity);
+    }
 
-	@Transactional
-	public List<UpdateControlEntity> getAllUpdateControl(Date date) {
-		return updateControlDAO.getAllUsersSolvedTickets(date);
-	}
-	
-	@Transactional
-	public List<UpdateControlEntity> getAllUpdateControl() {
-		return updateControlDAO.getAllUsersSolvedTickets();
-	}
-	
-	@Transactional
-	public void update(UpdateControlEntity updateControlEntity) {
-		updateControlDAO.update(updateControlEntity);
-	}
+    @Transactional
+    public void updateUpdateControl(UpdateControlEntity updateControlEntity){
+        updateControlDao.updateUpdateControl(updateControlEntity);
+    }
+
 
 }

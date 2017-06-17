@@ -57,19 +57,19 @@ public class LoginBean implements Serializable {
 	}
 
 	public String getUserRole() {
-		return user.getUser_role();
+		return user.getRole();
 	}
 
 	public String getUser_first_name() {
-		return user.getUser_first_name();
+		return user.getFirst_name();
 	}
 
 	public String getUser_last_name() {
-		return user.getUser_last_name();
+		return user.getLast_name();
 	}
 
 	public Integer getUser_id() {
-		return user.getUser_id();
+		return user.getId();
 	}
 	
 	public UserEntity getUser() {
@@ -90,7 +90,7 @@ public class LoginBean implements Serializable {
 		} else {
 			String userId = context.getExternalContext().getRequestParameterMap().get("userId");
 			UserEntity user = userService.getUser(Integer.valueOf(userId));
-			return new DefaultStreamedContent(new ByteArrayInputStream(user.getUser_avatar()));
+			return new DefaultStreamedContent(new ByteArrayInputStream(user.getAvatar()));
 		}
 	}
 
@@ -98,12 +98,22 @@ public class LoginBean implements Serializable {
 	 * @return User 
 	 */
 	public String login() {
+		/*if (username.equals("user") && password.equals("user")){
+			HttpSession session = SessionUtils.getSession();
+			session.setAttribute("username", username);
+			return "user";
+		}else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Incorrect username or password", "Please correct data"));
+			return null;
+		}*/
+
 		UserEntity user = userService.validateUser(username, password);
 		if (user != null) {
 			HttpSession session = SessionUtils.getSession();
 			session.setAttribute("username", username);
 			this.user = user;
-			return user.getUser_role();
+			return user.getRole();
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
 					"Incorrect username or password", "Please correct data"));
@@ -118,7 +128,7 @@ public class LoginBean implements Serializable {
 		HttpSession session = SessionUtils.getSession();
 		session.invalidate();
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-				"Logout from dashboard", "User " + user.getUser_first_name() + " " + user.getUser_last_name()));
+				"Logout from dashboard", "User " + user.getFirst_name() + " " + user.getLast_name()));
 		return "logout";
 	}
 
@@ -126,9 +136,9 @@ public class LoginBean implements Serializable {
 	 * @return list of all users in system
 	 */
 	public List<UserEntity> getAllUsers(){
-		if(user.getUser_role().equals("admin")){
+		if(user.getRole().equals("admin")){
 		return userService.getAllUsers();
-		}else if(user.getUser_role().equals("user")){
+		}else if(user.getRole().equals("user")){
 			List<UserEntity>users=new ArrayList<>();
 			users.add(user);
 			return users;

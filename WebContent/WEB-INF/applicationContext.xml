@@ -24,7 +24,7 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/test" />
+		<property name="url" value="jdbc:mysql://localhost:3306/qa" />
 		<property name="username" value="root" />
 		<property name="password" value="root" />
 	</bean>
@@ -35,10 +35,9 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>com.entity.UserEntity</value>
-				<value>com.entity.CreateTicketEntity</value>
-				<value>com.entity.SolvedTicketEntity</value>
-				<value>com.entity.UpdateControlEntity</value>
 				<value>com.entity.OvertimeEntity</value>
+				<value>com.entity.UpdateControlEntity</value>
+				<value>com.entity.TicketEntity</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

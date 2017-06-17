@@ -8,9 +8,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.context.RequestContext;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.entity.UserEntity;
 import com.utils.SupportUtils;
 
@@ -74,12 +71,12 @@ public class CreateUserBean implements Serializable {
 			String username = SupportUtils.getUsernameFromEmail(email);
 			String password = SupportUtils.generatePassword();
 			UserEntity userEntity = new UserEntity();
-			userEntity.setUsername(username);
+			userEntity.setLogin(username);
 			userEntity.setPassword(SupportUtils.MD5(password));
-			userEntity.setUser_first_name(firstName);
-			userEntity.setUser_last_name(lastName);
-			userEntity.setUser_role("user");
-			userEntity.setUser_email(email);
+			userEntity.setFirst_name(firstName);
+			userEntity.setLast_name(lastName);
+			userEntity.setRole("user");
+			userEntity.setEmail(email);
 			userService.createUser(userEntity);
 			mail.sendThreadEmail("Dreamscape.QA notification", "Hi ! " + System.lineSeparator() +
 					firstName + " " + lastName + System.lineSeparator() +

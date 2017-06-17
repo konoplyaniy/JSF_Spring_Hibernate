@@ -64,7 +64,7 @@
 				
 					<p:graphicImage value="#{loginBean.userAvatar}"	styleClass="smallImage">
 					
-						<f:param name="userId" value="#{user.user_id}" />
+						<f:param name="userId" value="#{user.id}" />
 						
 					</p:graphicImage>
 					
@@ -72,25 +72,25 @@
 				
 				<p:column headerText="FIRST NAME">
 				
-					<h:outputText value="#{user.user_first_name}" />
+					<h:outputText value="#{user.first_name}" />
 					
 				</p:column>
 				
 				<p:column headerText="LAST NAME">
 				
-					<h:outputText value="#{user.user_last_name}" />
+					<h:outputText value="#{user.last_name}" />
 					
 				</p:column>
 				
 				<p:column headerText="ROLE" priority="1">
 				
-					<h:outputText value="#{user.user_role}" />
+					<h:outputText value="#{user.role}" />
 					
 				</p:column>
 				
 				<p:column headerText="EMAIL" priority="2">
 				
-					<h:outputText value="#{user.user_email}" />
+					<h:outputText value="#{user.email}" />
 					
 				</p:column>
 				

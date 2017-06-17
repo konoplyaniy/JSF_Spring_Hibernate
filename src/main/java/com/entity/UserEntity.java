@@ -1,144 +1,142 @@
 package com.entity;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.springframework.stereotype.Component;
-
+/**
+ * Created by geser on 16.06.17.
+ */
 @Entity
-@Table(name = "users", schema = "test")
-public class UserEntity implements Serializable {
+@Table(name = "user", schema = "qa")
+public class UserEntity {
+    private int id;
+    private String login;
+    private String first_name;
+    private String last_name;
+    private String email;
+    private byte[] avatar;
+    private String password;
+    private String role;
+    private OvertimeEntity overtimeByOvertimeId;
+    private TicketEntity ticketByTicketId;
+    private UpdateControlEntity updateControlByUpdateControlId;
 
-	private Integer user_id;
-	private String username;
-	private String password;
-	private String user_role;
-	private String user_first_name;
-	private String user_last_name;
-	private String user_email;
-	private byte[] user_avatar;
+    public UserEntity() {
+    }
 
-	private Set<OvertimeEntity> overtimeEntities = new HashSet<OvertimeEntity>(0);
-	private Set<CreateTicketEntity> createTicketEntities = new HashSet<CreateTicketEntity>(0);
+    public UserEntity(String first_name, String last_name, String email) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+    }
 
-	public UserEntity() {
-	}
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getId() {
+        return id;
+    }
 
-	public UserEntity(String username, String password, String user_role, String user_first_name, String user_last_name,
-			String user_email, byte[] user_avatar) {
-		this.user_id = user_id;
-		this.username = username;
-		this.password = password;
-		this.user_role = user_role;
-		this.user_first_name = user_first_name;
-		this.user_last_name = user_last_name;
-		this.user_email = user_email;
-		this.user_avatar = user_avatar;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	@Id
-	@Column(name = "user_id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Integer getUser_id() {
-		return user_id;
-	}
+    @Basic
+    @Column(name = "login", nullable = false, insertable = true, updatable = true, length = 45)
+    public String getLogin() {
+        return login;
+    }
 
-	public void setUser_id(Integer user_id) {
-		this.user_id = user_id;
-	}
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
-	@Column(name = "username")
-	public String getUsername() {
-		return username;
-	}
+    @Basic
+    @Column(name = "first_name", nullable = false, insertable = true, updatable = true, length = 45)
+    public String getFirst_name() {
+        return first_name;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setFirst_name(String firstName) {
+        this.first_name = firstName;
+    }
 
-	@Column(name = "password")
-	public String getPassword() {
-		return password;
-	}
+    @Basic
+    @Column(name = "last_name", nullable = false, insertable = true, updatable = true, length = 45)
+    public String getLast_name() {
+        return last_name;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setLast_name(String lastName) {
+        this.last_name = lastName;
+    }
 
-	@Column(name = "user_role")
-	public String getUser_role() {
-		return user_role;
-	}
+    @Basic
+    @Column(name = "email", nullable = false, insertable = true, updatable = true, length = 45)
+    public String getEmail() {
+        return email;
+    }
 
-	public void setUser_role(String user_role) {
-		this.user_role = user_role;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@Column(name = "user_first_name")
-	public String getUser_first_name() {
-		return user_first_name;
-	}
+    @Basic
+    @Column(name = "avatar", nullable = true, insertable = true, updatable = true)
+    public byte[] getAvatar() {
+        return avatar;
+    }
 
-	public void setUser_first_name(String user_first_name) {
-		this.user_first_name = user_first_name;
-	}
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
+    }
 
-	@Column(name = "user_last_name")
-	public String getUser_last_name() {
-		return user_last_name;
-	}
+    @Basic
+    @Column(name = "password", nullable = false, insertable = true, updatable = true, length = 45)
+    public String getPassword() {
+        return password;
+    }
 
-	public void setUser_last_name(String user_last_name) {
-		this.user_last_name = user_last_name;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	@Column(name = "user_email")
-	public String getUser_email() {
-		return user_email;
-	}
+    @Basic
+    @Column(name = "role", nullable = false, insertable = true, updatable = true, length = 45)
+    public String getRole() {
+        return role;
+    }
 
-	public void setUser_email(String user_email) {
-		this.user_email = user_email;
-	}
+    public void setRole(String role) {
+        this.role = role;
+    }
 
-	@Column(name = "user_avatar")
-	@Lob
-	public byte[] getUser_avatar() {
-		return user_avatar;
-	}
+    @ManyToOne
+    @JoinColumn(name = "overtime_id", referencedColumnName = "id", nullable = false)
+    public OvertimeEntity getOvertimeByOvertimeId() {
+        return overtimeByOvertimeId;
+    }
 
-	public void setUser_avatar(byte[] user_avatar) {
-		this.user_avatar = user_avatar;
-	}
+    public void setOvertimeByOvertimeId(OvertimeEntity overtimeByOvertimeId) {
+        this.overtimeByOvertimeId = overtimeByOvertimeId;
+    }
 
-	@OneToMany(mappedBy = "userEntity")
-	public Set<OvertimeEntity> getOvertimeEntities() {
-		return overtimeEntities;
-	}
+    @ManyToOne
+    @JoinColumn(name = "ticket_id", referencedColumnName = "id", nullable = false)
+    public TicketEntity getTicketByTicketId() {
+        return ticketByTicketId;
+    }
 
-	public void setOvertimeEntities(Set<OvertimeEntity> overtimeEntities) {
-		this.overtimeEntities = overtimeEntities;
-	}
-	
-	@OneToMany(mappedBy = "userEntity")
-	public Set<CreateTicketEntity> getCreateTicketEntities() {
-		return createTicketEntities;
-	}
+    public void setTicketByTicketId(TicketEntity ticketByTicketId) {
+        this.ticketByTicketId = ticketByTicketId;
+    }
 
-	public void setCreateTicketEntities(Set<CreateTicketEntity> createTicketEntities) {
-		this.createTicketEntities = createTicketEntities;
-	}
+    @ManyToOne
+    @JoinColumn(name = "update_control_id", referencedColumnName = "id", nullable = false)
+    public UpdateControlEntity getUpdateControlByUpdateControlId() {
+        return updateControlByUpdateControlId;
+    }
 
+    public void setUpdateControlByUpdateControlId(UpdateControlEntity updateControlByUpdateControlId) {
+        this.updateControlByUpdateControlId = updateControlByUpdateControlId;
+    }
 }

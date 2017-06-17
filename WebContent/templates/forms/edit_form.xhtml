@@ -32,7 +32,7 @@
 					rendered="#{empty editProfileBean.newImageName}"
 					styleClass="editImage">
 
-					<f:param name="userId" value="#{editProfileBean.userPopup.user_id}" />
+					<f:param name="userId" value="#{editProfileBean.userPopup.id}" />
 
 				</p:graphicImage>
 
@@ -74,7 +74,7 @@
 				<h:outputText value="Username :" />
 
 				<p:inputText id="editUsername"
-					value="#{editProfileBean.userPopup.username}" maxlength="40"
+					value="#{editProfileBean.userPopup.login}" maxlength="40"
 					size="32">
 
 					<f:validateLength minimum="1" maximum="40" />
@@ -88,7 +88,7 @@
 
 				<h:outputText value="First name :" />
 
-				<p:inputText value="#{editProfileBean.userPopup.user_first_name}"
+				<p:inputText value="#{editProfileBean.userPopup.first_name}"
 					maxlength="40" size="32">
 
 					<f:validateLength minimum="1" maximum="40" />
@@ -98,7 +98,7 @@
 
 				<h:outputText value="Last name :" />
 
-				<p:inputText value="#{editProfileBean.userPopup.user_last_name}"
+				<p:inputText value="#{editProfileBean.userPopup.last_name}"
 					maxlength="40" size="32">
 
 					<f:validateLength minimum="2" maximum="40" />
@@ -108,7 +108,7 @@
 
 				<h:outputText value="User email :" />
 
-				<p:inputText value="#{editProfileBean.userPopup.user_email}"
+				<p:inputText value="#{editProfileBean.userPopup.email}"
 					size="32" validatorMessage="Invalid email">
 
 					<f:validateRegex

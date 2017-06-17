@@ -3,9 +3,6 @@
  xmlns="http://java.sun.com/xml/ns/javaee" 
  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
   http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
- 
-
-
  <!-- Spring Context Configuration' s Path definition -->
       <context-param>
       <param-name>contextConfigLocation</param-name>
@@ -13,12 +10,10 @@
       /WEB-INF/applicationContext.xml
       </param-value>
    </context-param>
-   
    <context-param>
     <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
     <param-value>true</param-value>
 </context-param>
-  
    <!-- The Bootstrap listener to start up and shut down Spring's root WebApplicationContext. It is registered to Servlet Container -->
    <listener>
   <listener-class>
@@ -31,13 +26,11 @@
   </listener-class>
    </listener>
 
-
 	<!-- Change to "Production" when you are ready to deploy -->
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Production</param-value>
 	</context-param>
-  
 
 	<filter>
     <filter-name>primeFacesFileUploadFilter</filter-name>
@@ -54,15 +47,13 @@
     <param-value>commons</param-value><!-- Allowed values: auto, native and commons. -->
     
 </context-param>
-
-	<listener>
+	<!--<listener>
 		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-	</listener>
-
+	</listener>-->
 
     <!-- Welcome page -->
     <welcome-file-list>
-        <welcome-file>faces/enterPage.xhtml</welcome-file>
+        <welcome-file>faces/login.xhtml</welcome-file>
     </welcome-file-list>
 
     <!-- JSF mapping -->

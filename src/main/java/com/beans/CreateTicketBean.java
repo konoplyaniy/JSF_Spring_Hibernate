@@ -1,8 +1,8 @@
 package com.beans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -10,16 +10,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.ArrayDataModel;
-import javax.faces.model.DataModel;
 
-import org.primefaces.context.RequestContext;
-
-import com.entity.CreateTicketEntity;
-import com.entity.SolvedTicketEntity;
+import com.entity.TicketEntity;
 import com.entity.UpdateControlEntity;
-import com.service.CreateTicketService;
-import com.service.SolvedTicketService;
+import com.service.TicketService;
 import com.service.UpdateControlService;
 
 @ManagedBean
@@ -30,8 +24,8 @@ public class CreateTicketBean implements Serializable {
 	private Products selectedProduct;
 	private FacesMessage message;
 
-	@ManagedProperty(value = "#{createTicketService}")
-	CreateTicketService createTicketService;
+	@ManagedProperty(value = "#{ticketService}")
+	TicketService ticketService;
 
 	@ManagedProperty(value = "#{loginBean}")
 	LoginBean loginBean;
@@ -39,13 +33,10 @@ public class CreateTicketBean implements Serializable {
 	@ManagedProperty(value = "#{calendarBean}")
 	CalendarBean calendarBean;
 
-	@ManagedProperty(value = "#{solvedTicketService}")
-	SolvedTicketService solvedTicketService;
-
 	@ManagedProperty(value = "#{updateControlService}")
 	UpdateControlService updateControlService;
 
-	private List<CreateTicketEntity> deleteTickets;
+	private List<TicketEntity> deleteTickets;
 
 	public LoginBean getLoginBean() {
 		return loginBean;
@@ -63,20 +54,12 @@ public class CreateTicketBean implements Serializable {
 		this.calendarBean = calendarBean;
 	}
 
-	public CreateTicketService getCreateTicketService() {
-		return createTicketService;
+	public TicketService getCreateTicketService() {
+		return ticketService;
 	}
 
-	public void setCreateTicketService(CreateTicketService createTicketService) {
-		this.createTicketService = createTicketService;
-	}
-
-	public SolvedTicketService getSolvedTicketService() {
-		return solvedTicketService;
-	}
-
-	public void setSolvedTicketService(SolvedTicketService solvedTicketService) {
-		this.solvedTicketService = solvedTicketService;
+	public void setTicketService(TicketService ticketService) {
+		this.ticketService = ticketService;
 	}
 
 	public UpdateControlService getUpdateControlService() {
@@ -157,11 +140,11 @@ public class CreateTicketBean implements Serializable {
 		return Arrays.asList(Products.values());
 	}
 
-	public List<CreateTicketEntity> getDeleteTickets() {
+	public List<TicketEntity> getDeleteTickets() {
 		return deleteTickets;
 	}
 
-	public void setDeleteTickets(List<CreateTicketEntity> deleteTickets) {
+	public void setDeleteTickets(List<TicketEntity> deleteTickets) {
 		this.deleteTickets = deleteTickets;
 	}
 
@@ -183,13 +166,13 @@ public class CreateTicketBean implements Serializable {
 					areaMessage = areaMessage + "Members area \n";
 				}
 			}
-			CreateTicketEntity createTicketEntity = new CreateTicketEntity();
-			createTicketEntity.setUser_id(loginBean.getUser_id());
+			TicketEntity createTicketEntity = new TicketEntity();
+			createTicketEntity.setId(loginBean.getUser_id());
 			createTicketEntity.setDate(calendarBean.getDate());
-			createTicketEntity.setFront_area(front_area);
-			createTicketEntity.setMembers_area(members_area);
+			createTicketEntity.setFront(front_area);
+			createTicketEntity.setMembers(members_area);
 			createTicketEntity.setProduct(selectedProduct.name());
-			createTicketService.createTicket(createTicketEntity);
+			ticketService.createTicket(createTicketEntity);
 			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Ticket created",
 					selectedProduct.name() + "\n" + areaMessage);
 		} else if (selectedAreas.size() == 0 || selectedProduct.name().length() == 0) {
@@ -203,11 +186,11 @@ public class CreateTicketBean implements Serializable {
 	 * 
 	 * @return List of created tickets
 	 */
-	public List<CreateTicketEntity> getCreatedTickets() {
+	public List<TicketEntity> getCreatedTickets() {
 		if (loginBean.getUserRole().equals("admin")) {
-			return createTicketService.getAllTickets(calendarBean.getDate());
+			return ticketService.getAllUsersTicketsByDate(new Date());
 		} else if (loginBean.getUserRole().equals("user")) {
-			return createTicketService.getTickets(loginBean.getUser_id(), calendarBean.getDate());
+			return ticketService.getCreatedTicketsByUserId(loginBean.getUser_id(), new Date());
 		} else {
 			return null;
 		}
@@ -218,8 +201,8 @@ public class CreateTicketBean implements Serializable {
 	 */
 	public void deleteTickets() {
 		String msg = "";
-		for (CreateTicketEntity delete : deleteTickets) {
-			createTicketService.deleteTicket(delete);
+		for (TicketEntity delete : deleteTickets) {
+			ticketService.deleteTicket(delete);
 			msg = msg + delete.getProduct() + ",";
 		}
 		message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Delete tickets :", msg);
@@ -229,11 +212,12 @@ public class CreateTicketBean implements Serializable {
 	/**
 	 * method for abort solved tickets
 	 */
+//	TODO need change logic
 	public void deleteSolvedTickets() {
-		String msg = "";
-		List<SolvedTicketEntity> solvedList = null;
+		/*String msg = "";
+		List<TicketEntity> solvedList = null;
 		if (loginBean.getUserRole().equals("admin")) {
-			solvedList = solvedTicketService.getAllSolvedTickets(calendarBean.getDate());
+			solvedList = ticketService.getClosedTicketsByDatUserId(calendarBean.getDate());
 		} else if (loginBean.getUserRole().equals("user")) {
 			solvedList = solvedTicketService.getSolvedTickets(loginBean.getUser_id(), calendarBean.getDate());
 		}
@@ -243,7 +227,7 @@ public class CreateTicketBean implements Serializable {
 		}
 		solvedTicketService.deleteTicket(solvedTicketEntity);
 		message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Abort solved ticket", "");
-		FacesContext.getCurrentInstance().addMessage(null, message);
+		FacesContext.getCurrentInstance().addMessage(null, message);*/
 	}
 
 	/**
@@ -253,15 +237,15 @@ public class CreateTicketBean implements Serializable {
 		String msg = "";
 		List<UpdateControlEntity> updateList = null;
 		if (loginBean.getUserRole().equals("admin")) {
-			updateList = updateControlService.getAllUpdateControl(calendarBean.getDate());
+			updateList = updateControlService.getAllUsersTicketsByDate(calendarBean.getDate());
 		} else if (loginBean.getUserRole().equals("user")) {
-			updateList = updateControlService.getUpdateControl(loginBean.getUser_id(), calendarBean.getDate());
+			updateList = updateControlService.getUserTicketsByDate(loginBean.getUser_id(), calendarBean.getDate());
 		}
 		UpdateControlEntity updateControlEntity = null;
 		for (UpdateControlEntity update : updateList) {
 			updateControlEntity = update;
 		}
-		updateControlService.delete(updateControlEntity);
+		updateControlService.deleteUpdateControl(updateControlEntity);
 		message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Abort update control", "");
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
@@ -269,11 +253,16 @@ public class CreateTicketBean implements Serializable {
 	/**
 	 * Method for solved ticket
 	 */
+	//TODO Need inspect..
 	public void createSolvedTicket() {
-		SolvedTicketEntity solvedTicketEntity = new SolvedTicketEntity();
-		solvedTicketEntity.setUser_id(loginBean.getUser_id());
+		TicketEntity solvedTicketEntity = new TicketEntity();
+		solvedTicketEntity.setId(loginBean.getUser_id());
+		//TODO need add field for ZenDesk ticket ID
+		solvedTicketEntity.setZendesk_id(12132131);
 		solvedTicketEntity.setDate(calendarBean.getDate());
-		solvedTicketService.solvedTicket(solvedTicketEntity);
+		//TODO here need add getter for user ID
+//		solvedTicketEntity.setOpen_user_id();
+		ticketService.createTicket(solvedTicketEntity);
 		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Solved ticket", "");
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
@@ -285,7 +274,7 @@ public class CreateTicketBean implements Serializable {
 		UpdateControlEntity updateControlEntity = new UpdateControlEntity();
 		updateControlEntity.setUser_id(loginBean.getUser_id());
 		updateControlEntity.setDate(calendarBean.getDate());
-		updateControlService.create(updateControlEntity);
+		updateControlService.createUpdateControl(updateControlEntity);
 		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Create update control", "");
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
@@ -297,9 +286,9 @@ public class CreateTicketBean implements Serializable {
 	 */
 	public Integer getUpdateControlCount() {
 		if (loginBean.getUserRole().equals("admin")) {
-			return updateControlService.getAllUpdateControl(calendarBean.getDate()).size();
+			return updateControlService.getAllUsersTicketsByDate(calendarBean.getDate()).size();
 		} else if (loginBean.getUserRole().equals("user")) {
-			return updateControlService.getUpdateControl(loginBean.getUser_id(), calendarBean.getDate()).size();
+			return updateControlService.getUserTicketsByDate(loginBean.getUser_id(), calendarBean.getDate()).size();
 		} else {
 			return 0;
 		}
@@ -310,14 +299,15 @@ public class CreateTicketBean implements Serializable {
 	 * 
 	 * @return solved tickets count
 	 */
+	//TODO need to add methods to DAO and Service classes
 	public Integer getSolvedTicketsCount() {
-		if (loginBean.getUserRole().equals("admin")) {
-			return solvedTicketService.getAllSolvedTickets(calendarBean.getDate()).size();
+		/*if (loginBean.getUserRole().equals("admin")) {
+			return ticketService.getAllSolvedTickets(calendarBean.getDate()).size();
 		} else if (loginBean.getUserRole().equals("user")) {
 			return solvedTicketService.getSolvedTickets(loginBean.getUser_id(), calendarBean.getDate()).size();
-		} else {
+		} else {*/
 			return 0;
-		}
+		/*}*/
 	}
 
 	/**
@@ -325,44 +315,51 @@ public class CreateTicketBean implements Serializable {
 	 * 
 	 * @return create tickets count
 	 */
+	//TODO need to add methods to DAO and Service classes
 	public Integer getCreatedTicketsCount() {
-		if (loginBean.getUserRole().equals("admin")) {
+		/*if (loginBean.getUserRole().equals("admin")) {
 			return createTicketService.getAllTickets(calendarBean.getDate()).size();
 		} else if (loginBean.getUserRole().equals("user")) {
 			return createTicketService.getTickets(loginBean.getUser_id(), calendarBean.getDate()).size();
-		} else {
+		} else {*/
 			return 0;
-		}
+		/*}*/
 	}
 
 	/**
 	 * Method for count solved tickets by user id for statistic table
 	 * 
-	 * @param user_id
+	 * @param userId
 	 * @return count solved tickets
 	 */
+	//TODO need to add methods to DAO and Service classes
 	public Integer getSolvedTicketsId(Integer userId) {
-		return solvedTicketService.getSolvedTickets(userId, calendarBean.getDate()).size();
+		/*return ticketService.getSolvedTickets(userId, calendarBean.getDate()).size();*/
+		return 3;
 	}
 
 	/**
 	 * Method for count update control by user id for statistic table
 	 * 
-	 * @param user_id
+	 * @param userId
 	 * @return count update control
 	 */
+	//TODO need to add methods to DAO and Service classes
 	public Integer getUpdateControlId(Integer userId) {
-		return updateControlService.getUpdateControl(userId, calendarBean.getDate()).size();
+//		return updateControlService.getUpdateControlDao(userId, calendarBean.getDate()).size();
+		return 34;
 	}
 
 	/**
 	 * Method for count created tickets by user id for statistic table
 	 * 
-	 * @param user_id
+	 * @param userId
 	 * @return count created tickets
 	 */
+	//TODO need to add methods to DAO and Service classes
 	public Integer getCreatedTicketsId(Integer userId) {
-		return createTicketService.getTickets(userId, calendarBean.getDate()).size();
+//		return createTicketService.getTickets(userId, calendarBean.getDate()).size();
+		return 21;
 	}
 
 }
