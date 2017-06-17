@@ -24,6 +24,7 @@ import org.primefaces.event.SelectEvent;
 public class OvertimeBean implements Serializable {
 
 	private OvertimeEntity overtimeEntity;
+	private Date overtimePeriod;
 
 	private Timestamp overtime_form_date_from;
 	private Date overtime_form_date_to;
@@ -152,8 +153,7 @@ public class OvertimeBean implements Serializable {
 	}
 
 	public String getTotalHours() {
-		ArrayList<OvertimeEntity> overtimes = null;
-		;
+		ArrayList<OvertimeEntity> overtimes = new ArrayList<>();
 		if (loginBean.getUserRole().equals("admin")) {
 			overtimes = overtimeService.getAllOvertimes(calendarBean.getDate());
 		} else if (loginBean.getUserRole().equals("user")) {

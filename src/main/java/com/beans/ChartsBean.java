@@ -182,7 +182,7 @@ public class ChartsBean implements Serializable {
 		ArrayList<TicketEntity> ticketsBefore;
 		ArrayList<TicketEntity> tickets = new ArrayList<>();
 		if (loginBean.getUserRole().equals("admin")) {
-			ticketsBefore = ticketService.getAllUsersTicketsByDate(calendarBean.getDate());
+			ticketsBefore = ticketService.getAllUsersTicketsByMonth(calendarBean.getDate());
 		} else if (loginBean.getUserRole().equals("user")) {
 			ticketsBefore = ticketService.getTicketsByDateUserId(loginBean.getUser_id(), calendarBean.getDate());
 		} else {
@@ -331,9 +331,9 @@ public class ChartsBean implements Serializable {
 			chart.set("Created Tickets",
 					ticketService.getCreatedTicketsByUserId(user.getId(), calendarBean.getDate()).size());
 			chart.set("Solved Tickets",
-					ticketService.getClosedTicketsByDatUserId(user.getId(), calendarBean.getDate()).size());
+					ticketService.getClosedTicketsByDateUserId(user.getId(), calendarBean.getDate()).size());
 			chart.set("Update Control",
-					updateControlService.getUserTicketsByDate(user.getId(), calendarBean.getDate()).size());
+					updateControlService.getUserUpdateControlByDate(user.getId(), calendarBean.getDate()).size());
 			model.addSeries(chart);
 		}
 

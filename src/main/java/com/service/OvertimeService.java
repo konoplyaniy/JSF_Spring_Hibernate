@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * Created by geser on 16.06.17.
  */
-@Service("OvertimeService")
+@Service("overtimeService")
 public class OvertimeService {
     @Autowired
     OvertimeDao overtimeDao;

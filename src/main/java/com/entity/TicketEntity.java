@@ -1,6 +1,7 @@
 package com.entity;;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "ticket", schema = "", catalog = "qa")
-public class TicketEntity {
+public class TicketEntity implements Serializable {
     private int id;
     private String url;
     private Date date;
@@ -16,7 +17,7 @@ public class TicketEntity {
     private int front;
     private int members;
     private Integer open_user_id;
-    private Integer close_user_Id;
+    private Integer close_user_id;
     private Integer zendesk_id;
 
     @Id
@@ -91,12 +92,12 @@ public class TicketEntity {
 
     @Basic
     @Column(name = "close_user_id", nullable = true, insertable = true, updatable = true)
-    public Integer getClose_user_Id() {
-        return close_user_Id;
+    public Integer getClose_user_id() {
+        return close_user_id;
     }
 
-    public void setClose_user_Id(Integer closeUserId) {
-        this.close_user_Id = closeUserId;
+    public void setClose_user_id(Integer closeUserId) {
+        this.close_user_id = closeUserId;
     }
 
     @Basic
@@ -117,7 +118,7 @@ public class TicketEntity {
         TicketEntity that = (TicketEntity) o;
 
         if (id != that.id) return false;
-        if (close_user_Id != null ? !close_user_Id.equals(that.close_user_Id) : that.close_user_Id != null) return false;
+        if (close_user_id != null ? !close_user_id.equals(that.close_user_id) : that.close_user_id != null) return false;
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
         if (open_user_id != null ? !open_user_id.equals(that.open_user_id) : that.open_user_id != null) return false;
         if (product != null ? !product.equals(that.product) : that.product != null) return false;
@@ -134,7 +135,7 @@ public class TicketEntity {
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (product != null ? product.hashCode() : 0);
         result = 31 * result + (open_user_id != null ? open_user_id.hashCode() : 0);
-        result = 31 * result + (close_user_Id != null ? close_user_Id.hashCode() : 0);
+        result = 31 * result + (close_user_id != null ? close_user_id.hashCode() : 0);
         result = 31 * result + (zendesk_id != null ? zendesk_id.hashCode() : 0);
         return result;
     }

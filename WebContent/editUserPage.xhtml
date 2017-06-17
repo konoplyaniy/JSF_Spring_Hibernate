@@ -53,7 +53,7 @@
 				value="#{loginBean.allUsers}"
 				selectionMode="single"
 				selection="#{editProfileBean.userEntity}"
-				rowKey="#{user.user_id}">
+				rowKey="#{user.id}">
 
 				<p:ajax event="rowSelect"
 					listener="#{editProfileBean.onRowSelect}"

@@ -26,7 +26,7 @@ public class UpdateControlDao {
     }
 
 
-    public ArrayList<UpdateControlEntity> getUserTicketsByDate(Integer user_id, Date date) {
+    public ArrayList<UpdateControlEntity> getUserUpdateControlByDate(Integer user_id, Date date) {
         Query query = sessionFactory.getCurrentSession()
                 .createQuery(
                         "from UpdateControlEntity where user_id=:user_id and month(date)=month(:date) and year(date)=year(:date)");
@@ -36,7 +36,7 @@ public class UpdateControlDao {
         return updateList;
     }
 
-    public ArrayList<UpdateControlEntity> getAllUsersTicketsByDate(Date date) {
+    public ArrayList<UpdateControlEntity> getAllUsersUpdateControlByDate(Date date) {
         Query query = sessionFactory.getCurrentSession()
                 .createQuery(
                         "from UpdateControlEntity where month(date)=month(:date) and year(date)=year(:date)");
@@ -45,10 +45,12 @@ public class UpdateControlDao {
         return updateList;
     }
 
-    public ArrayList<UpdateControlEntity> getAllUsersSolvedTickets(){
+    /*public ArrayList<UpdateControlEntity> getAllUsersUpdateControlByMonth(Date date){
+        Query query = sessionFactory.getCurrentSession().createQuery(
+                "from UpdateControlEntity where ");
         ArrayList<UpdateControlEntity>updateList = (ArrayList<UpdateControlEntity>) sessionFactory.getCurrentSession().createCriteria(UpdateControlEntity.class).list();
         return updateList;
-    }
+    }*/
 
     public void createUpdateControl(UpdateControlEntity updateControlEntity){
         sessionFactory.getCurrentSession().persist(updateControlEntity);

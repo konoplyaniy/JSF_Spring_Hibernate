@@ -1,13 +1,14 @@
 package com.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by geser on 16.06.17.
  */
 @Entity
 @Table(name = "user", schema = "qa")
-public class UserEntity {
+public class UserEntity  implements Serializable{
     private int id;
     private String login;
     private String first_name;

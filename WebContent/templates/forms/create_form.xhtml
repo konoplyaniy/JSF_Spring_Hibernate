@@ -70,8 +70,9 @@
 				<p:toolbar>
 				
 					<f:facet name="right">
-					
-						<p:commandButton action="#{createUserBean.createUser()}"
+						<!--<p:commandButton action="#{createUserBean.createUser()}"-->
+
+						<p:commandButton
 							value="Create"
 							icon="fa fa-user-plus"
 							oncomplete="if (args &amp;&amp; !args.validationFailed) PF('createUserPopup').hide();"

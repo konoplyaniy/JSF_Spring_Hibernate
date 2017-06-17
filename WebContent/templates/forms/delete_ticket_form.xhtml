@@ -24,7 +24,8 @@
 						hideEffect="fade">
 						
 						<!-- Delete ticket scroll table -->
-						<p:dataTable id="deleteTable" var="deleteTickets"
+							<!--NEED TO EDIT-->
+						<!--<p:dataTable id="deleteTable" var="deleteTickets"
 							value="#{createTicketBean.createdTickets}"
 							selection="#{createTicketBean.deleteTickets}"
 							rowKey="#{deleteTickets.id}"
@@ -49,13 +50,13 @@
 							
 							<p:column headerText="AREA">
 							
-							<h:outputText value="#{(deleteTickets.front_area==1)? 'Front' : ''} #{(deleteTickets.members_area==1)? ' Members' : ''}"/>
+							<h:outputText value="#{(deleteTickets.front==1)? 'Front' : ''} #{(deleteTickets.members==1)? ' Members' : ''}"/>
 							
 							</p:column>
 							
 							<p:column selectionMode="multiple"	style="width:16px;text-align:center" />
 							
-							</p:dataTable>
+							</p:dataTable>-->
 					
 							<!-- Footer -->
 						<f:facet name="footer">

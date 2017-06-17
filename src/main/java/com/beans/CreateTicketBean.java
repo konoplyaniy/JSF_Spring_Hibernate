@@ -1,6 +1,7 @@
 package com.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +55,7 @@ public class CreateTicketBean implements Serializable {
 		this.calendarBean = calendarBean;
 	}
 
-	public TicketService getCreateTicketService() {
+	public TicketService getTicketService() {
 		return ticketService;
 	}
 
@@ -186,13 +187,15 @@ public class CreateTicketBean implements Serializable {
 	 * 
 	 * @return List of created tickets
 	 */
-	public List<TicketEntity> getCreatedTickets() {
+	public ArrayList<TicketEntity> getCreatedTickets() {
 		if (loginBean.getUserRole().equals("admin")) {
-			return ticketService.getAllUsersTicketsByDate(new Date());
+			return ticketService.getAllUsersTicketsByMonth(new Date());
 		} else if (loginBean.getUserRole().equals("user")) {
-			return ticketService.getCreatedTicketsByUserId(loginBean.getUser_id(), new Date());
+			System.out.println("*******************-----*** user ID: " + loginBean.getUser_id());
+			System.out.println("ticket service is null: " + ticketService == null);
+			return ticketService.getCreatedTicketsByUserId(loginBean.getUser_id(), calendarBean.getDate());
 		} else {
-			return null;
+			return new ArrayList<>();
 		}
 	}
 
@@ -217,7 +220,7 @@ public class CreateTicketBean implements Serializable {
 		/*String msg = "";
 		List<TicketEntity> solvedList = null;
 		if (loginBean.getUserRole().equals("admin")) {
-			solvedList = ticketService.getClosedTicketsByDatUserId(calendarBean.getDate());
+			solvedList = ticketService.getClosedTicketsByDateUserId(calendarBean.getDate());
 		} else if (loginBean.getUserRole().equals("user")) {
 			solvedList = solvedTicketService.getSolvedTickets(loginBean.getUser_id(), calendarBean.getDate());
 		}
@@ -237,9 +240,9 @@ public class CreateTicketBean implements Serializable {
 		String msg = "";
 		List<UpdateControlEntity> updateList = null;
 		if (loginBean.getUserRole().equals("admin")) {
-			updateList = updateControlService.getAllUsersTicketsByDate(calendarBean.getDate());
+			updateList = updateControlService.getAllUsersUpdateControlByDate(calendarBean.getDate());
 		} else if (loginBean.getUserRole().equals("user")) {
-			updateList = updateControlService.getUserTicketsByDate(loginBean.getUser_id(), calendarBean.getDate());
+			updateList = updateControlService.getUserUpdateControlByDate(loginBean.getUser_id(), calendarBean.getDate());
 		}
 		UpdateControlEntity updateControlEntity = null;
 		for (UpdateControlEntity update : updateList) {
@@ -285,13 +288,13 @@ public class CreateTicketBean implements Serializable {
 	 * @return update control count
 	 */
 	public Integer getUpdateControlCount() {
-		if (loginBean.getUserRole().equals("admin")) {
-			return updateControlService.getAllUsersTicketsByDate(calendarBean.getDate()).size();
+		/*if (loginBean.getUserRole().equals("admin")) {
+			return updateControlService.getAllUsersUpdateControlByDate(calendarBean.getDate()).size();
 		} else if (loginBean.getUserRole().equals("user")) {
-			return updateControlService.getUserTicketsByDate(loginBean.getUser_id(), calendarBean.getDate()).size();
-		} else {
+			return updateControlService.getUserUpdateControlByDate(loginBean.getUser_id(), calendarBean.getDate()).size();
+		} else {*/
 			return 0;
-		}
+		/*}*/
 	}
 
 	/**
@@ -306,7 +309,7 @@ public class CreateTicketBean implements Serializable {
 		} else if (loginBean.getUserRole().equals("user")) {
 			return solvedTicketService.getSolvedTickets(loginBean.getUser_id(), calendarBean.getDate()).size();
 		} else {*/
-			return 0;
+			return 6;
 		/*}*/
 	}
 
@@ -322,7 +325,7 @@ public class CreateTicketBean implements Serializable {
 		} else if (loginBean.getUserRole().equals("user")) {
 			return createTicketService.getTickets(loginBean.getUser_id(), calendarBean.getDate()).size();
 		} else {*/
-			return 0;
+			return 5;
 		/*}*/
 	}
 

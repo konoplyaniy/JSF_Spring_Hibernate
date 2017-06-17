@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by geser on 16.06.17.
  */
-@Service
+@Service("userService")
 public class UserService {
     @Autowired
     UserDao userDao;

@@ -12,10 +12,12 @@ import java.util.Date;
 /**
  * Created by geser on 16.06.17.
  */
-@Service("TicketService")
+@Service("ticketService")
 public class TicketService {
     @Autowired
     TicketDao ticketDao;
+
+    public TicketService (){}
 
     public TicketDao getTicketDao() {
         return ticketDao;
@@ -26,23 +28,23 @@ public class TicketService {
     }
 
     @Transactional
-    public ArrayList<TicketEntity> getTicketsByDateUserId(Integer userId, Date date){
+    public ArrayList<TicketEntity> getTicketsByDateUserId(int userId, Date date){
         return ticketDao.getTicketsByDateUserId(userId, date);
     }
 
     @Transactional
-    public ArrayList<TicketEntity> getAllUsersTicketsByDate(Date date){
-        return ticketDao.getAllUsersTicketsByDate(date);
+    public ArrayList<TicketEntity> getAllUsersTicketsByMonth(Date date){
+        return ticketDao.getAllUsersTicketsByMonth(date);
     }
 
     @Transactional
-    public ArrayList<TicketEntity> getCreatedTicketsByUserId(Integer userId, Date date){
+    public ArrayList<TicketEntity> getCreatedTicketsByUserId(int userId, Date date){
         return ticketDao.getCreatedTicketsByUserId(userId, date);
     }
 
     @Transactional
-    public ArrayList<TicketEntity> getClosedTicketsByDatUserId(Integer userId, Date date){
-        return ticketDao.getClosedTicketsByDatUserId(userId, date);
+    public ArrayList<TicketEntity> getClosedTicketsByDateUserId(int userId, Date date){
+        return ticketDao.getClosedTicketsByDateUserId(userId, date);
     }
 
     @Transactional

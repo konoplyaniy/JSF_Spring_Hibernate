@@ -25,7 +25,7 @@ public class TicketDao {
         this.sessionFactory = sessionFactory;
     }
 
-    public ArrayList<TicketEntity> getTicketsByDateUserId(Integer user_id, Date date) {
+    public ArrayList<TicketEntity> getTicketsByDateUserId(int user_id, Date date) {
         Query query = sessionFactory.getCurrentSession()
                 .createQuery(
                         "from TicketEntity where open_user_id=:user_id and month(date)=month(:date) and year(date)=year(:date)");
@@ -36,27 +36,34 @@ public class TicketDao {
     }
 
 
-    public ArrayList<TicketEntity> getCreatedTicketsByUserId(Integer user_id, Date date) {
+    public ArrayList<TicketEntity> getCreatedTicketsByUserId(int user_id, Date date) {
         Query query = sessionFactory.getCurrentSession()
                 .createQuery(
                         "from TicketEntity where open_user_id=:user_id and month(date)=month(:date) and year(date)=year(:date)");
         query.setParameter("user_id", user_id);
         query.setParameter("date", date);
         ArrayList<TicketEntity> createList = (ArrayList<TicketEntity>) query.list();
+        System.out.println("result list size" + createList.size());
         return createList;
     }
 
-    public ArrayList<TicketEntity> getClosedTicketsByDatUserId(Integer user_id, Date date) {
+    /**
+     *
+     * @param user_id
+     * @param date
+     * @return closed tickets by month from date
+     */
+    public ArrayList<TicketEntity> getClosedTicketsByDateUserId(int user_id, Date date) {
         Query query = sessionFactory.getCurrentSession()
                 .createQuery(
-                        "from TicketEntity where open_user_id=:user_id and month(date)=month(:date) and year(date)=year(:date)");
+                        "from TicketEntity where close_user_id=:user_id and month(date)=month(:date) and year(date)=year(:date)");
         query.setParameter("user_id", user_id);
         query.setParameter("date", date);
         ArrayList<TicketEntity> createList = (ArrayList<TicketEntity>) query.list();
         return createList;
     }
 
-    public ArrayList<TicketEntity> getAllUsersTicketsByDate(Date date) {
+    public ArrayList<TicketEntity> getAllUsersTicketsByMonth(Date date) {
         Query query = sessionFactory.getCurrentSession()
                 .createQuery("from TicketEntity where month(date)=month(:date) and year(date)=year(:date)");
         query.setParameter("date", date);
@@ -64,9 +71,7 @@ public class TicketDao {
         return createList;
     }
 
-
-
-    //TODO bad method!
+    //TODO colo method!
     public ArrayList<TicketEntity> getAllUsersCreateTickets(){
         ArrayList<TicketEntity>createList = (ArrayList<TicketEntity>) sessionFactory.getCurrentSession().createCriteria(TicketEntity.class).list();
         return createList;

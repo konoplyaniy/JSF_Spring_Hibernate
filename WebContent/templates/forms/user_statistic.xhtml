@@ -25,33 +25,33 @@
 			
 			<p:column headerText="USER">
 			
-				<h:outputText value="#{user.user_first_name} "></h:outputText>
+				<h:outputText value="#{user.first_name} "></h:outputText>
 				
-				<h:outputText value="#{user.user_last_name}"></h:outputText>
+				<h:outputText value="#{user.last_name}"></h:outputText>
 				
 			</p:column>
 			
 			<p:column headerText="CREATED TICKETS">
 			
-				<h:outputText value="#{createTicketBean.getCreatedTicketsId(user.user_id)}" />
+				<h:outputText value="#{createTicketBean.getCreatedTicketsId(user.id)}" />
 				
 			</p:column>
 			
 			<p:column headerText="SOLVED TICKETS">
 			
-				<h:outputText value="#{createTicketBean.getSolvedTicketsId(user.user_id)}" />
+				<h:outputText value="#{createTicketBean.getSolvedTicketsId(user.id)}" />
 				
 			</p:column>
 			
 			<p:column headerText="UPDATE">
 			
-				<h:outputText	value="#{createTicketBean.getUpdateControlId(user.user_id)}" />
+				<h:outputText	value="#{createTicketBean.getUpdateControlId(user.id)}" />
 				
 			</p:column>
 			
 			<p:column headerText="WORK PART" rendered="#{loginBean.userRole.equals('admin')}">
 			
-				<h:outputText	value="#{((createTicketBean.getCreatedTicketsId(user.user_id)+createTicketBean.getSolvedTicketsId(user.user_id)+createTicketBean.getUpdateControlId(user.user_id))/(createTicketBean.createdTicketsCount+createTicketBean.solvedTicketsCount+createTicketBean.updateControlCount))}">
+				<h:outputText	value="#{((createTicketBean.getCreatedTicketsId(user.id)+createTicketBean.getSolvedTicketsId(user.user_id)+createTicketBean.getUpdateControlId(user.user_id))/(createTicketBean.createdTicketsCount+createTicketBean.solvedTicketsCount+createTicketBean.updateControlCount))}">
 					
 					<f:convertNumber pattern="#0.00%"/>
 					

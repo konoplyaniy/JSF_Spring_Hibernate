@@ -1,6 +1,7 @@
 package com.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -9,7 +10,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "overtime", schema = "", catalog = "qa")
-public class OvertimeEntity {
+public class OvertimeEntity implements Serializable {
     private int id;
     private int user_id;
     private Timestamp period;

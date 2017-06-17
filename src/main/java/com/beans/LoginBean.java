@@ -68,7 +68,7 @@ public class LoginBean implements Serializable {
 		return user.getLast_name();
 	}
 
-	public Integer getUser_id() {
+	public int getUser_id() {
 		return user.getId();
 	}
 	

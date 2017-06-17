@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * Created by geser on 16.06.17.
  */
-@Service("UpdateControlService")
+@Service("updateControlService")
 public class UpdateControlService {
     @Autowired
     UpdateControlDao updateControlDao;
@@ -26,13 +26,13 @@ public class UpdateControlService {
     }
 
     @Transactional
-    public ArrayList<UpdateControlEntity> getUserTicketsByDate(Integer userId, Date date){
-        return updateControlDao.getUserTicketsByDate(userId, date);
+    public ArrayList<UpdateControlEntity> getUserUpdateControlByDate(Integer userId, Date date){
+        return updateControlDao.getUserUpdateControlByDate(userId, date);
     }
 
     @Transactional
-    public ArrayList<UpdateControlEntity> getAllUsersTicketsByDate(Date date){
-        return updateControlDao.getAllUsersTicketsByDate(date);
+    public ArrayList<UpdateControlEntity> getAllUsersUpdateControlByDate(Date date){
+        return updateControlDao.getAllUsersUpdateControlByDate(date);
     }
 
     @Transactional

@@ -1,6 +1,7 @@
 package com.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "update_control", schema = "", catalog = "qa")
-public class UpdateControlEntity {
+public class UpdateControlEntity implements Serializable {
     private int id;
     private int user_id;
     private Date date;
