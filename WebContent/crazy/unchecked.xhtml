@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:body>
+
+    <ui:composition template="/resources/templates/template.xhtml">
+        <ui:define name="title">
+            Crazy Unchecked Events | QA | Dreamscape Networks
+        </ui:define>
+
+        <ui:define name="content">
+            <h:body onload="document.getElementById('hiddenForm:update_event_form').click()">
+                <h:form id="hiddenForm" style="display: none">
+                    <h:commandButton id="update_event_form" action="#{crazy_events.init()}" value="Refresh">
+                        <f:ajax render=":event_form"/>
+                    </h:commandButton>
+                </h:form>
+
+                <h:form id="event_form">
+                    <p:dataTable id="event_table" var="eventByLocale"
+                                 stickyHeader="true"
+                                 value="#{crazy_events.eventByLocale}"
+                                 rendered="#{crazy_events.dataLoaded}">
+
+                        <!--COLUMN SELECTOR BAD WORKING WILL BE DELETED OR EDITED-->
+                        <f:facet name="{ColumnSelector}" id="columnSelector">
+                            <p:commandButton id="toggler" type="button" value="Select columns"
+                                             style="float:right;
+                                 background-color: gray;"
+                                             icon="ui-icon-calculator"/>
+                            <p:columnToggler id="columnTogler"
+                                             datasource="event_table"
+                                             trigger="toggler"/>
+                        </f:facet>
+
+                        <f:facet name="header">
+                            CRAZYDOMAINS: failed tests for  #{crazy_events.currentDate}, for see other use search
+                        </f:facet>
+
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column headerText="Date" style="width: 120px"/>
+                                <p:column headerText="Class name"/>
+                                <p:column headerText="Test name"/>
+                                <p:column headerText="Sysweb" style="width: 175px"/>
+                                <p:column headerText="Params"/>
+                                <p:column headerText="URL"/>
+                            </p:row>
+                        </p:columnGroup>
+
+                        <p:subTable var="reportRow" value="#{eventByLocale.uncheckedEvents}" id="subTable">
+                            <f:facet name="header">
+                                <h:outputText value="Locale: #{eventByLocale.locale}"
+                                              style="text-align:right; font-size: 15px"/>
+                                <h:outputText value=" | Total failed: #{eventByLocale.failedTestsCount}"
+                                              style="text-align:right; font-size: 15px"/>
+                            </f:facet>
+                            <p:column style="width: 120px">
+                                <h:outputText value="#{reportRow.data}">
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss"
+                                                       timeZone="#{eventTableExporter.timeZone}"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column>
+                                <h:outputText var="id" value="#{reportRow.testByTestId.clazzByClassId.name}"/>
+                            </p:column>
+
+                            <p:column>
+                                <h:outputText var="id" value="#{reportRow.testByTestId.name}"/>
+                            </p:column>
+
+                            <p:column>
+                                <h:outputText value="#{reportRow.syswebBySyswebId.name}"/>
+                            </p:column>
+
+                            <p:column>
+                                <h:outputText value="#{reportRow.params}"/>
+                            </p:column>
+
+                            <p:column>
+                                <p:link value="#{reportRow.url}" href="#{reportRow.url}" style="color: blue"
+                                        target="_blank"/>
+                            </p:column>
+
+                        </p:subTable>
+                    </p:dataTable>
+                </h:form>
+                <!--Loader-->
+                <h:form rendered="#{not crazy_events.dataLoaded}">
+                    <div style="padding: 10em;" align="center">
+                        <h:outputLabel for="data-loader"
+                                       value="Loading data"
+                                       style="font-size: 2em"
+                        /><br></br>
+                        <p:graphicImage value="/resources/images/row-loader.gif"
+                                        id="data-loader"/>
+                    </div>
+                </h:form>
+            </h:body>
+        </ui:define>
+    </ui:composition>
+
+</h:body>
+</html>

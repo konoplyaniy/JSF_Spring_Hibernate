@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:body>
+
+    <ui:composition template="/resources/templates/template.xhtml">
+        <ui:define name="title">
+            All Events | QA | Dreamscape Networks
+        </ui:define>
+
+        <ui:define name="content">
+            <h:body onload="document.getElementById('hiddenForm:update_event_form').click()">
+                <h:form id="hiddenForm" style="display:none">
+                    <h:commandButton id="update_event_form" action="#{eventTableExporter.init()}">
+                        <f:ajax render=":event_form"/>
+                    </h:commandButton>
+                </h:form>
+
+                <h:form id="event_form">
+                    <p:dataTable id="event_table" var="reportRow"
+                                 stickyHeader="true"
+                                 rowKey="#{event.data}"
+                                 value="#{eventTableExporter.events}"
+                                 paginatorTemplate="{Exporters}"
+                                 paginator="true"
+                                 rowIndexVar="rCount"
+                                 rowsPerPageTemplate="40,60,80"
+                                 rows="#{eventTableExporter.events.size()}"
+                                 style="margin-bottom:15px"
+                                 showDetail="true"
+                                 widgetVar="eventTable"
+                                 selection="#{eventTableExporter.selectedEvents}"
+                                 editable="true"
+                                 editMode="cell"
+                                 rendered="#{eventTableExporter.dataLoaded}">
+                        <f:facet name="{Exporters}">
+                            <h:commandLink>
+                                <p:graphicImage value="/resources/images/xls.png" width="32"/>
+                                <p:dataExporter type="xls" target="event_table" fileName="eventsXls"
+                                                postProcessor="#{eventTableExporter.postProcessXLS}"/>
+                            </h:commandLink>
+                            <h:commandLink>
+                                <p:graphicImage value="/resources/images/pdf.png" width="32"/>
+                                <p:dataExporter type="pdf" target="event_table" fileName="eventsPdf"
+                                                postProcessor="#{eventTableExporter.postProcessXLS}"/>
+                            </h:commandLink>
+                        </f:facet>
+
+                        <f:facet name="{ColumnSelector}" id="columnSelector">
+                            <p:commandButton id="toggler" type="button" value="Select columns"
+                                             style="float:right;
+                                 background-color: gray;"
+                                             icon="ui-icon-calculator"/>
+                            <p:columnToggler id="columnTogler"
+                                             datasource="event_table"
+                                             trigger="toggler"/>
+                        </f:facet>
+
+                        <p:ajax event="cellEdit" listener="#{eventTableExporter.onCellEdit}"
+                                update="event_form:event_table"/>
+
+                        <f:facet name="header">
+                            Failed tests for #{eventTableExporter.currentDate}, for see other use search
+                        </f:facet>
+
+                        <p:column style="width: 20px;">
+                            <f:facet name="header">
+                                <h:outputText value="№"/>
+                            </f:facet>
+                            <h:outputText value="#{rCount + 1}"/>
+                        </p:column>
+                        <p:column sortBy="#{reportRow.data}"
+                                  style="width: 120px">
+                            <f:facet name="header">
+                                <h:outputText value="Date"/>
+                            </f:facet>
+
+                            <h:outputText value="#{reportRow.data}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss"
+                                                   timeZone="#{eventTableExporter.timeZone}"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Locale"
+                                  style="width: 120px; height: 20px;"
+                                  sortBy="#{reportRow.localeByLocaleId.locale}">
+                            <h:outputText value="#{reportRow.localeByLocaleId.locale}"/>
+                        </p:column>
+                        <p:column sortBy="#{reportRow.testByTestId.clazzByClassId.name}" headerText="Class name">
+                            <h:outputText var="id" value="#{reportRow.testByTestId.clazzByClassId.name}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{reportRow.testByTestId.name}" headerText="Test name">
+                            <p:commandButton value="#{reportRow.testByTestId.name}"
+                                             style="border: none"
+                                             process="event_table"
+                                             update=":event_form:multiEventDetail"
+                                             oncomplete="PF('multiEventDialog').show()"
+                                             id="seeStepsButton">
+                                <f:setPropertyActionListener value="#{reportRow}"
+                                                             target="#{eventTableExporter.selectedEvent}"/>
+                            </p:commandButton>
+                            <p:tooltip id="tipTestName" for="seeStepsButton" value="Click to see steps" position="top"
+                                       styleClass="MyToolTip"/>
+
+                        </p:column>
+                        <p:column headerText="Sysweb">
+                            <h:outputText value="#{reportRow.syswebBySyswebId.name}"/>
+                        </p:column>
+                        <p:column headerText="Params">
+                            <h:outputText value="#{reportRow.params}"/>
+                        </p:column>
+                        <p:column headerText="URL">
+                            <p:link value="#{reportRow.url}" href="#{reportRow.url}" style="color: blue"
+                                    target="_blank"/>
+                        </p:column>
+                        <p:column headerText="Ticket">
+
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:link value="ticket" href="#{reportRow.ticket}" style="color: blue"
+                                            rendered="#{not empty reportRow.ticket}" target="_blank"/>
+                                    <p:commandButton value="Add" rendered="#{empty reportRow.ticket}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{reportRow.ticket}" style="width:96%" label="Ticket"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Status" sortBy="#{reportRow.status}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:graphicImage value="/resources/images/plus_icons/favicon-16x16.png"
+                                                    rendered="#{reportRow.status eq 'Checked, Issue'}"/>
+                                    <p:graphicImage value="/resources/images/closed_icons/favicon-16x16.png"
+                                                    rendered="#{reportRow.status eq 'Checked, Fixed'}"/>
+                                    <p:graphicImage value="/resources/images/accept_icons/favicon-16x16.png"
+                                                    rendered="#{reportRow.status eq 'Checked'}"/>
+                                    <p:graphicImage value="/resources/images/question_icons/favicon-16x16.png"
+                                                    rendered="#{reportRow.status eq 'Unchecked'}"/>
+                                    <h:outputText value="#{reportRow.status}"
+                                                  rendered="#{reportRow.status eq 'Checked' or reportRow.status eq 'Checked, Fixed'}"
+                                                  style="background: greenyellow;"/>
+                                    <h:outputText value="#{reportRow.status}"
+                                                  rendered="#{reportRow.status eq 'Unchecked' or reportRow.status eq 'Checked, Issue'}"
+                                                  style="background: coral;"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{reportRow.status}" style="width:80%;">
+                                        <f:selectItems value="#{eventTableExporter.statusesList}"/>
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                    </p:dataTable>
+                    <!--Loader-->
+                    <h:form rendered="#{not eventTableExporter.dataLoaded}">
+                        <div style="padding: 10em;" align="center">
+                            <h:outputLabel for="data-loader"
+                                           value="Loading data"
+                                           style="font-size: 2em"
+                            /><br></br>
+                            <p:graphicImage value="/resources/images/row-loader.gif"
+                                            id="data-loader"/>
+                        </div>
+                    </h:form>
+                    <p:dialog header="Steps" widgetVar="multiEventDialog" modal="true" showEffect="fade"
+                              hideEffect="fade"
+                              resizable="false" width="1000" position="top"
+                              onShow="PF('multiEventDialog').initPosition()">
+                        <p:outputPanel id="multiEventDetail" style="text-align:left;">
+                            <ui:repeat value="#{eventTableExporter.selectedEvent}" var="event">
+                                <h:outputText value="#{reportRow.steps}" style="display:block"
+                                              styleClass="preformatted"/>
+                            </ui:repeat>
+                        </p:outputPanel>
+                    </p:dialog>
+
+                </h:form>
+            </h:body>
+        </ui:define>
+    </ui:composition>
+
+</h:body>
+</html>

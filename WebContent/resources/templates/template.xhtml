@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<f:view contentType="text/html" id="fview1">
+
+    <h:head>
+        <title><ui:insert name="title">Selenium</ui:insert></title>
+    </h:head>
+
+    <h:head>
+        <h:outputStylesheet library="css" name="styles.css"/>
+        <link rel="icon" type="image/x-icon" href="/resources/images/favicon.ico"/>
+    </h:head>
+
+    <h:body style="background-color: aliceblue">
+
+        <div id="header">
+            <ui:insert name="header" >
+                <ui:include src="headers.xhtml"/>
+            </ui:insert>
+        </div>
+
+        <div id="content">
+            <ui:insert name="content" >
+                <ui:include src="default.xhtml" />
+            </ui:insert>
+        </div>
+
+        <div id="footer">
+            <ui:insert name="footer" >
+                <ui:include src="footers.xhtml"/>
+            </ui:insert>
+        </div>
+
+
+    </h:body>
+</f:view>
+
+</html>

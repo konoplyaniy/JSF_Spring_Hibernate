@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:outputScript library="js" name="goTo.js"/>
+
+<div class="ui-g">
+    <div class="ui-g-12" align="left" style="background-color: aliceblue">
+        <p:menubar style="background-color: aliceblue;  font-size: 1.4em">
+            <p:menuitem value="Home"
+                        url="/main/welcome.xhtml" icon="ui-icon-home"/>
+            <p:menuitem value="Short Report" icon="ui-icon-contact"
+                        url="/main/report.xhtml"/>
+            <p:submenu label="Results" icon="ui-icon-check" id="results_menu">
+                <p:menuitem value="All Websites"
+                            url="/main/allevents.xhtml"/>
+                <p:menuitem value="General" outcome="/general/unchecked.xhtml"/>
+                <p:submenu style="border: none" label="Crazy">
+                    <p:menuitem value="Crazy Unchecked"
+                                url="/crazy/unchecked.xhtml" id="uncheckedCrazy"/>
+                    <p:menuitem value="Crazy Front" url="/crazy/front.xhtml" id="crFront"/>
+                    <p:menuitem value="Crazy Members" url="/crazy/members.xhtml" id="crMemb"/>
+                </p:submenu>
+                <p:submenu style="border: none" label="Aust">
+                    <p:menuitem value="Aust Unckecked" url="/aust/unchecked.xhtml" id="allAust"/>
+                    <p:menuitem value="Aust Front" url="/aust/front.xhtml" id="austFront"/>
+                    <p:menuitem value="Aust Members" url="/aust/members.xhtml" id="austMemb"/>
+                </p:submenu>
+            </p:submenu>
+            <p:menuitem value="Search" icon="ui-icon-search"
+                        url="/main/search.xhtml"/>
+            <p:submenu label="Diagram" icon="ui-icon-image" id="diagram_menu">
+                <p:menuitem value="All events"
+                            url="/main/diagram.xhtml" id="all_diagrams"/>
+                <p:menuitem value="General"
+                            url="/general/diagram.xhtml" id="general_diagrams"/>
+                <p:menuitem value="Crazy events"
+                            url="/crazy/diagram.xhtml" id="crazy_diagrams"/>
+                <p:menuitem value="Aust events"
+                            url="/aust/diagram.xhtml" id="aust_diagrams"/>
+                <p:menuitem value="Build"
+                            url="/main/diagram-custom.xhtml" id="build_diagrams"/>
+            </p:submenu>
+            <p:menuitem value="Test cases" icon="ui-icon-document"
+                        url="/main/testcases.xhtml"
+                        id="testCases"/>
+        </p:menubar>
+    </div>
+    <div class="ui-g-12" align="center">
+        <p:link outcome="/main/welcome">
+            <h:graphicImage name="images/qa_automation_logo.png" width="438" height="140"/>
+        </p:link>
+    </div>
+</div>
+
+<h:form>
+    <p:commandButton value="Download HostsSwitсher" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);"
+                     icon="ui-icon-arrowthick-1-s">
+        <p:fileDownload value="#{fileDownload.file}"/>
+    </p:commandButton>
+</h:form>
+
+<p:separator style="width:100%; height:5px; background-color: black; opacity: 0.4;"/>
+
+<p:tooltip id="tipCrAll" for="uncheckedCrazy" value="All Crazy unchecked events" position="top"
+           styleClass="MyToolTip"/>
+<p:tooltip id="tipCrFront" for="crFront" value="Crazy front events" position="top" styleClass="MyToolTip"/>
+<p:tooltip id="tipCrMemb" for="crMemb" value="Crazy members events" position="top" styleClass="MyToolTip"/>
+
+<p:tooltip id="tipAustAll" for="allAust" value="Unchecked Aust events" position="top" styleClass="MyToolTip"/>
+<p:tooltip id="tipAustFr" for="austFront" value="Aust front events" position="top" styleClass="MyToolTip"/>
+<p:tooltip id="tipAustMemb" for="austMemb" value="Aust members events" position="top" styleClass="MyToolTip"/>
+
+</html>
