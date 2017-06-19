@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by geser on 16.06.17.
  */
 @Entity
-@Table(name = "overtime", schema = "", catalog = "qa")
+@Table(name = "overtime", schema = "crazydomains")
 public class OvertimeEntity implements Serializable {
     private int id;
     private int user_id;

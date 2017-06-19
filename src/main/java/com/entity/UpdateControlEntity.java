@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by geser on 16.06.17.
  */
 @Entity
-@Table(name = "update_control", schema = "", catalog = "qa")
+@Table(name = "update_control", schema = "crazydomains")
 public class UpdateControlEntity implements Serializable {
     private int id;
     private int user_id;

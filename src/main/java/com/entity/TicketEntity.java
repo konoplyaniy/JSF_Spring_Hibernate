@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by geser on 16.06.17.
  */
 @Entity
-@Table(name = "ticket", schema = "", catalog = "qa")
+@Table(name = "ticket", schema = "crazydomains")
 public class TicketEntity implements Serializable {
     private int id;
     private String url;
