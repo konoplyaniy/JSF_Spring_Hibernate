@@ -247,7 +247,7 @@ public class CreateTicketBean implements Serializable {
 	 * method for abort solved tickets
 	 */
 //	TODO need change logic
-	public void deleteSolvedTickets() {
+	public void deleteClosedTickets() {
 		/*String msg = "";
 		List<TicketEntity> solvedList = null;
 		if (loginBean.getUserRole().equals("admin")) {
@@ -317,13 +317,13 @@ public class CreateTicketBean implements Serializable {
 	 * @return update control count
 	 */
 	public Integer getUpdateControlCount() {
-		/*if (loginBean.getUserRole().equals("admin")) {
+		if (loginBean.getUserRole().equals("admin")) {
 			return updateControlService.getAllUsersUpdateControlByDate(calendarBean.getDate()).size();
 		} else if (loginBean.getUserRole().equals("user")) {
 			return updateControlService.getUserUpdateControlByDate(loginBean.getUser_id(), calendarBean.getDate()).size();
-		} else {*/
+		} else {
 			return 4;
-		/*}*/
+		}
 	}
 
 	/**
