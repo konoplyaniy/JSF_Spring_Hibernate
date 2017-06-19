@@ -38,15 +38,15 @@
 				<value>com.entity.OvertimeEntity</value>
 				<value>com.entity.UpdateControlEntity</value>
 				<value>com.entity.TicketEntity</value>
-				<value>com.entity.BrowserEntity></value>
-				<value>com.entity.ClazzEntity></value>
-				<value>com.entity.EventEntity></value>
-				<value>com.entity.GroupEntity></value>
-				<value>com.entity.LocaleEntity></value>
-				<value>com.entity.PcEntity"></value>
-				<value>com.entity.SyswebEntity></value>
-				<value>com.entity.TestEntity></value>
-				<value>com.entity.TestcaseEntity></value>
+				<value>com.entity.BrowserEntity</value>
+				<value>com.entity.ClazzEntity</value>
+				<value>com.entity.EventEntity</value>
+				<value>com.entity.GroupEntity</value>
+				<value>com.entity.LocaleEntity</value>
+				<value>com.entity.PcEntity</value>
+				<value>com.entity.SyswebEntity</value>
+				<value>com.entity.TestEntity</value>
+				<value>com.entity.TestcaseEntity</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
