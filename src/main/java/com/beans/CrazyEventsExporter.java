@@ -1,8 +1,8 @@
-package com.reporter.beans;
+package com.beans;
 
 
-import com.reporter.hibernate.entities.EventEntity;
-import com.reporter.hibernate.service.EventService;
+import com.entity.EventEntity;
+import com.service.EventService;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -13,6 +13,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CellEditEvent;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 @ManagedBean(name = "crazy_events")
-public class CrazyEventsExporter implements Serializable{
+public class CrazyEventsExporter implements Serializable {
 
     private ArrayList<EventEntity> events;
     private ArrayList<EventEntity> allCrazyEvents;
@@ -36,7 +37,17 @@ public class CrazyEventsExporter implements Serializable{
     private ArrayList<ListEntities> eventByLocale;
     private EventEntity selectedEvent;
     private List<EventEntity> selectedEvents;
-    private EventService service;
+
+    @ManagedProperty(value = "#{eventService}")
+    private EventService eventService;
+
+    public EventService getEventService() {
+        return eventService;
+    }
+
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
 
     private boolean isDataLoaded = false;
 
@@ -49,8 +60,7 @@ public class CrazyEventsExporter implements Serializable{
     }
 
     public void init() {
-        service = new EventService();
-        events = service.findByDayEvents(new Date(), "crazydomains");
+        events = eventService.findByDayEvents(new Date(), "crazydomains");
         System.out.println("All crazy event count = " + events.size());
 
         eventsComAuLocale = new ArrayList<>();
@@ -98,11 +108,11 @@ public class CrazyEventsExporter implements Serializable{
         divideArrayToMembersAndFrontList(events, eventsCrazyMembers, eventsCrazyFront);
 
         eventByLocale = new ArrayList<>();
-        eventByLocale.add(new CrazyEventsExporter.ListEntities("com.au", eventsComAuLocale));
-        eventByLocale.add(new CrazyEventsExporter.ListEntities("co.uk", eventsCoUkLocale));
-        eventByLocale.add(new CrazyEventsExporter.ListEntities("co.nz", eventsCoNzLocale));
-        eventByLocale.add(new CrazyEventsExporter.ListEntities("in", eventsInLocale));
-        eventByLocale.add(new CrazyEventsExporter.ListEntities("ae", eventsAeLocale));
+        eventByLocale.add(new ListEntities("com.au", eventsComAuLocale));
+        eventByLocale.add(new ListEntities("co.uk", eventsCoUkLocale));
+        eventByLocale.add(new ListEntities("co.nz", eventsCoNzLocale));
+        eventByLocale.add(new ListEntities("in", eventsInLocale));
+        eventByLocale.add(new ListEntities("ae", eventsAeLocale));
         setDataLoaded(true);
     }
 
@@ -157,7 +167,7 @@ public class CrazyEventsExporter implements Serializable{
             eventEntity.setTicket(newValue.toString());
         }
 
-       service.update(eventEntity);
+        eventService.update(eventEntity);
         System.out.println("end cell edit ");
     }
 

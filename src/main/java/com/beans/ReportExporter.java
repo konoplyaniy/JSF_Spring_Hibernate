@@ -1,8 +1,8 @@
-package com.reporter.beans;
+package com.beans;
 
 
-import com.reporter.hibernate.entities.EventEntity;
-import com.reporter.hibernate.service.EventService;
+import com.entity.EventEntity;
+import com.service.EventService;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;

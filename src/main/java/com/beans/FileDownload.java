@@ -1,4 +1,4 @@
-package com.reporter.beans;
+package com.beans;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;

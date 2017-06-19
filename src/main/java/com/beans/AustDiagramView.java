@@ -1,11 +1,12 @@
-package com.reporter.beans;
+package com.beans;
 
 
-import com.reporter.hibernate.entities.EventEntity;
-import com.reporter.hibernate.service.EventService;
+import com.entity.EventEntity;
+import com.service.EventService;
 import org.primefaces.model.chart.*;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -20,8 +21,19 @@ public class AustDiagramView implements Serializable {
     private LineChartModel modelPerDate;
     private BarChartModel modelByLocale;
     private BarChartModel modelBySysweb;
-    private EventService service;
+
     private boolean isDataLoaded = false;
+
+    @ManagedProperty(value = "#{eventService}")
+    private EventService eventService;
+
+    public EventService getEventService() {
+        return eventService;
+    }
+
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
 
     public boolean isDataLoaded() {
         return isDataLoaded;
@@ -32,7 +44,6 @@ public class AustDiagramView implements Serializable {
     }
 
     public void init() {
-        service = new EventService();
         modelPerDate = initLineChartModel();
         modelByLocale = initBarChartModel(true, "Locales");
         modelBySysweb = initBarChartModel(false, "Syswebs");
@@ -116,7 +127,7 @@ public class AustDiagramView implements Serializable {
 
             /*System.out.println("default diagram");*/
         for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-            ArrayList<EventEntity> eventList = service.findByDayEvents(date, "austdomains.com.au");
+            ArrayList<EventEntity> eventList = eventService.findByDayEvents(date, "austdomains.com.au");
             series.set(formatter.format(date), eventList.size());
         }
 
@@ -134,7 +145,7 @@ public class AustDiagramView implements Serializable {
     }
 
     private ArrayList<EventEntity> getEvents() {
-        return service.findByMonthEvents(new Date(), "austdomains.com.au");
+        return eventService.findByMonthEvents(new Date(), "austdomains.com.au");
     }
 
     public BarChartModel getModelByLocale() {

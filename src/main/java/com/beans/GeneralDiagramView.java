@@ -1,10 +1,11 @@
-package com.reporter.beans;
+package com.beans;
 
-import com.reporter.hibernate.entities.EventEntity;
-import com.reporter.hibernate.service.EventService;
+import com.entity.EventEntity;
+import com.service.EventService;
 import org.primefaces.model.chart.*;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -17,10 +18,20 @@ public class GeneralDiagramView implements Serializable{
     private LineChartModel modelPerDate;
     private BarChartModel modelByLocale;
     private BarChartModel modelBySysweb;
-    private EventService service;
+
+
+    @ManagedProperty(value = "#{eventService}")
+    private EventService eventService;
+
+    public EventService getEventService() {
+        return eventService;
+    }
+
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
 
     public void init() {
-        service = new EventService();
         modelPerDate = initLineChartModel();
         modelByLocale = initBarChartModel(true, "Locales");
         modelBySysweb = initBarChartModel(false, "Syswebs");
@@ -102,7 +113,7 @@ public class GeneralDiagramView implements Serializable{
 
             /*System.out.println("default diagram");*/
         for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-            ArrayList<EventEntity> eventList = service.findByDayEvents(date, "general");
+            ArrayList<EventEntity> eventList = eventService.findByDayEvents(date, "general");
             series.set(formatter.format(date), eventList.size());
         }
 
@@ -120,7 +131,7 @@ public class GeneralDiagramView implements Serializable{
     }
 
     private ArrayList<EventEntity> getEvents() {
-        return service.findByMonthEvents(new Date(), "general");
+        return eventService.findByMonthEvents(new Date(), "general");
     }
 
     public BarChartModel getModelByLocale() {

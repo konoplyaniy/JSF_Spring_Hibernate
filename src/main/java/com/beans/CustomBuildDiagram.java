@@ -1,13 +1,14 @@
-package com.reporter.beans;
+package com.beans;
 
-import com.reporter.hibernate.entities.EventEntity;
-import com.reporter.hibernate.service.EventService;
+import com.entity.EventEntity;
+import com.service.EventService;
 import org.hibernate.HibernateException;
 import org.primefaces.model.chart.*;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
@@ -37,8 +38,18 @@ public class CustomBuildDiagram implements Serializable {
     private String website = "";
     private ArrayList<String> websites;
     private boolean clickedBuild = false;
-    private EventService service;
     private boolean isDataLoad = false;
+
+    @ManagedProperty(value = "#{eventService}")
+    private EventService eventService;
+
+    public EventService getEventService() {
+        return eventService;
+    }
+
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
 
     private void resetVariables(){
         sysweb = "";
@@ -49,18 +60,16 @@ public class CustomBuildDiagram implements Serializable {
 
     @PostConstruct
     public void init() {
-        service = new EventService();
         initDropdownsData();
     }
 
     //  INIT DROPDOWNS LIST
     public void initDropdownsData() {
         resetVariables();
-        EventService service = new EventService();
         /*setTestNames(service.getTestNames());*/
-        setLocales(service.getLocaleNames());
-        setSyswebs(service.getSyswebNames());
-        setClazzNames(service.getClazzNames());
+        setLocales(eventService.getLocaleNames());
+        setSyswebs(eventService.getSyswebNames());
+        setClazzNames(eventService.getClazzNames());
         setWebsites(getWebsites());
     }
 
@@ -83,7 +92,7 @@ public class CustomBuildDiagram implements Serializable {
     }
 
     public void onWebSiteChange() {
-        HashSet<String> allSyswebsList = service.getSyswebNames();
+        HashSet<String> allSyswebsList = eventService.getSyswebNames();
         if (getWebsite().equals("austdomains.com.au")) {
             HashSet<String> austSyswebs = new HashSet<>();
             allSyswebsList.forEach(syswebName -> {
@@ -101,9 +110,9 @@ public class CustomBuildDiagram implements Serializable {
 
     public HashSet<String> getTestNamesListBySelectedClassName() throws HibernateException {
         if (getClazzName() != null && !getClazzName().equals("")) {
-            return service.getTestNamesByClazzName(getClazzName());
+            return eventService.getTestNamesByClazzName(getClazzName());
         } else
-            return service.getTestNames();
+            return eventService.getTestNames();
     }
 
     /**
@@ -185,7 +194,7 @@ public class CustomBuildDiagram implements Serializable {
         /*per day add to series date and count of failed tests*/
         for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
             /*System.out.println("clazz name " + getClazzName() + " test name " + getTestName() + " sysweb " + getSysweb() + " locale " + getLocale());*/
-            ArrayList<EventEntity> eventList = service.findBySelectedDay(getWebsite(), getClazzName(), getTestName(), getSysweb(), getLocale(), date);
+            ArrayList<EventEntity> eventList = eventService.findBySelectedDay(getWebsite(), getClazzName(), getTestName(), getSysweb(), getLocale(), date);
             System.out.println("Diagram view class. " + date + " event count = " + eventList.size());
             series.set(formatter.format(date), eventList.size());
         }
@@ -204,7 +213,7 @@ public class CustomBuildDiagram implements Serializable {
     }
 
     private ArrayList<EventEntity> getEventsCustom() {
-        ArrayList<EventEntity> resultEventsList = service.findBySelected(getWebsite(), getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
+        ArrayList<EventEntity> resultEventsList = eventService.findBySelected(getWebsite(), getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
         return resultEventsList;
     }
 

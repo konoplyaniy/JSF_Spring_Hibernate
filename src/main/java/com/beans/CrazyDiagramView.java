@@ -1,11 +1,11 @@
-package com.reporter.beans;
+package com.beans;
 
-import com.reporter.hibernate.entities.EventEntity;
-import com.reporter.hibernate.service.EventService;
+import com.entity.EventEntity;
+import com.service.EventService;
 import org.primefaces.model.chart.*;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -14,27 +14,44 @@ import java.util.*;
 
 @ManagedBean
 @SessionScoped
-public class DiagramView implements Serializable {
+public class CrazyDiagramView implements Serializable {
     private LineChartModel modelPerDate;
     private BarChartModel modelByLocale;
     private BarChartModel modelBySysweb;
 
-    private EventService service;
+    private boolean isDataLoaded = false;
 
-    @PostConstruct
+    public boolean isDataLoaded() {
+        return isDataLoaded;
+    }
+
+    public void setDataLoaded(boolean dataLoaded) {
+        isDataLoaded = dataLoaded;
+    }
+
+    @ManagedProperty(value = "#{eventService}")
+    private EventService eventService;
+
+    public EventService getEventService() {
+        return eventService;
+    }
+
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
+
     public void init() {
-        service = new EventService();
-        modelPerDate = initLineChartModel(false);
-        modelByLocale = initBarChartModel(true, false, "", "Locales");
-        modelBySysweb = initBarChartModel(false, false, "", "Syswebs");
+        modelPerDate = initLineChartModel();
+        modelByLocale = initBarChartModel(true, "Locales");
+        modelBySysweb = initBarChartModel(false, "Syswebs");
+        setDataLoaded(true);
     }
 
     /**
      * @param isBarChartByLocale if set true will be generated diagram by locale, else by syswebs
-     * @param addToLabelString   this label will be displayed after key (like "in locale"  or "SYSWEB4.UK.SYRAHOST.COM sysweb"), could be ""
      * @return BarChart diagram with series
      */
-    public BarChartModel initBarChartModel(boolean isBarChartByLocale, boolean isCustomDiagram, String addToLabelString, String label) {
+    public BarChartModel initBarChartModel(boolean isBarChartByLocale, String label) {
         DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         BarChartModel barChartModel = new BarChartModel();
         HashMap<String, Integer> map = new HashMap<>();
@@ -42,6 +59,7 @@ public class DiagramView implements Serializable {
 
         /* init events list*/
         events = getEvents();
+
 
         /*init map for series*/
         events.forEach(event -> {
@@ -63,7 +81,7 @@ public class DiagramView implements Serializable {
         ChartSeries chartSeries;
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
             chartSeries = new ChartSeries();
-            chartSeries.setLabel(entry.getKey() + " " + addToLabelString);
+            chartSeries.setLabel(entry.getKey());
             chartSeries.set(entry.getKey(), entry.getValue());
             barChartModel.addSeries(chartSeries);
         }
@@ -75,23 +93,23 @@ public class DiagramView implements Serializable {
         yAxis.setLabel("Count");
         barChartModel.setLegendPosition("e");
         barChartModel.setLegendPlacement(LegendPlacement.OUTSIDEGRID);
-        barChartModel.setTitle("Failed tests for today " + formatter.format(new Date()));
+
+        barChartModel.setTitle("Failed tests count");
+
 
         return barChartModel;
     }
 
     /**
-     * @param isCustomDiagram if set true will be generated diagram of failed tests count per day (for current month)
-     *                        else by selected by user dates
      * @return LineChart diagram with series
      */
-    public LineChartModel initLineChartModel(boolean isCustomDiagram) {
+    public LineChartModel initLineChartModel() {
         // events per Day
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd ");
         Date startDate;
         Date endDate;
 
-        /*here get start date - first day in month*/
+            /*here get start date - first day in month*/
         Calendar calendar_start = Calendar.getInstance();
         calendar_start.set(Calendar.DAY_OF_MONTH, calendar_start.getActualMinimum(Calendar.DAY_OF_MONTH));
         startDate = calendar_start.getTime();
@@ -103,9 +121,9 @@ public class DiagramView implements Serializable {
         Calendar end = Calendar.getInstance();
         end.setTime(endDate);
 
-        /*per day add to series date and count of failed tests*/
+            /*System.out.println("default diagram");*/
         for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-            ArrayList<EventEntity> eventList = service.findByDayEvents(date);
+            ArrayList<EventEntity> eventList = eventService.findByDayEvents(date, "crazydomains");
             series.set(formatter.format(date), eventList.size());
         }
 
@@ -123,8 +141,7 @@ public class DiagramView implements Serializable {
     }
 
     private ArrayList<EventEntity> getEvents() {
-        ArrayList<EventEntity> resultEventsList = service.findByMonthEvents(new Date());
-        return resultEventsList;
+        return eventService.findByMonthEvents(new Date(), "crazydomains");
     }
 
     public BarChartModel getModelByLocale() {
@@ -138,4 +155,5 @@ public class DiagramView implements Serializable {
     public BarChartModel getModelBySysweb() {
         return modelBySysweb;
     }
+
 }

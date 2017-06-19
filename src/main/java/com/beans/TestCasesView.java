@@ -1,8 +1,8 @@
-package com.reporter.beans;
+package com.beans;
 
-import com.reporter.hibernate.dao.TestCaseDao;
-import com.reporter.hibernate.entities.TestcaseEntity;
-import com.reporter.hibernate.service.TestCaseService;
+import com.dao.TestCaseDao;
+import com.entity.TestcaseEntity;
+import com.service.TestCaseService;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.TransactionException;

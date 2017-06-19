@@ -1,7 +1,7 @@
-package com.reporter.beans;
+package com.beans;
 
-import com.reporter.hibernate.entities.EventEntity;
-import com.reporter.hibernate.service.EventService;
+import com.entity.EventEntity;
+import com.service.EventService;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -12,20 +12,20 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CellEditEvent;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ManagedProperty;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-@ManagedBean
-@SessionScoped
-public class EventTableExporter implements Serializable {
-
-    private List<EventEntity> events;
+@ManagedBean(name = "general_events")
+public class GeneralEventExporter implements Serializable{
     private EventEntity selectedEvent;
     private List<EventEntity> selectedEvents;
-    private EventService service;
+
+    private ArrayList<EventEntity> generalEvents;
     private boolean isDataLoaded = false;
 
     public boolean isDataLoaded() {
@@ -36,19 +36,21 @@ public class EventTableExporter implements Serializable {
         isDataLoaded = dataLoaded;
     }
 
-    public void init() {
-        service = new EventService();
-        events = service.findByDayEvents(new Date());
-        setDataLoaded(true);
+    @ManagedProperty(value = "#{eventService}")
+    private EventService eventService;
+
+    public EventService getEventService() {
+        return eventService;
     }
 
-    public ArrayList<String> getStatusesList() {
-        ArrayList<String> statuses = new ArrayList<>();
-        statuses.add("Checked");
-        statuses.add("Checked, Issue");
-        statuses.add("Checked, Fixed");
-        statuses.add("Unchecked");
-        return statuses;
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
+
+    public void init() {
+        generalEvents = eventService.findByDayEvents(new Date(), "general");
+        System.out.println("general events size = " + generalEvents.size());
+        setDataLoaded(true);
     }
 
     public void postProcessXLS(Object document) {
@@ -81,20 +83,22 @@ public class EventTableExporter implements Serializable {
         if (columnName.equals("Ticket")) {
             eventEntity.setTicket(newValue.toString());
         }
-
-        service.update(eventEntity);
-        System.out.println("end cell edit ");
+        eventService.update(eventEntity);
     }
 
-    public HashSet<String> getLocales() {
-        HashSet<String> set = new HashSet<>();
-        ArrayList<EventEntity> events = (ArrayList<EventEntity>) getEvents();
-        events.forEach(eventEntity -> set.add(eventEntity.getLocaleByLocaleId().getLocale()));
-        return set;
+    public ArrayList<String> getStatusesList() {
+        ArrayList<String> statuses = new ArrayList<>();
+        statuses.add("Checked");
+        statuses.add("Checked, Issue");
+        statuses.add("Checked, Fixed");
+        statuses.add("Unchecked");
+        return statuses;
     }
 
-    public List<EventEntity> getEvents() {
-        return events;
+    public String getCurrentDate() {
+        Date today = new Date();
+        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        return formatter.format(today);
     }
 
     public EventEntity getSelectedEvent() {
@@ -113,14 +117,11 @@ public class EventTableExporter implements Serializable {
         this.selectedEvents = selectedEvents;
     }
 
-    public String getCurrentDate() {
-        Date today = new Date();
-        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-        return formatter.format(today);
+    public ArrayList<EventEntity> getGeneralEvents() {
+        return generalEvents;
     }
 
-    public TimeZone getTimeZone() {
-        return TimeZone.getDefault();
+    public void setGeneralEvents(ArrayList<EventEntity> generalEvents) {
+        this.generalEvents = generalEvents;
     }
 }
-

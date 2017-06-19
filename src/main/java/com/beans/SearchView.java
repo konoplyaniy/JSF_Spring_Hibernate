@@ -1,12 +1,13 @@
-package com.reporter.beans;
+package com.beans;
 
-import com.reporter.hibernate.entities.EventEntity;
-import com.reporter.hibernate.service.EventService;
+import com.entity.EventEntity;
+import com.service.EventService;
 import org.hibernate.HibernateException;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
@@ -34,16 +35,25 @@ public class SearchView implements Serializable {
     private HashSet<String> syswebs;
     private ArrayList<String> websites;
     private ArrayList<EventEntity> resultEventsList;
-    private EventService service;
+
+    @ManagedProperty(value = "#{eventService}")
+    private EventService eventService;
+
+    public EventService getEventService() {
+        return eventService;
+    }
+
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
 
     @PostConstruct
     public void initDropDowns() {
-        service = new EventService();
         initDropdownsData();
     }
 
     public void onWebSiteChange() {
-        HashSet<String> allSyswebsList = service.getSyswebNames();
+        HashSet<String> allSyswebsList = eventService.getSyswebNames();
         if (getWebsite().equals("austdomains.com.au")) {
             HashSet<String> austSyswebs = new HashSet<>();
             allSyswebsList.forEach(syswebName -> {
@@ -63,15 +73,15 @@ public class SearchView implements Serializable {
 
     public HashSet<String> getTestNamesListBySelectedClassName() throws HibernateException {
         if (getClazzName() != null && !getClazzName().equals("")) {
-            return service.getTestNamesByClazzName(getClazzName());
+            return eventService.getTestNamesByClazzName(getClazzName());
         } else
-            return service.getTestNames();
+            return eventService.getTestNames();
     }
 
     private void initDropdownsData() {
-        setLocales(service.getLocaleNames());
-        setSyswebs(service.getSyswebNames());
-        setClazzNames(service.getClazzNames());
+        setLocales(eventService.getLocaleNames());
+        setSyswebs(eventService.getSyswebNames());
+        setClazzNames(eventService.getClazzNames());
         setWebsites(getWebsites());
     }
 
@@ -85,7 +95,7 @@ public class SearchView implements Serializable {
     }
 
     public ArrayList<EventEntity> getResultEventsList() {
-        resultEventsList = service.findBySelected(getWebsite(), getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
+        resultEventsList = eventService.findBySelected(getWebsite(), getClazzName(), getTestName(), getSysweb(), getLocale(), getStartDate(), getEndDate());
         return resultEventsList;
     }
 
