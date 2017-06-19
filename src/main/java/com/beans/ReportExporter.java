@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -21,9 +22,19 @@ import java.util.Date;
 @SessionScoped
 @ManagedBean(name = "report_exporter")
 public class ReportExporter implements Serializable{
-    private EventService service;
     private ArrayList<ReportRow> reportRowArrayList;
     private boolean isDataLoaded = false;
+
+    @ManagedProperty(value = "#{eventService}")
+    private EventService eventService;
+
+    public EventService getEventService() {
+        return eventService;
+    }
+
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
 
     public void init() {
         setDataLoaded(false);
@@ -35,8 +46,7 @@ public class ReportExporter implements Serializable{
         ReportRow aust = new ReportRow("aust", "com.au");
         ReportRow general = new ReportRow("general", "");
 
-        service = new EventService();
-        ArrayList<EventEntity> todayEvents = service.findByDayEvents(new Date());
+        ArrayList<EventEntity> todayEvents = eventService.findByDayEvents(new Date());
         todayEvents.forEach(eventEntity -> {
             switch (eventEntity.getLocaleByLocaleId().getLocale().toLowerCase()) {
                 case "com.au":

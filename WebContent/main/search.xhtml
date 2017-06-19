@@ -11,8 +11,6 @@
 </h:head>
 
 <h:body>
-
-
     <ui:composition template="/resources/templates/template.xhtml">
         <ui:define name="title">
             Search Event | QA | Dreamscape Networks
@@ -193,18 +191,7 @@
                             <h:outputText value="#{reportRow.url}"/>
                         </p:column>
                     </p:dataTable>
-                    <!--uncorrect wotking-->
-                    <!--Loader-->
-                    <!--<h:form rendered="#{not searchView.dataLoaded }">
-                        <div style="padding: 10em;" align="center">
-                            <h:outputLabel for="data-loader"
-                                           value="Loading data"
-                                           style="font-size: 2em"
-                            /><br></br>
-                            <p:graphicImage value="/resources/images/row-loader.gif"
-                                            id="data-loader"/>
-                        </div>
-                    </h:form>-->
+
                 </h:panelGroup>
             </p:panel>
         </ui:define>

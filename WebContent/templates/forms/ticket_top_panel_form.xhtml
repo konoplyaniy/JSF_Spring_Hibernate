@@ -74,7 +74,7 @@
 						showEffect="fade">
 						<h:panelGrid columns="2">
 							<p:commandButton value="YES"
-								action="#{createTicketBean.deleteSolvedTickets}"
+								action="#{createTicketBean.deleteClosedTickets}"
 								update=":mainViewForm,message"
 								widgetVar="deleteSolvedTicketButton"
 								onclick="PF('deleteSolvedTicketButton').disable();"
