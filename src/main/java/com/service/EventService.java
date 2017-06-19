@@ -16,14 +16,14 @@ import java.util.List;
 @Service("eventService")
 public class EventService {
     @Autowired
-    private static EventDao eventDao;
+    EventDao eventDao;
 
-    public static EventDao getEventDao() {
+    public EventDao getEventDao() {
         return eventDao;
     }
 
-    public static void setEventDao(EventDao eventDao) {
-        EventService.eventDao = eventDao;
+    public void setEventDao(EventDao eventDao) {
+        this.eventDao = eventDao;
     }
 
     @Transactional
@@ -120,7 +120,7 @@ public class EventService {
         return eventDao.findByDayEvents(date);
     }
 
-    @Transactional
+    @Transactional()
     public ArrayList<EventEntity> findBySelected(String website, String clazzName, String testName, String sysweb, String locale, Date startDate, Date endDate) {
         return eventDao.findBySelected(website, clazzName, testName, sysweb, locale, startDate, endDate);
     }
