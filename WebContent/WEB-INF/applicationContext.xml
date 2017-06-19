@@ -24,9 +24,9 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/qa" />
+		<property name="url" value="jdbc:mysql://localhost:3306/crazydomains" />
 		<property name="username" value="root" />
-		<property name="password" value="root" />
+		<property name="password" value="Selenium2015DreamTest" />
 	</bean>
 
 	<bean id="sessionFactory"
@@ -38,6 +38,15 @@
 				<value>com.entity.OvertimeEntity</value>
 				<value>com.entity.UpdateControlEntity</value>
 				<value>com.entity.TicketEntity</value>
+				<value>com.entity.BrowserEntity></value>
+				<value>com.entity.ClazzEntity></value>
+				<value>com.entity.EventEntity></value>
+				<value>com.entity.GroupEntity></value>
+				<value>com.entity.LocaleEntity></value>
+				<value>com.entity.PcEntity"></value>
+				<value>com.entity.SyswebEntity></value>
+				<value>com.entity.TestEntity></value>
+				<value>com.entity.TestcaseEntity></value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
