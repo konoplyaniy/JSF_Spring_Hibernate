@@ -1,4 +1,4 @@
-package com.reporter.hibernate.entities;
+package com.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 
