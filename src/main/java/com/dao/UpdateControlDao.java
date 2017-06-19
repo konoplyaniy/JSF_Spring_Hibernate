@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * Created by geser on 16.06.17.
  */
-@Repository("UpdateControlDAO")
+@Repository("updateControlDao")
 public class UpdateControlDao {
     @Autowired
     private SessionFactory sessionFactory;

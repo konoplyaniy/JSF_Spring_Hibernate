@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
-@Repository("TestCaseDAO")
+@Repository("testCaseDAO")
 public class TestCaseDao{
 
     @Autowired

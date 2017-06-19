@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-@Repository("EventDAO")
+@Repository("eventDAO")
 public class EventDao{
 
     @Autowired
