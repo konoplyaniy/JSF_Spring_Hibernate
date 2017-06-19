@@ -1,13 +1,13 @@
-package com.reporter.hibernate.service;
+package com.service;
 
 
-import com.reporter.hibernate.dao.GroupDao;
-import com.reporter.hibernate.entities.GroupEntity;
+import com.dao.GroupDao;
+import com.entity.GroupEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("GroupService")
+@Service("groupService")
 public class GroupService {
 
     @Autowired

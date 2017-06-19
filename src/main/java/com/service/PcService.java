@@ -1,13 +1,13 @@
-package com.reporter.hibernate.service;
+package com.service;
 
 
-import com.reporter.hibernate.dao.PcDao;
-import com.reporter.hibernate.entities.PcEntity;
+import com.dao.PcDao;
+import com.entity.PcEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("PcService")
+@Service("pcService")
 public class PcService {
 
     @Autowired

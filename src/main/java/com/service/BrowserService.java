@@ -1,12 +1,12 @@
-package com.reporter.hibernate.service;
+package com.service;
 
-import com.reporter.hibernate.dao.BrowserDao;
-import com.reporter.hibernate.entities.BrowserEntity;
+import com.dao.BrowserDao;
+import com.entity.BrowserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("BrowserService")
+@Service("browserService")
 public class BrowserService {
 
     @Autowired

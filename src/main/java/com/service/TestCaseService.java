@@ -1,14 +1,14 @@
-package com.reporter.hibernate.service;
+package com.service;
 
-import com.reporter.hibernate.dao.TestCaseDao;
-import com.reporter.hibernate.entities.TestcaseEntity;
+import com.dao.TestCaseDao;
+import com.entity.TestcaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
-@Service("TestCaseService")
+@Service("testCaseService")
 public class TestCaseService {
 
     @Autowired

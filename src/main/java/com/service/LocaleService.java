@@ -1,13 +1,13 @@
-package com.reporter.hibernate.service;
+package com.service;
 
 
-import com.reporter.hibernate.dao.LocaleDao;
-import com.reporter.hibernate.entities.LocaleEntity;
+import com.dao.LocaleDao;
+import com.entity.LocaleEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("LocaleService")
+@Service("localeService")
 public class LocaleService {
 
     @Autowired

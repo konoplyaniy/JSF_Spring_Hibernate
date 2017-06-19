@@ -1,9 +1,9 @@
-package com.reporter.hibernate.service;
+package com.service;
 
 
-import com.reporter.hibernate.dao.EventDao;
-import com.reporter.hibernate.entities.ClazzEntity;
-import com.reporter.hibernate.entities.EventEntity;
+import com.dao.EventDao;
+import com.entity.ClazzEntity;
+import com.entity.EventEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-@Service("EventService")
+@Service("eventService")
 public class EventService {
     @Autowired
     private static EventDao eventDao;

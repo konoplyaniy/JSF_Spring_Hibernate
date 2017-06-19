@@ -1,13 +1,13 @@
-package com.reporter.hibernate.service;
+package com.service;
 
 
-import com.reporter.hibernate.dao.SyswebDao;
-import com.reporter.hibernate.entities.SyswebEntity;
+import com.dao.SyswebDao;
+import com.entity.SyswebEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("SyswebService")
+@Service("syswebService")
 public class SyswebService {
 
     @Autowired
