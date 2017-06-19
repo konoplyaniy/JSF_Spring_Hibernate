@@ -1,7 +1,7 @@
-package com.reporter.hibernate.dao;
+package com.dao;
 
 
-import com.reporter.hibernate.entities.ClazzEntity;
+import com.entity.ClazzEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;

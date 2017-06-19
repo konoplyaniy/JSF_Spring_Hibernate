@@ -1,6 +1,6 @@
-package com.reporter.hibernate.dao;
+package com.dao;
 
-import com.reporter.hibernate.entities.*;
+import com.entity.*;
 import org.hibernate.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

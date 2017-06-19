@@ -1,6 +1,6 @@
-package com.reporter.hibernate.dao;
+package com.dao;
 
-import com.reporter.hibernate.entities.TestEntity;
+import com.entity.TestEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;

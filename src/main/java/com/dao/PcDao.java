@@ -1,7 +1,7 @@
-package com.reporter.hibernate.dao;
+package com.dao;
 
 
-import com.reporter.hibernate.entities.PcEntity;
+import com.entity.PcEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;

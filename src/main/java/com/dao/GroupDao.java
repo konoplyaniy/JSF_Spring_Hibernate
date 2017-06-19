@@ -1,6 +1,6 @@
-package com.reporter.hibernate.dao;
+package com.dao;
 
-import com.reporter.hibernate.entities.GroupEntity;
+import com.entity.GroupEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
