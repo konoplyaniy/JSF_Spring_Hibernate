@@ -27,12 +27,12 @@ public class OvertimeService {
 
     @Transactional
     public ArrayList<OvertimeEntity> getOvertimesByDateUserId(int  userId, Date date){
-        return overtimeDao.getOvertimesByDateUserId(userId, date);
+        return overtimeDao.getUserOvertimesByDate(userId, date);
     }
 
     @Transactional
     public ArrayList<OvertimeEntity> getAllOvertimes(Date date){
-        return overtimeDao.getAllOvertimes(date);
+        return overtimeDao.getOvertimesByMonth(date);
     }
 
     @Transactional

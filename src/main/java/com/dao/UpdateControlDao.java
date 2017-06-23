@@ -52,15 +52,15 @@ public class UpdateControlDao {
         return updateList;
     }*/
 
-    public void createUpdateControl(UpdateControlEntity updateControlEntity){
+    public void createUpdateControl(UpdateControlEntity updateControlEntity) {
         sessionFactory.getCurrentSession().persist(updateControlEntity);
     }
 
-    public void deleteUpdateControl(UpdateControlEntity updateControlEntity){
+    public void deleteUpdateControl(UpdateControlEntity updateControlEntity) {
         sessionFactory.getCurrentSession().delete(updateControlEntity);
     }
 
-    public void updateUpdateControl(UpdateControlEntity updateControlEntity){
+    public void updateUpdateControl(UpdateControlEntity updateControlEntity) {
         sessionFactory.getCurrentSession().update(updateControlEntity);
     }
 }

@@ -1,108 +1,70 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <h:head>
-	<title>Left Menu</title>
+    <title>Left Menu</title>
 </h:head>
-
 <h:body>
-	
-	<!-- Left toogle menu  -->
-	<ui:composition>
-
-		<div id="sidebar-wrapper">
-		
-			<ul class="sidebar-nav" style="margin-left: 0;">
-			
-				<h:form id="leftUserPanel">
-					
-					<!-- Avatar image -->
-					<p:graphicImage value="#{loginBean.userAvatar}"
-						styleClass="leftProfileImage">
-						
-						<f:param name="userId" value="#{loginBean.user_id}" />
-						
-					</p:graphicImage>
-					
-					<!-- User name -->
-					<h:panelGrid columns="1" styleClass="leftMenuNames">
-					
-						<h:outputText value="#{loginBean.user_first_name}" />
-						
-						<h:outputText value="#{loginBean.user_last_name}" />
-						
-					</h:panelGrid>
-					
-				</h:form>
-				
-				<li class="sidebar-brand">
-				
-				<a href="#menu-toggle"
-					id="menu-toggle"
-					style="margin-top: 20px; float: right;">
-					
-					 <i	class="fa fa-bars"
-					  style="font-size: 20px !Important;"
-					  aria-hidden="true">
-					  </i>
-					  
-					  </a>
-					  
-					  </li>
-					  
-				<h:form>
-				
-				<!-- Left menu links -->
-					<li>
-					
-					<h:commandLink	action="#{leftMenuBean.clickOnmainDashboard()}">
-					
-							<f:ajax render=":mainViewForm"/>
-							
-							<i class="fa fa-desktop" aria-hidden="true"> </i>
-							
-							<span class="left-menu-span" style="margin-left: 10px;">Dashboard</span>
-							
-						</h:commandLink>
-						
-						</li>
-						
-				</h:form>
-				
-				<h:form>
-					<li>
-					<h:commandLink	rendered="#{loginBean.userRole.equals('admin')}"
-							action="#{leftMenuBean.clickOnEditProfiles()}">
-							
-							<f:ajax render=":mainViewForm"/>
-							
-							<i class="fa fa-users" aria-hidden="true"> </i>
-							
-							<span class="left-menu-span" style="margin-left: 10px;">Edit Profiles </span>
-							
-						</h:commandLink>
-						
-						</li>
-						
-				</h:form>
-				
-			</ul>
-			
-		</div>
-
-		<script>
-			$("#menu-toggle").click(function(e) {
-				e.preventDefault();
-				$("#wrapper").toggleClass("toggled");
-			});
-		</script>
-
-	</ui:composition>
-
+    <!-- Left toogle menu  -->
+    <ui:composition>
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav" style="margin-left: 0;">
+                <h:form id="leftUserPanel">
+                    <!-- Avatar image -->
+                    <p:graphicImage value="#{loginBean.userAvatar}"
+                                    styleClass="leftProfileImage">
+                        <f:param name="userId" value="#{loginBean.user_id}"/>
+                    </p:graphicImage>
+                    <!-- User name -->
+                    <h:panelGrid columns="1" styleClass="leftMenuNames">
+                        <h:outputText value="#{loginBean.user_first_name}"/>
+                        <h:outputText value="#{loginBean.user_last_name}"/>
+                    </h:panelGrid>
+                </h:form>
+                <li class="sidebar-brand">
+                    <a href="#menu-toggle"
+                       id="menu-toggle"
+                       style="margin-top: 20px; float: right;">
+                        <i class="fa fa-bars"
+                           style="font-size: 20px !Important;"
+                           aria-hidden="true">
+                        </i>
+                    </a>
+                </li>
+                <h:form>
+                    <!-- Left menu links -->
+                    <li>
+                        <h:commandLink action="#{leftMenuBean.clickOnmainDashboard()}">
+                            <f:ajax render=":mainViewForm"/>
+                            <i class="fa fa-desktop" aria-hidden="true"> </i>
+                            <span class="left-menu-span" style="margin-left: 10px;">Dashboard</span>
+                        </h:commandLink>
+                    </li>
+                </h:form>
+                <h:form>
+                    <li>
+                        <h:commandLink rendered="#{loginBean.userRole.equals('admin')}"
+                                       action="#{leftMenuBean.clickOnEditProfiles()}">
+                            <f:ajax render=":mainViewForm"/>
+                            <i class="fa fa-users" aria-hidden="true"> </i>
+                            <span class="left-menu-span" style="margin-left: 10px;">Edit Profiles </span>
+                        </h:commandLink>
+                    </li>
+                </h:form>
+            </ul>
+        </div>
+        <script>
+            $("#menu-toggle").click(function (e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+        </script>
+    </ui:composition>
 </h:body>
 </html>

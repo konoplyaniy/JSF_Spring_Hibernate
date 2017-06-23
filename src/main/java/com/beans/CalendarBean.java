@@ -17,78 +17,79 @@ import org.primefaces.event.SelectEvent;
 @SessionScoped
 public class CalendarBean implements Serializable {
 
-	private Date date = new Date();
-	private Date currentDate = new Date();
-	private FacesMessage message;
-	private Calendar calendar;
+    private Date date = new Date();
+    private Date currentDate = new Date();
+    private FacesMessage message;
+    private Calendar calendar;
 
-	public Date getDate() {
-		return date;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public Date getCurrentDate() {
-		return currentDate;
-	}
+    public Date getCurrentDate() {
+        return currentDate;
+    }
 
-	public void setCurrentDate(Date currentDate) {
-		this.currentDate = currentDate;
-	}
-	
-	
-	/**Method for identify current month
-	 * @return true if calendar date equals current date
-	 */
-	public boolean itsCurrentMonth() {
-		Calendar calendarDate = Calendar.getInstance();
-		Calendar calendarCurrentDate = Calendar.getInstance();
-		calendarDate.setTime(date);
-		calendarCurrentDate.setTime(currentDate);
-		if (calendarDate.get(Calendar.MONTH) == calendarCurrentDate.get(Calendar.MONTH)
-				&& calendarDate.get(Calendar.YEAR) == calendarCurrentDate.get(Calendar.YEAR)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
+    }
 
-	/**
-	 * Method for choose next month and display info message
-	 */
-	public void nextMonth() {
-		if (itsCurrentMonth()) {
-			date = currentDate;
-		} else {
-			Calendar c = Calendar.getInstance();
-			c.setTime(date);
-			c.add(Calendar.MONTH, 1);
-			date = c.getTime();
-		}
-		calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Select month ",
-				calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH) + " "
-						+ calendar.get(Calendar.YEAR));
-		FacesContext.getCurrentInstance().addMessage(null, message);
-	}
-	
-	/**
-	 * Method for choose previous month and display info message
-	 */
-	public void previousMonth() {
-		Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		c.add(Calendar.MONTH, -1);
-		date = c.getTime();
-		calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Select month ",
-				calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH) + " "
-						+ calendar.get(Calendar.YEAR));
-		FacesContext.getCurrentInstance().addMessage(null, message);
-	}
+
+    /**
+     * Method for identify current month
+     *
+     * @return true if calendar date equals current date
+     */
+    public boolean itsCurrentMonth() {
+        Calendar calendarDate = Calendar.getInstance();
+        Calendar calendarCurrentDate = Calendar.getInstance();
+        calendarDate.setTime(date);
+        calendarCurrentDate.setTime(currentDate);
+        if (calendarDate.get(Calendar.MONTH) == calendarCurrentDate.get(Calendar.MONTH)
+                && calendarDate.get(Calendar.YEAR) == calendarCurrentDate.get(Calendar.YEAR)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Method for choose next month and display info message
+     */
+    public void nextMonth() {
+        if (itsCurrentMonth()) {
+            date = currentDate;
+        } else {
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            c.add(Calendar.MONTH, 1);
+            date = c.getTime();
+        }
+        calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Switch month to ",
+                calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH) + " "
+                        + calendar.get(Calendar.YEAR));
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    /**
+     * Method for choose previous month and display info message
+     */
+    public void previousMonth() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.MONTH, -1);
+        date = c.getTime();
+        calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Switch month to ",
+                calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH) + " "
+                        + calendar.get(Calendar.YEAR));
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
 }

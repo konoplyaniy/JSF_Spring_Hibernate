@@ -29,7 +29,7 @@ public class TicketService {
 
     @Transactional
     public ArrayList<TicketEntity> getTicketsByDateUserId(int userId, Date date){
-        return ticketDao.getTicketsByDateUserId(userId, date);
+        return ticketDao.getUserTicketsByDate(userId, date);
     }
 
     @Transactional
@@ -38,13 +38,13 @@ public class TicketService {
     }
 
     @Transactional
-    public ArrayList<TicketEntity> getCreatedTicketsByUserId(int userId, Date date){
-        return ticketDao.getCreatedTicketsByUserId(userId, date);
+    public ArrayList<TicketEntity> getUserCreatedTicketsByDate(int userId, Date date){
+        return ticketDao.getUserCreatedTicketsByDate(userId, date);
     }
 
     @Transactional
-    public ArrayList<TicketEntity> getClosedTicketsByDateUserId(int userId, Date date){
-        return ticketDao.getClosedTicketsByDateUserId(userId, date);
+    public ArrayList<TicketEntity> getUserClosedTicketsByDate(int userId, Date date){
+        return ticketDao.getUserClosedTicketsByDate(userId, date);
     }
 
     @Transactional

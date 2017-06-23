@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 
 @Repository("testCaseDAO")
-public class TestCaseDao{
+public class TestCaseDao {
 
     @Autowired
     private SessionFactory sessionFactory;

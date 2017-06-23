@@ -28,8 +28,8 @@ public class OvertimeDao {
     }
 
     /*Return month overtimes*/
-    public ArrayList<OvertimeEntity> getOvertimesByDateUserId(Integer user_id, Date date) {
-        Calendar calendar=Calendar.getInstance();
+    public ArrayList<OvertimeEntity> getUserOvertimesByDate(Integer user_id, Date date) {
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         Query query = sessionFactory.getCurrentSession()
                 .createQuery(
@@ -41,8 +41,8 @@ public class OvertimeDao {
     }
 
     /*Return year overtimes*/
-    public ArrayList<OvertimeEntity> getAllOvertimes(Date date) {
-        Calendar calendar=Calendar.getInstance();
+    public ArrayList<OvertimeEntity> getOvertimesByMonth(Date date) {
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         Query query = sessionFactory.getCurrentSession()
                 .createQuery("from OvertimeEntity where MONTH(date)=MONTH(:date) and YEAR(date)=YEAR(:date)");
@@ -51,20 +51,15 @@ public class OvertimeDao {
         return overtimeList;
     }
 
-    public ArrayList<OvertimeEntity> getAllOvertimes(){
-        ArrayList<OvertimeEntity>overtimeList = (ArrayList<OvertimeEntity>) sessionFactory.getCurrentSession().createCriteria(OvertimeEntity.class).list();
-        return overtimeList;
-    }
-
-    public void create(OvertimeEntity overtimeEntity){
+    public void create(OvertimeEntity overtimeEntity) {
         sessionFactory.getCurrentSession().persist(overtimeEntity);
     }
 
-    public void delete(OvertimeEntity overtimeEntity){
+    public void delete(OvertimeEntity overtimeEntity) {
         sessionFactory.getCurrentSession().delete(overtimeEntity);
     }
 
-    public void update(OvertimeEntity overtimeEntity){
+    public void update(OvertimeEntity overtimeEntity) {
         sessionFactory.getCurrentSession().update(overtimeEntity);
     }
 }

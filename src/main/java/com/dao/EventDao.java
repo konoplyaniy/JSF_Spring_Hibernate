@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Repository("eventDAO")
-public class EventDao{
+public class EventDao {
 
     @Autowired
     private SessionFactory sessionFactory;

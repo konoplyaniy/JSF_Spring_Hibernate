@@ -50,7 +50,7 @@ public class UserDao {
     }
 
     public void createUser(UserEntity newUser){
-        sessionFactory.getCurrentSession().persist(newUser);
+        sessionFactory.getCurrentSession().saveOrUpdate(newUser);
         System.out.println("user created");
     }
 
@@ -66,7 +66,6 @@ public class UserDao {
 
     public ArrayList<UserEntity> getAllUsers() {
         @SuppressWarnings("unchecked")
-/*        ArrayList<UserEntity> users = (ArrayList<UserEntity>) sessionFactory.getCurrentSession().createQuery("from UserEntity");*/
         ArrayList<UserEntity> users = (ArrayList<UserEntity>) sessionFactory.getCurrentSession().createCriteria(UserEntity.class).list();
         return users;
     }
