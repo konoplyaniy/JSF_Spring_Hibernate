@@ -25,12 +25,11 @@ import com.utils.SessionUtils;
 @SessionScoped
 public class LoginBean implements Serializable {
 
+    @ManagedProperty(value = "#{userService}")
+    com.service.UserService userService;
     private String username;
     private String password;
     private UserEntity user;
-
-    @ManagedProperty(value = "#{userService}")
-    com.service.UserService userService;
 
     public com.service.UserService getUserService() {
         return userService;

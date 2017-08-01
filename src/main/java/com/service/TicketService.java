@@ -17,7 +17,8 @@ public class TicketService {
     @Autowired
     TicketDao ticketDao;
 
-    public TicketService (){}
+    public TicketService() {
+    }
 
     public TicketDao getTicketDao() {
         return ticketDao;
@@ -28,37 +29,37 @@ public class TicketService {
     }
 
     @Transactional
-    public ArrayList<TicketEntity> getTicketsByDateUserId(int userId, Date date){
+    public ArrayList<TicketEntity> getTicketsByDateUserId(int userId, Date date) {
         return ticketDao.getUserTicketsByDate(userId, date);
     }
 
     @Transactional
-    public ArrayList<TicketEntity> getAllUsersTicketsByMonth(Date date){
+    public ArrayList<TicketEntity> getAllUsersTicketsByMonth(Date date) {
         return ticketDao.getAllUsersTicketsByMonth(date);
     }
 
     @Transactional
-    public ArrayList<TicketEntity> getUserCreatedTicketsByDate(int userId, Date date){
+    public ArrayList<TicketEntity> getUserCreatedTicketsByDate(int userId, Date date) {
         return ticketDao.getUserCreatedTicketsByDate(userId, date);
     }
 
     @Transactional
-    public ArrayList<TicketEntity> getUserClosedTicketsByDate(int userId, Date date){
+    public ArrayList<TicketEntity> getUserClosedTicketsByDate(int userId, Date date) {
         return ticketDao.getUserClosedTicketsByDate(userId, date);
     }
 
     @Transactional
-    public void createTicket(TicketEntity ticketEntity){
+    public void createTicket(TicketEntity ticketEntity) {
         ticketDao.createTicket(ticketEntity);
     }
 
     @Transactional
-    public void deleteTicket(TicketEntity ticketEntity){
+    public void deleteTicket(TicketEntity ticketEntity) {
         ticketDao.deleteTicket(ticketEntity);
     }
 
     @Transactional
-    public void updateTcket(TicketEntity ticketEntity){
+    public void updateTcket(TicketEntity ticketEntity) {
         ticketDao.updateTicket(ticketEntity);
     }
 

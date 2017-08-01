@@ -15,83 +15,81 @@ import com.utils.SupportUtils;
 @RequestScoped
 public class CreateUserBean implements Serializable {
 
-	private String firstName = "";
-	private String lastName = "";
-	private String email = "";
-	private FacesMessage message;
+    @ManagedProperty(value = "#{userService}")
+    com.service.UserService userService;
+    private String firstName = "";
+    private String lastName = "";
+    private String email = "";
+    private FacesMessage message;
+    @ManagedProperty(value = "#{mail}")
+    private Mail mail;
 
-	@ManagedProperty(value = "#{userService}")
-	com.service.UserService userService;
+    public String getFirstName() {
+        return firstName;
+    }
 
-	@ManagedProperty(value = "#{mail}")
-	private Mail mail;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public com.service.UserService getUserService() {
+        return userService;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setUserService(com.service.UserService userService) {
+        this.userService = userService;
+    }
 
-	public com.service.UserService getUserService() {
-		return userService;
-	}
+    public Mail getMail() {
+        return mail;
+    }
 
-	public void setUserService(com.service.UserService userService) {
-		this.userService = userService;
-	}
+    public void setMail(Mail mail) {
+        this.mail = mail;
+    }
 
-	public Mail getMail() {
-		return mail;
-	}
-
-	public void setMail(Mail mail) {
-		this.mail = mail;
-	}
-
-	public void createUser() {
-		if (firstName.length()!=0 && lastName.length()!=0 && email.length()!=0) {
-			String username = SupportUtils.getUsernameFromEmail(email);
-			String password = SupportUtils.generatePassword();
-			UserEntity userEntity = new UserEntity();
-			userEntity.setLogin(username);
-			userEntity.setPassword(SupportUtils.MD5(password));
-			userEntity.setFirst_name(firstName);
-			userEntity.setLast_name(lastName);
-			userEntity.setRole("user");
-			userEntity.setEmail(email);
-			userService.createUser(userEntity);
-			mail.sendThreadEmail("Dreamscape.QA notification", "Hi ! " + System.lineSeparator() +
-					firstName + " " + lastName + System.lineSeparator() +
-					"Congrats! You was successfully registered on Dreamscape.QA portal" + System.lineSeparator() +
-					"Your credentials:" + System.lineSeparator() +
-					"Login: " + username + System.lineSeparator() +
-					"Password: " + password + System.lineSeparator() +
-					System.lineSeparator() +
-					"Dreamscape.QA portal: selenium-au.internal.dremscapeneworks.com"
-					, email);
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User created", firstName + " " + lastName);
-		} else {
-			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Validation error", "Fields should not be empty");
-		}
-		FacesContext.getCurrentInstance().addMessage(null, message);
-	}
+    public void createUser() {
+        if (firstName.length() != 0 && lastName.length() != 0 && email.length() != 0) {
+            String username = SupportUtils.getUsernameFromEmail(email);
+            String password = SupportUtils.generatePassword();
+            UserEntity userEntity = new UserEntity();
+            userEntity.setLogin(username);
+            userEntity.setPassword(SupportUtils.MD5(password));
+            userEntity.setFirst_name(firstName);
+            userEntity.setLast_name(lastName);
+            userEntity.setRole("user");
+            userEntity.setEmail(email);
+            userService.createUser(userEntity);
+            mail.sendThreadEmail("Dreamscape.QA notification", "Hi ! " + System.lineSeparator() +
+                            firstName + " " + lastName + System.lineSeparator() +
+                            "Congrats! You was successfully registered on Dreamscape.QA portal" + System.lineSeparator() +
+                            "Your credentials:" + System.lineSeparator() +
+                            "Login: " + username + System.lineSeparator() +
+                            "Password: " + password + System.lineSeparator() +
+                            System.lineSeparator() +
+                            "Dreamscape.QA portal: selenium-au.internal.dremscapeneworks.com"
+                    , email);
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User created", firstName + " " + lastName);
+        } else {
+            message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Validation error", "Fields should not be empty");
+        }
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
 }

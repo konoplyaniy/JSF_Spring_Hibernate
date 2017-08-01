@@ -16,6 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -24,7 +25,7 @@ import java.util.*;
 @SessionScoped
 public class EventTableExporter implements Serializable {
 
-    private List<EventEntity> events;
+    private ArrayList<EventEntity> events;
     private EventEntity selectedEvent;
     private List<EventEntity> selectedEvents;
 
@@ -106,7 +107,7 @@ public class EventTableExporter implements Serializable {
         return set;
     }
 
-    public List<EventEntity> getEvents() {
+    public ArrayList<EventEntity> getEvents() {
         return events;
     }
 

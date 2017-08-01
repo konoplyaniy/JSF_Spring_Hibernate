@@ -26,27 +26,27 @@ public class UpdateControlService {
     }
 
     @Transactional
-    public ArrayList<UpdateControlEntity> getUserUpdateControlByDate(Integer userId, Date date){
+    public ArrayList<UpdateControlEntity> getUserUpdateControlByDate(Integer userId, Date date) {
         return updateControlDao.getUserUpdateControlByDate(userId, date);
     }
 
     @Transactional
-    public ArrayList<UpdateControlEntity> getAllUsersUpdateControlByDate(Date date){
+    public ArrayList<UpdateControlEntity> getAllUsersUpdateControlByDate(Date date) {
         return updateControlDao.getAllUsersUpdateControlByDate(date);
     }
 
     @Transactional
-    public void createUpdateControl(UpdateControlEntity updateControlEntity){
+    public void createUpdateControl(UpdateControlEntity updateControlEntity) {
         updateControlDao.createUpdateControl(updateControlEntity);
     }
 
     @Transactional
-    public void deleteUpdateControl(UpdateControlEntity updateControlEntity){
+    public void deleteUpdateControl(UpdateControlEntity updateControlEntity) {
         updateControlDao.deleteUpdateControl(updateControlEntity);
     }
 
     @Transactional
-    public void updateUpdateControl(UpdateControlEntity updateControlEntity){
+    public void updateUpdateControl(UpdateControlEntity updateControlEntity) {
         updateControlDao.updateUpdateControl(updateControlEntity);
     }
 

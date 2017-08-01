@@ -104,14 +104,13 @@ public class TestCasesView implements Serializable {
         TestCaseService service = new TestCaseService();
 
 
-
-            if (service.exist(testcaseEntity.getClass_name(), testcaseEntity.getTest_name())) {
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Saving test case", " Edited test case successfully saved"));
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Saving test case Error", " Can't save edited test case, please try again later"));
-            }
+        if (service.exist(testcaseEntity.getClass_name(), testcaseEntity.getTest_name())) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Saving test case", " Edited test case successfully saved"));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Saving test case Error", " Can't save edited test case, please try again later"));
+        }
 
         setVisibleEditTestCaseForm(false);
     }

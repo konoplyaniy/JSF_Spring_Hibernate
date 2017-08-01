@@ -32,6 +32,7 @@ public class AustEventsExporter implements Serializable {
 
     @ManagedProperty(value = "#{eventService}")
     private EventService eventService;
+    private boolean isDataLoaded = false;
 
     public EventService getEventService() {
         return eventService;
@@ -40,8 +41,6 @@ public class AustEventsExporter implements Serializable {
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
     }
-
-    private boolean isDataLoaded = false;
 
     public boolean isDataLoaded() {
         return isDataLoaded;

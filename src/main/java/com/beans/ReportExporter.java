@@ -21,7 +21,7 @@ import java.util.Date;
 
 @SessionScoped
 @ManagedBean(name = "report_exporter")
-public class ReportExporter implements Serializable{
+public class ReportExporter implements Serializable {
     private ArrayList<ReportRow> reportRowArrayList;
     private boolean isDataLoaded = false;
 
@@ -87,6 +87,47 @@ public class ReportExporter implements Serializable{
         setDataLoaded(true);
     }
 
+    public void postProcessXLS(Object document) {
+        HSSFWorkbook wb = (HSSFWorkbook) document;
+        HSSFSheet sheet = wb.getSheetAt(0);
+        CellStyle style = wb.createCellStyle();
+        style.setFillBackgroundColor(IndexedColors.AQUA.getIndex());
+
+        for (Row row : sheet) {
+            for (Cell cell : row) {
+                cell.setCellValue(cell.getStringCellValue().toUpperCase());
+                cell.setCellStyle(style);
+            }
+        }
+    }
+
+    public ArrayList<String> getStatusesList() {
+        ArrayList<String> statuses = new ArrayList<>();
+        statuses.add("Checked");
+        statuses.add("Checked, Issue");
+        statuses.add("Checked, Fixed");
+        statuses.add("Unchecked");
+        return statuses;
+    }
+
+    public String getCurrentDate() {
+        Date today = new Date();
+        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        return formatter.format(today);
+    }
+
+    public ArrayList<ReportRow> getReportRowArrayList() {
+        return reportRowArrayList;
+    }
+
+    public boolean isDataLoaded() {
+        return isDataLoaded;
+    }
+
+    public void setDataLoaded(boolean dataLoaded) {
+        isDataLoaded = dataLoaded;
+    }
+
     public class ReportRow {
         String website;
         String locale;
@@ -146,46 +187,5 @@ public class ReportExporter implements Serializable{
         public int getFailedCount() {
             return failedCount;
         }
-    }
-
-    public void postProcessXLS(Object document) {
-        HSSFWorkbook wb = (HSSFWorkbook) document;
-        HSSFSheet sheet = wb.getSheetAt(0);
-        CellStyle style = wb.createCellStyle();
-        style.setFillBackgroundColor(IndexedColors.AQUA.getIndex());
-
-        for (Row row : sheet) {
-            for (Cell cell : row) {
-                cell.setCellValue(cell.getStringCellValue().toUpperCase());
-                cell.setCellStyle(style);
-            }
-        }
-    }
-
-    public ArrayList<String> getStatusesList() {
-        ArrayList<String> statuses = new ArrayList<>();
-        statuses.add("Checked");
-        statuses.add("Checked, Issue");
-        statuses.add("Checked, Fixed");
-        statuses.add("Unchecked");
-        return statuses;
-    }
-
-    public String getCurrentDate() {
-        Date today = new Date();
-        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-        return formatter.format(today);
-    }
-
-    public ArrayList<ReportRow> getReportRowArrayList() {
-        return reportRowArrayList;
-    }
-
-    public boolean isDataLoaded() {
-        return isDataLoaded;
-    }
-
-    public void setDataLoaded(boolean dataLoaded) {
-        isDataLoaded = dataLoaded;
     }
 }

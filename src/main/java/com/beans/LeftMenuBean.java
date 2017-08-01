@@ -9,21 +9,21 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class LeftMenuBean implements Serializable {
 
-	private String showView = "mainDashboard.xhtml";
+    private String showView = "mainDashboard.xhtml";
 
-	public String getShowView() {
-		return showView;
-	}
+    public String getShowView() {
+        return showView;
+    }
 
-	public void setShowView(String showView) {
-		this.showView = showView;
-	}
+    public void setShowView(String showView) {
+        this.showView = showView;
+    }
 
-	public void clickOnmainDashboard() {
-		showView = "mainDashboard.xhtml";
-	}
+    public void clickOnmainDashboard() {
+        showView = "mainDashboard.xhtml";
+    }
 
-	public void clickOnEditProfiles() {
-		showView = "editUserPage.xhtml";
-	}
+    public void clickOnEditProfiles() {
+        showView = "editUserPage.xhtml";
+    }
 }

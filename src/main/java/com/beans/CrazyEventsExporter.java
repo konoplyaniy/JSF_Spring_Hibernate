@@ -40,6 +40,7 @@ public class CrazyEventsExporter implements Serializable {
 
     @ManagedProperty(value = "#{eventService}")
     private EventService eventService;
+    private boolean isDataLoaded = false;
 
     public EventService getEventService() {
         return eventService;
@@ -48,8 +49,6 @@ public class CrazyEventsExporter implements Serializable {
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
     }
-
-    private boolean isDataLoaded = false;
 
     public boolean isDataLoaded() {
         return isDataLoaded;
@@ -171,52 +170,6 @@ public class CrazyEventsExporter implements Serializable {
         System.out.println("end cell edit ");
     }
 
-
-    public class ListEntities implements Serializable {
-        String locale;
-        ArrayList<EventEntity> events;
-        ArrayList<EventEntity> uncheckedEvents;
-
-        public String getLocale() {
-            return locale;
-        }
-
-        public void setLocale(String locale) {
-            this.locale = locale;
-        }
-
-        public ArrayList<EventEntity> getEvents() {
-            return events;
-        }
-
-        public ArrayList<EventEntity> getUncheckedEvents() {
-            uncheckedEvents = new ArrayList<>();
-            events.forEach(event -> {
-                if (!event.getStatus().toLowerCase().equals("checked")) {
-                    uncheckedEvents.add(event);
-                }
-            });
-            return uncheckedEvents;
-        }
-
-        public void setUncheckedEvents(ArrayList<EventEntity> uncheckedEvents) {
-            this.uncheckedEvents = uncheckedEvents;
-        }
-
-        public void setEvents(ArrayList<EventEntity> events) {
-            this.events = events;
-        }
-
-        public ListEntities(String locale, ArrayList<EventEntity> events) {
-            this.locale = locale;
-            this.events = events;
-        }
-
-        public int getFailedTestsCount() {
-            return events.size();
-        }
-    }
-
     public ArrayList<EventEntity> getAllCrazyEvents() {
         return allCrazyEvents;
     }
@@ -320,5 +273,50 @@ public class CrazyEventsExporter implements Serializable {
         statuses.add("Checked, Fixed");
         statuses.add("Unchecked");
         return statuses;
+    }
+
+    public class ListEntities implements Serializable {
+        String locale;
+        ArrayList<EventEntity> events;
+        ArrayList<EventEntity> uncheckedEvents;
+
+        public ListEntities(String locale, ArrayList<EventEntity> events) {
+            this.locale = locale;
+            this.events = events;
+        }
+
+        public String getLocale() {
+            return locale;
+        }
+
+        public void setLocale(String locale) {
+            this.locale = locale;
+        }
+
+        public ArrayList<EventEntity> getEvents() {
+            return events;
+        }
+
+        public void setEvents(ArrayList<EventEntity> events) {
+            this.events = events;
+        }
+
+        public ArrayList<EventEntity> getUncheckedEvents() {
+            uncheckedEvents = new ArrayList<>();
+            events.forEach(event -> {
+                if (!event.getStatus().toLowerCase().equals("checked")) {
+                    uncheckedEvents.add(event);
+                }
+            });
+            return uncheckedEvents;
+        }
+
+        public void setUncheckedEvents(ArrayList<EventEntity> uncheckedEvents) {
+            this.uncheckedEvents = uncheckedEvents;
+        }
+
+        public int getFailedTestsCount() {
+            return events.size();
+        }
     }
 }

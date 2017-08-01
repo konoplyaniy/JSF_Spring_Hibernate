@@ -1,4 +1,5 @@
 package com.entity;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -20,7 +21,7 @@ public class TestcaseEntity implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "test_case_id", nullable = false)
     public int getTest_case_id() {
         return test_case_id;

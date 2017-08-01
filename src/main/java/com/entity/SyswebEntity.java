@@ -12,10 +12,11 @@ public class SyswebEntity implements Serializable {
     private String name;
     private Set<EventEntity> eventsBySyswebId = new HashSet<>(0);
 
-    public SyswebEntity(){}
+    public SyswebEntity() {
+    }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sysweb_id", nullable = false, unique = true)
     public int getSysweb_id() {
         return sysweb_id;

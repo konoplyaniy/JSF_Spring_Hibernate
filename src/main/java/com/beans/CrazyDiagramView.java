@@ -20,6 +20,8 @@ public class CrazyDiagramView implements Serializable {
     private BarChartModel modelBySysweb;
 
     private boolean isDataLoaded = false;
+    @ManagedProperty(value = "#{eventService}")
+    private EventService eventService;
 
     public boolean isDataLoaded() {
         return isDataLoaded;
@@ -28,9 +30,6 @@ public class CrazyDiagramView implements Serializable {
     public void setDataLoaded(boolean dataLoaded) {
         isDataLoaded = dataLoaded;
     }
-
-    @ManagedProperty(value = "#{eventService}")
-    private EventService eventService;
 
     public EventService getEventService() {
         return eventService;

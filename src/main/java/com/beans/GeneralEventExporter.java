@@ -21,12 +21,14 @@ import java.util.Date;
 import java.util.List;
 
 @ManagedBean(name = "general_events")
-public class GeneralEventExporter implements Serializable{
+public class GeneralEventExporter implements Serializable {
     private EventEntity selectedEvent;
     private List<EventEntity> selectedEvents;
 
     private ArrayList<EventEntity> generalEvents;
     private boolean isDataLoaded = false;
+    @ManagedProperty(value = "#{eventService}")
+    private EventService eventService;
 
     public boolean isDataLoaded() {
         return isDataLoaded;
@@ -35,9 +37,6 @@ public class GeneralEventExporter implements Serializable{
     public void setDataLoaded(boolean dataLoaded) {
         isDataLoaded = dataLoaded;
     }
-
-    @ManagedProperty(value = "#{eventService}")
-    private EventService eventService;
 
     public EventService getEventService() {
         return eventService;

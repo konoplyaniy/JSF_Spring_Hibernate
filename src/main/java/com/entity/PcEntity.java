@@ -13,10 +13,11 @@ public class PcEntity implements Serializable {
     private String os;
     private Set<EventEntity> eventsByPcId = new HashSet<>(0);
 
-    public PcEntity(){}
+    public PcEntity() {
+    }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pc_id", nullable = false, unique = true)
     public int getPc_id() {
         return pc_id;

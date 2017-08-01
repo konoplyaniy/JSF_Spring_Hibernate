@@ -51,7 +51,7 @@ public class CustomBuildDiagram implements Serializable {
         this.eventService = eventService;
     }
 
-    private void resetVariables(){
+    private void resetVariables() {
         sysweb = "";
         testName = "";
         clazzName = "";
@@ -244,6 +244,10 @@ public class CustomBuildDiagram implements Serializable {
         return endDate;
     }
 
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     public HashSet<String> getSyswebs() {
         return syswebs;
     }
@@ -266,10 +270,6 @@ public class CustomBuildDiagram implements Serializable {
 
     public void setLocales(HashSet<String> locales) {
         this.locales = locales;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
     }
 
     public String getClazzName() {
@@ -344,15 +344,15 @@ public class CustomBuildDiagram implements Serializable {
         return websites;
     }
 
+    public void setWebsites(ArrayList<String> websites) {
+        this.websites = websites;
+    }
+
     public boolean isDataLoad() {
         return isDataLoad;
     }
 
     public void setDataLoad(boolean dataLoad) {
         isDataLoad = dataLoad;
-    }
-
-    public void setWebsites(ArrayList<String> websites) {
-        this.websites = websites;
     }
 }

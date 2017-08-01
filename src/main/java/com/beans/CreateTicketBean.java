@@ -21,12 +21,21 @@ import com.service.UpdateControlService;
 @SessionScoped
 public class CreateTicketBean implements Serializable {
 
+    @ManagedProperty(value = "#{ticketService}")
+    TicketService ticketService;
+    @ManagedProperty(value = "#{loginBean}")
+    LoginBean loginBean;
+    @ManagedProperty(value = "#{calendarBean}")
+    CalendarBean calendarBean;
+    @ManagedProperty(value = "#{updateControlService}")
+    UpdateControlService updateControlService;
     private List<Areas> selectedAreas;
     private Products selectedProduct;
     private FacesMessage message;
     private int zendeskId = 0;
     private int zendeskIdClosed;
     private String zendeskUrl;
+    private List<TicketEntity> deleteTickets;
 
     public int getZendeskIdClosed() {
         return zendeskIdClosed;
@@ -51,20 +60,6 @@ public class CreateTicketBean implements Serializable {
     public void setZendeskId(int zendeskId) {
         this.zendeskId = zendeskId;
     }
-
-    @ManagedProperty(value = "#{ticketService}")
-    TicketService ticketService;
-
-    @ManagedProperty(value = "#{loginBean}")
-    LoginBean loginBean;
-
-    @ManagedProperty(value = "#{calendarBean}")
-    CalendarBean calendarBean;
-
-    @ManagedProperty(value = "#{updateControlService}")
-    UpdateControlService updateControlService;
-
-    private List<TicketEntity> deleteTickets;
 
     public LoginBean getLoginBean() {
         return loginBean;
@@ -96,49 +91,6 @@ public class CreateTicketBean implements Serializable {
 
     public void setUpdateControlService(UpdateControlService updateControlService) {
         this.updateControlService = updateControlService;
-    }
-
-    public enum Products {
-        Domains(1), Windows_Hosting(2), Linux_Hosting(3), Email_Hosting(4), Email_Exchange(5),
-        Linux_Servers(6), Windows_Servers(7), Custom_Servers(8), Email_Fax(9), Secure_SSL(10),
-        Email_Protect(11), Website_Builder(12), Eshop_Builder(13), Email_Marketing(14),
-        Traffic_Booster(15), Search_Ads(16), Site_Protection(17), Analytics(18), Web_Design(19),
-        Logo_Design(20), Packages(21), Pricing_And_Promos(22), Js_Css_Styles_Help(23),
-        Accounts_Inc_Crms(24), Crms(25), Shopping_Cart(26), Dns_Hosting(27), Affiliates(28),
-        Advanced_Support(29), Live_Chat(30), Payment_And_PayExpress(31), WhoIs(31), Seo(32),
-        Business_Directory(33), Emails_s_Notifications(34), Reseller_Console(35);
-
-        Products(Integer id) {
-            this.id = id;
-        }
-
-        public Integer id;
-
-        public Integer getId() {
-            return id;
-        }
-
-        public void setId(Integer id) {
-            this.id = id;
-        }
-    }
-
-    public enum Areas {
-        Front(1), Members(2);
-
-        Areas(Integer id) {
-            this.id = id;
-        }
-
-        public Integer id;
-
-        public Integer getId() {
-            return id;
-        }
-
-        public void setId(Integer id) {
-            this.id = id;
-        }
     }
 
     public List<Areas> getSelectedAreas() {
@@ -332,12 +284,12 @@ public class CreateTicketBean implements Serializable {
     //TODO need to add methods to DAO and Service classes
     public Integer getSolvedTicketsCount() {
         /*if (loginBean.getUserRole().equals("admin")) {
-			return ticketService.getAllSolvedTickets(calendarBean.getDate()).size();
+            return ticketService.getAllSolvedTickets(calendarBean.getDate()).size();
 		} else if (loginBean.getUserRole().equals("user")) {
 			return solvedTicketService.getSolvedTickets(loginBean.getUser_id(), calendarBean.getDate()).size();
 		} else {*/
         return 6;
-		/*}*/
+        /*}*/
     }
 
     /**
@@ -390,6 +342,49 @@ public class CreateTicketBean implements Serializable {
     public Integer getCreatedTicketsId(Integer userId) {
 //		return createTicketService.getTickets(userId, calendarBean.getDate()).size();
         return 21;
+    }
+
+    public enum Products {
+        Domains(1), Windows_Hosting(2), Linux_Hosting(3), Email_Hosting(4), Email_Exchange(5),
+        Linux_Servers(6), Windows_Servers(7), Custom_Servers(8), Email_Fax(9), Secure_SSL(10),
+        Email_Protect(11), Website_Builder(12), Eshop_Builder(13), Email_Marketing(14),
+        Traffic_Booster(15), Search_Ads(16), Site_Protection(17), Analytics(18), Web_Design(19),
+        Logo_Design(20), Packages(21), Pricing_And_Promos(22), Js_Css_Styles_Help(23),
+        Accounts_Inc_Crms(24), Crms(25), Shopping_Cart(26), Dns_Hosting(27), Affiliates(28),
+        Advanced_Support(29), Live_Chat(30), Payment_And_PayExpress(31), WhoIs(31), Seo(32),
+        Business_Directory(33), Emails_s_Notifications(34), Reseller_Console(35);
+
+        public Integer id;
+
+        Products(Integer id) {
+            this.id = id;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+    }
+
+    public enum Areas {
+        Front(1), Members(2);
+
+        public Integer id;
+
+        Areas(Integer id) {
+            this.id = id;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
     }
 
 }

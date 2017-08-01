@@ -31,35 +31,35 @@ public class UserDao {
         return user;
     }
 
-    public UserEntity getUser(int id){
+    public UserEntity getUser(int id) {
         Query query = sessionFactory.getCurrentSession().createQuery(
                 "from UserEntity where id=:id");
         query.setParameter("id", id);
         return (UserEntity) query.uniqueResult();
     }
 
-    public boolean isExist(String login, String password){
+    public boolean isExist(String login, String password) {
         Query query = sessionFactory.getCurrentSession().createQuery(
                 "from UserEntity where login=:login and password=:password");
         query.setParameter("login", login);
         query.setParameter("password", password);
-        if (query.uniqueResult() != null){
+        if (query.uniqueResult() != null) {
             return true;
         }
         return false;
     }
 
-    public void createUser(UserEntity newUser){
+    public void createUser(UserEntity newUser) {
         sessionFactory.getCurrentSession().saveOrUpdate(newUser);
         System.out.println("user created");
     }
 
-    public void updateUser(UserEntity updatedUser){
+    public void updateUser(UserEntity updatedUser) {
         sessionFactory.getCurrentSession().persist(updatedUser);
         System.out.println("user updated");
     }
 
-    public void deleteUser(UserEntity updatedUser){
+    public void deleteUser(UserEntity updatedUser) {
         sessionFactory.getCurrentSession().persist(updatedUser);
         System.out.println("user deleted");
     }

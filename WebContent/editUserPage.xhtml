@@ -1,105 +1,106 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <h:head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
-	<link rel="stylesheet"
-		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
-	<link href="https://fonts.googleapis.com/css?family=Fira+Sans"
-		rel="stylesheet" />
-	<link href="https://fonts.googleapis.com/css?family=Oswald"
-		rel="stylesheet" />
-	<link rel="stylesheet"
-		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-	<link rel="stylesheet"
-		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" />
-	<h:outputStylesheet library="css" name="main.css" />
-	<h:outputStylesheet library="css" name="topMenu.css" />
-	<h:outputStylesheet library="css" name="leftMenu.css" />
-	<h:outputStylesheet library="css" name="editProfileMenu.css" />
-	<h:outputStylesheet library="css" name="mainView.css" />
-	<h:outputScript library="js" name="leftMenu.js" />
-	<link rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans"
+          rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Oswald"
+          rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"/>
+    <h:outputStylesheet library="css" name="main.css"/>
+    <h:outputStylesheet library="css" name="topMenu.css"/>
+    <h:outputStylesheet library="css" name="leftMenu.css"/>
+    <h:outputStylesheet library="css" name="editProfileMenu.css"/>
+    <h:outputStylesheet library="css" name="mainView.css"/>
+    <h:outputScript library="js" name="leftMenu.js"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 
-	<title>User Edit Page</title>
+    <title>User Edit Page</title>
 
 </h:head>
 
 <h:body>
 
-	<ui:composition>
-		
-		<!-- Edit profiles page -->
-		<h:form>
-				
-				<!-- Edit profile table  -->
-			<p:dataTable id="editTable"
-				styleClass="editUserTable"
-				var="user"
-				paginatorPosition="bottom"
-			    style="margin-left:25px!important;"
-				rows="10"
-				paginator="true"
-				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-				rowsPerPageTemplate="10"
-				value="#{loginBean.allUsers}"
-				selectionMode="single"
-				selection="#{editProfileBean.userEntity}"
-				rowKey="#{user.id}">
+    <ui:composition>
 
-				<p:ajax event="rowSelect"
-					listener="#{editProfileBean.onRowSelect}"
-					oncomplete="PF('editProfilePopup').show();"
-					update=":editProfileForm" />
+        <!-- Edit profiles page -->
+        <h:form>
 
-				<p:column headerText="AVATAR">
-				
-					<p:graphicImage value="#{loginBean.userAvatar}"	styleClass="smallImage">
-					
-						<f:param name="userId" value="#{user.id}" />
-						
-					</p:graphicImage>
-					
-				</p:column>
-				
-				<p:column headerText="FIRST NAME">
-				
-					<h:outputText value="#{user.first_name}" />
-					
-				</p:column>
-				
-				<p:column headerText="LAST NAME">
-				
-					<h:outputText value="#{user.last_name}" />
-					
-				</p:column>
-				
-				<p:column headerText="ROLE" priority="1">
-				
-					<h:outputText value="#{user.role}" />
-					
-				</p:column>
-				
-				<p:column headerText="EMAIL" priority="2">
-				
-					<h:outputText value="#{user.email}" />
-					
-				</p:column>
-				
-			</p:dataTable>
+            <!-- Edit profile table  -->
+            <p:dataTable id="editTable"
+                         styleClass="editUserTable"
+                         var="user"
+                         paginatorPosition="bottom"
+                         style="margin-left:25px!important;"
+                         rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="10"
+                         value="#{loginBean.allUsers}"
+                         selectionMode="single"
+                         selection="#{editProfileBean.userEntity}"
+                         rowKey="#{user.id}">
 
-		</h:form>
-		
-	</ui:composition>
-	
+                <p:ajax event="rowSelect"
+                        listener="#{editProfileBean.onRowSelect}"
+                        oncomplete="PF('editProfilePopup').show();"
+                        update=":editProfileForm"/>
+
+                <p:column headerText="AVATAR">
+
+                    <p:graphicImage value="#{loginBean.userAvatar}" styleClass="smallImage">
+
+                        <f:param name="userId" value="#{user.id}"/>
+
+                    </p:graphicImage>
+
+                </p:column>
+
+                <p:column headerText="FIRST NAME">
+
+                    <h:outputText value="#{user.first_name}"/>
+
+                </p:column>
+
+                <p:column headerText="LAST NAME">
+
+                    <h:outputText value="#{user.last_name}"/>
+
+                </p:column>
+
+                <p:column headerText="ROLE" priority="1">
+
+                    <h:outputText value="#{user.role}"/>
+
+                </p:column>
+
+                <p:column headerText="EMAIL" priority="2">
+
+                    <h:outputText value="#{user.email}"/>
+
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+    </ui:composition>
+
 </h:body>
 
 </html>

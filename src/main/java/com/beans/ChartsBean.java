@@ -35,25 +35,20 @@ import org.primefaces.model.chart.PieChartModel;
 @ManagedBean
 @RequestScoped
 public class ChartsBean implements Serializable {
+    @ManagedProperty(value = "#{updateControlService}")
+    UpdateControlService updateControlService;
+    @ManagedProperty(value = "#{ticketService}")
+    TicketService ticketService;
+    @ManagedProperty(value = "#{calendarBean}")
+    CalendarBean calendarBean;
+    @ManagedProperty(value = "#{loginBean}")
+    LoginBean loginBean;
+    @ManagedProperty(value = "#{userService}")
+    UserService userService;
     private PieChartModel pieModel;
     private LineChartModel lineChart;
     private BarChartModel barChartModel;
     private String option = "Both";
-
-    @ManagedProperty(value = "#{updateControlService}")
-    UpdateControlService updateControlService;
-
-    @ManagedProperty(value = "#{ticketService}")
-    TicketService ticketService;
-
-    @ManagedProperty(value = "#{calendarBean}")
-    CalendarBean calendarBean;
-
-    @ManagedProperty(value = "#{loginBean}")
-    LoginBean loginBean;
-
-    @ManagedProperty(value = "#{userService}")
-    UserService userService;
 
     public CalendarBean getCalendarBean() {
         return calendarBean;

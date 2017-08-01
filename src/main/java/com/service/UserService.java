@@ -16,7 +16,7 @@ public class UserService {
     @Autowired
     UserDao userDao;
 
-    public UserService (){
+    public UserService() {
 
     }
 
@@ -29,38 +29,38 @@ public class UserService {
     }
 
     @Transactional
-    public UserEntity getUser(int id){
+    public UserEntity getUser(int id) {
         return userDao.getUser(id);
     }
 
     @Transactional
-    public boolean isExist(String login, String password){
+    public boolean isExist(String login, String password) {
         return userDao.isExist(login, password);
     }
 
     @Transactional
-    public UserEntity validateUser(String login, String password){
+    public UserEntity validateUser(String login, String password) {
         return userDao.validateUser(login, password);
     }
 
     @Transactional
-    public void createUser(UserEntity newUser){
+    public void createUser(UserEntity newUser) {
         userDao.createUser(newUser);
     }
 
     @Transactional
-    public void updateUser(UserEntity updatedUser){
+    public void updateUser(UserEntity updatedUser) {
         userDao.createUser(updatedUser);
     }
 
     @Transactional
-    public void deleteUser(UserEntity user){
+    public void deleteUser(UserEntity user) {
         userDao.createUser(user);
     }
 
     @Transactional
-    public ArrayList<UserEntity> getAllUsers(){
-        return  userDao.getAllUsers();
+    public ArrayList<UserEntity> getAllUsers() {
+        return userDao.getAllUsers();
     }
 
 }

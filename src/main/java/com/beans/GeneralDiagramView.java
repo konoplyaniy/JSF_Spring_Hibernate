@@ -14,7 +14,7 @@ import java.util.*;
 
 @ManagedBean
 @SessionScoped
-public class GeneralDiagramView implements Serializable{
+public class GeneralDiagramView implements Serializable {
     private LineChartModel modelPerDate;
     private BarChartModel modelByLocale;
     private BarChartModel modelBySysweb;

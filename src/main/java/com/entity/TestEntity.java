@@ -50,7 +50,7 @@ public class TestEntity implements Serializable {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "testByTestId", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "testByTestId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public Set<EventEntity> getEventsByTestId() {
         return eventsByTestId;
     }
@@ -59,7 +59,7 @@ public class TestEntity implements Serializable {
         this.eventsByTestId = eventsByTestId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "group_id", nullable = false)
     public GroupEntity getGroupByGroupId() {
         return groupByGroupId;
@@ -69,7 +69,7 @@ public class TestEntity implements Serializable {
         this.groupByGroupId = groupByGroupId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "class_id", nullable = false)
     public ClazzEntity getClazzByClassId() {
         return clazzByClassId;

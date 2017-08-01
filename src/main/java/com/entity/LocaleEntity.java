@@ -12,10 +12,11 @@ public class LocaleEntity implements Serializable {
     private String locale;
     private Set<EventEntity> eventsByLocaleId = new HashSet<>(0);
 
-    public LocaleEntity(){}
+    public LocaleEntity() {
+    }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "locale_id", nullable = false, unique = true)
     public int getLocale_id() {
         return locale_id;

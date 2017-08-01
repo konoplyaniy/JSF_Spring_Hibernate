@@ -39,6 +39,16 @@ import com.utils.SupportUtils;
 @SessionScoped
 public class EditProfileBean implements Serializable {
 
+    @ManagedProperty(value = "#{userService}")
+    com.service.UserService userService;
+    @ManagedProperty(value = "#{overtimeService}")
+    OvertimeService overtimeService;
+    @ManagedProperty(value = "#{updateControlService}")
+    UpdateControlService updateControlService;
+    @ManagedProperty(value = "#{ticketService}")
+    TicketService ticketService;
+    @ManagedProperty(value = "#{loginBean}")
+    LoginBean loginBean;
     private UserEntity userPopup = new UserEntity();
     private UserEntity userEntity;
     private UploadedFile file;
@@ -51,6 +61,8 @@ public class EditProfileBean implements Serializable {
     private CroppedImage croppedImage;
     private String newImageName;
     private Integer width;
+    @ManagedProperty(value = "#{mail}")
+    private Mail mail;
 
     public Integer getWidth() {
         return width;
@@ -59,24 +71,6 @@ public class EditProfileBean implements Serializable {
     public void setWidth(Integer width) {
         this.width = width;
     }
-
-    @ManagedProperty(value = "#{userService}")
-    com.service.UserService userService;
-
-    @ManagedProperty(value = "#{overtimeService}")
-    OvertimeService overtimeService;
-
-    @ManagedProperty(value = "#{updateControlService}")
-    UpdateControlService updateControlService;
-
-    @ManagedProperty(value = "#{ticketService}")
-    TicketService ticketService;
-
-    @ManagedProperty(value = "#{loginBean}")
-    LoginBean loginBean;
-
-    @ManagedProperty(value = "#{mail}")
-    private Mail mail;
 
     public UploadedFile getFile() {
         return file;
@@ -359,7 +353,7 @@ public class EditProfileBean implements Serializable {
         } else {
             //TODO inspect, possibly will be deleted
             /*for (OvertimeEntity overtime : overtimeService.getOvertimesByMonth(new Date())) {
-				if (user.getId() == overtime.getUser_id()) {
+                if (user.getId() == overtime.getUser_id()) {
 					overtimeService.deleteteOvertime(overtime);
 				}
 			}

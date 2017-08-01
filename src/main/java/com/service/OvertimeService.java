@@ -26,27 +26,27 @@ public class OvertimeService {
     }
 
     @Transactional
-    public ArrayList<OvertimeEntity> getOvertimesByDateUserId(int  userId, Date date){
+    public ArrayList<OvertimeEntity> getOvertimesByDateUserId(int userId, Date date) {
         return overtimeDao.getUserOvertimesByDate(userId, date);
     }
 
     @Transactional
-    public ArrayList<OvertimeEntity> getAllOvertimes(Date date){
+    public ArrayList<OvertimeEntity> getAllOvertimes(Date date) {
         return overtimeDao.getOvertimesByMonth(date);
     }
 
     @Transactional
-    public void createOvertime(OvertimeEntity overtime){
+    public void createOvertime(OvertimeEntity overtime) {
         overtimeDao.create(overtime);
     }
 
     @Transactional
-    public void updateOvertime(OvertimeEntity overtime){
+    public void updateOvertime(OvertimeEntity overtime) {
         overtimeDao.update(overtime);
     }
 
     @Transactional
-    public void deleteteOvertime(OvertimeEntity overtime){
+    public void deleteteOvertime(OvertimeEntity overtime) {
         overtimeDao.delete(overtime);
     }
 

@@ -23,218 +23,212 @@ import org.primefaces.event.SelectEvent;
 @SessionScoped
 public class OvertimeBean implements Serializable {
 
-	private OvertimeEntity overtimeEntity;
-	private Date overtimePeriod;
+    @ManagedProperty(value = "#{userService}")
+    com.service.UserService userService;
+    @ManagedProperty(value = "#{overtimeService}")
+    OvertimeService overtimeService;
+    @ManagedProperty(value = "#{loginBean}")
+    LoginBean loginBean;
+    @ManagedProperty(value = "#{calendarBean}")
+    CalendarBean calendarBean;
+    private OvertimeEntity overtimeEntity;
+    private Date overtimePeriod;
+    private Timestamp overtime_form_date_from;
+    private Date overtime_form_date_to;
+    private String overtime_form_project;
+    private OvertimeEntity overtimePopup = new OvertimeEntity();
+    private boolean approvementAll;
+    private boolean approveSingle;
+    private FacesMessage message;
+    @ManagedProperty(value = "#{mail}")
+    private Mail mail;
 
-	private Timestamp overtime_form_date_from;
-	private Date overtime_form_date_to;
-	private String overtime_form_project;
-	private OvertimeEntity overtimePopup = new OvertimeEntity();
-	private boolean approvementAll;
-	private boolean approveSingle;
-	private FacesMessage message;
+    public CalendarBean getCalendarBean() {
+        return calendarBean;
+    }
 
-	@ManagedProperty(value = "#{userService}")
-	com.service.UserService userService;
+    public void setCalendarBean(CalendarBean calendarBean) {
+        this.calendarBean = calendarBean;
+    }
 
-	@ManagedProperty(value = "#{overtimeService}")
-	OvertimeService overtimeService;
+    public OvertimeService getOvertimeService() {
+        return overtimeService;
+    }
 
-	@ManagedProperty(value = "#{loginBean}")
-	LoginBean loginBean;
+    public void setOvertimeService(OvertimeService overtimeService) {
+        this.overtimeService = overtimeService;
+    }
 
-	@ManagedProperty(value = "#{calendarBean}")
-	CalendarBean calendarBean;
+    public LoginBean getLoginBean() {
+        return loginBean;
+    }
 
-	@ManagedProperty(value = "#{mail}")
-	private Mail mail;
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
+    }
 
-	public CalendarBean getCalendarBean() {
-		return calendarBean;
-	}
+    public OvertimeEntity getOvertimeEntity() {
+        return overtimeEntity;
+    }
 
-	public void setCalendarBean(CalendarBean calendarBean) {
-		this.calendarBean = calendarBean;
-	}
+    public void setOvertimeEntity(OvertimeEntity overtimeEntity) {
+        overtimeEntity = overtimeEntity;
+    }
 
-	public OvertimeService getOvertimeService() {
-		return overtimeService;
-	}
+    public Date getOvertime_form_date_from() {
+        return overtime_form_date_from;
+    }
 
-	public void setOvertimeService(OvertimeService overtimeService) {
-		this.overtimeService = overtimeService;
-	}
+    public void setOvertime_form_date_from(Date overtime_form_date_from) {
+        this.overtime_form_date_from = (Timestamp) overtime_form_date_from;
+    }
 
-	public LoginBean getLoginBean() {
-		return loginBean;
-	}
+    public Date getOvertime_form_date_to() {
+        return overtime_form_date_to;
+    }
 
-	public void setLoginBean(LoginBean loginBean) {
-		this.loginBean = loginBean;
-	}
+    public void setOvertime_form_date_to(Date overtime_form_date_to) {
+        this.overtime_form_date_to = overtime_form_date_to;
+    }
 
-	public OvertimeEntity getOvertimeEntity() {
-		return overtimeEntity;
-	}
+    public String getOvertime_form_project() {
+        return overtime_form_project;
+    }
 
-	public void setOvertimeEntity(OvertimeEntity overtimeEntity) {
-		overtimeEntity = overtimeEntity;
-	}
+    public void setOvertime_form_project(String overtime_form_project) {
+        this.overtime_form_project = overtime_form_project;
+    }
 
-	public Date getOvertime_form_date_from() {
-		return overtime_form_date_from;
-	}
+    public OvertimeEntity getOvertimePopup() {
+        return overtimePopup;
+    }
 
-	public void setOvertime_form_date_from(Date overtime_form_date_from) {
-		this.overtime_form_date_from = (Timestamp) overtime_form_date_from;
-	}
+    public void setOvertimePopup(OvertimeEntity overtimePopup) {
+        this.overtimePopup = overtimePopup;
+    }
 
-	public Date getOvertime_form_date_to() {
-		return overtime_form_date_to;
-	}
+    public boolean isApprovementAll() {
+        return approvementAll;
+    }
 
-	public void setOvertime_form_date_to(Date overtime_form_date_to) {
-		this.overtime_form_date_to = overtime_form_date_to;
-	}
+    public void setApprovementAll(boolean approvementAll) {
+        this.approvementAll = approvementAll;
+    }
 
-	public String getOvertime_form_project() {
-		return overtime_form_project;
-	}
+    public boolean isApproveSingle() {
+        return approveSingle;
+    }
 
-	public void setOvertime_form_project(String overtime_form_project) {
-		this.overtime_form_project = overtime_form_project;
-	}
+    public void setApproveSingle(boolean approveSingle) {
+        this.approveSingle = approveSingle;
+    }
 
-	public OvertimeEntity getOvertimePopup() {
-		return overtimePopup;
-	}
+    public Mail getMail() {
+        return mail;
+    }
 
-	public void setOvertimePopup(OvertimeEntity overtimePopup) {
-		this.overtimePopup = overtimePopup;
-	}
+    public void setMail(Mail mail) {
+        this.mail = mail;
+    }
 
-	public boolean isApprovementAll() {
-		return approvementAll;
-	}
+    public com.service.UserService getUserService() {
+        return userService;
+    }
 
-	public void setApprovementAll(boolean approvementAll) {
-		this.approvementAll = approvementAll;
-	}
+    public void setUserService(com.service.UserService userService) {
+        this.userService = userService;
+    }
 
-	public boolean isApproveSingle() {
-		return approveSingle;
-	}
+    public boolean intToBoolean(int number) {
+        if (number == 1) {
+            return true;
+        } else
+            return false;
+    }
 
-	public void setApproveSingle(boolean approveSingle) {
-		this.approveSingle = approveSingle;
-	}
+    public String getTotalHours() {
+        ArrayList<OvertimeEntity> overtimes = new ArrayList<>();
+        if (loginBean.getUserRole().equals("admin")) {
+            overtimes = overtimeService.getAllOvertimes(calendarBean.getDate());
+        } else if (loginBean.getUserRole().equals("user")) {
+            overtimes = overtimeService.getOvertimesByDateUserId(loginBean.getUser_id(), calendarBean.getDate());
+        }
+        Date total_hours = null;
+        //TODO Need to inspect this
+        for (OvertimeEntity overtime : overtimes) {
+            total_hours = overtime.getPeriod();
+        }
+        Period p = new Period(total_hours);
+        String totalMessage = "";
+        long hours = p.getHours();
+        long minutes = p.getMinutes();
+        return totalMessage + hours + "h" + minutes + "m";
+    }
 
-	public Mail getMail() {
-		return mail;
-	}
+    public String getDifferentBetweenDate(Date date_from, Date date_to) {
+        DateTime dateFrom = new DateTime(date_from);
+        DateTime dateTo = new DateTime(date_to);
+        Period p = new Period(dateFrom, dateTo);
+        long days = p.getDays();
+        long hours = p.getHours();
+        long minutes = p.getMinutes();
+        String message = "";
+        if (days != 0) {
+            message = message + days + "d";
+        }
+        return message + hours + "h" + minutes + "m";
+    }
 
-	public void setMail(Mail mail) {
-		this.mail = mail;
-	}
+    public List<OvertimeEntity> getOvertimes() {
+        if (loginBean.getUserRole().equals("admin")) {
+            return overtimeService.getAllOvertimes(calendarBean.getDate());
+        } else if (loginBean.getUserRole().equals("user")) {
+            return overtimeService.getOvertimesByDateUserId(loginBean.getUser_id(), calendarBean.getDate());
+        } else {
+            return null;
+        }
+    }
 
-	public com.service.UserService getUserService() {
-		return userService;
-	}
+    public void onRowSelect(SelectEvent event) {
+        overtimePopup = (OvertimeEntity) event.getObject();
+    }
 
-	public void setUserService(com.service.UserService userService) {
-		this.userService = userService;
-	}
+    public void create() {
+        OvertimeEntity overtimeEntity = new OvertimeEntity();
+        overtimeEntity.setUser_id(loginBean.getUser_id());
+        overtimeEntity.setPeriod(overtime_form_date_from);
+        overtimeEntity.setProject(overtime_form_project);
+        overtimeEntity.setApprovement(0);
+        overtimeEntity.setDate(calendarBean.getDate());
+        overtimeService.createOvertime(overtimeEntity);
+        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Overtime created", "From: " + overtime_form_date_from
+                + "\n " + "To: " + overtime_form_date_to + "\n" + "Project: " + overtime_form_project);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        for (UserEntity userEntity : userService.getAllUsers()) {
+            if (userEntity.getRole().equals("admin")) {
+                mail.sendThreadEmail("Create overtime",
+                        "Hi ! \n" + "User " + loginBean.getUser_first_name() + " " + loginBean.getUser_last_name()
+                                + " create overtime for date \n" + "Date from: " + overtime_form_date_to + "\n"
+                                + "Date to: " + overtime_form_date_to + "\n" + "Project name: " + overtime_form_project
+                                + "\n" + "Pls approve !",
+                        userEntity.getEmail());
+            }
+        }
+        overtime_form_date_from = null;
+        overtime_form_date_to = null;
+        overtime_form_project = "";
+    }
 
-	public boolean intToBoolean(int number) {
-		if (number == 1) {
-			return true;
-		} else
-			return false;
-	}
-
-	public String getTotalHours() {
-		ArrayList<OvertimeEntity> overtimes = new ArrayList<>();
-		if (loginBean.getUserRole().equals("admin")) {
-			overtimes = overtimeService.getAllOvertimes(calendarBean.getDate());
-		} else if (loginBean.getUserRole().equals("user")) {
-			overtimes = overtimeService.getOvertimesByDateUserId(loginBean.getUser_id(), calendarBean.getDate());
-		}
-		Date total_hours = null;
-		//TODO Need to inspect this
-		for (OvertimeEntity overtime : overtimes) {
-			total_hours = overtime.getPeriod();
-		}
-		Period p = new Period(total_hours);
-		String totalMessage = "";
-		long hours = p.getHours();
-		long minutes = p.getMinutes();
-		return totalMessage + hours + "h" + minutes + "m";
-	}
-
-	public String getDifferentBetweenDate(Date date_from, Date date_to) {
-		DateTime dateFrom = new DateTime(date_from);
-		DateTime dateTo = new DateTime(date_to);
-		Period p = new Period(dateFrom, dateTo);
-		long days = p.getDays();
-		long hours = p.getHours();
-		long minutes = p.getMinutes();
-		String message = "";
-		if (days != 0) {
-			message = message + days + "d";
-		}
-		return message + hours + "h" + minutes + "m";
-	}
-
-	public List<OvertimeEntity> getOvertimes() {
-		if (loginBean.getUserRole().equals("admin")) {
-			return overtimeService.getAllOvertimes(calendarBean.getDate());
-		} else if (loginBean.getUserRole().equals("user")) {
-			return overtimeService.getOvertimesByDateUserId(loginBean.getUser_id(), calendarBean.getDate());
-		} else {
-			return null;
-		}
-	}
-
-	public void onRowSelect(SelectEvent event) {
-		overtimePopup = (OvertimeEntity) event.getObject();
-	}
-
-	public void create() {
-		OvertimeEntity overtimeEntity = new OvertimeEntity();
-		overtimeEntity.setUser_id(loginBean.getUser_id());
-		overtimeEntity.setPeriod(overtime_form_date_from);
-		overtimeEntity.setProject(overtime_form_project);
-		overtimeEntity.setApprovement(0);
-		overtimeEntity.setDate(calendarBean.getDate());
-		overtimeService.createOvertime(overtimeEntity);
-		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Overtime created", "From: " + overtime_form_date_from
-				+ "\n " + "To: " + overtime_form_date_to + "\n" + "Project: " + overtime_form_project);
-		FacesContext.getCurrentInstance().addMessage(null, message);
-		for (UserEntity userEntity : userService.getAllUsers()) {
-			if (userEntity.getRole().equals("admin")) {
-				mail.sendThreadEmail("Create overtime",
-						"Hi ! \n" + "User " + loginBean.getUser_first_name() + " " + loginBean.getUser_last_name()
-								+ " create overtime for date \n" + "Date from: " + overtime_form_date_to + "\n"
-								+ "Date to: " + overtime_form_date_to + "\n" + "Project name: " + overtime_form_project
-								+ "\n" + "Pls approve !",
-						userEntity.getEmail());
-			}
-		}
-		overtime_form_date_from = null;
-		overtime_form_date_to = null;
-		overtime_form_project = "";
-	}
-
-	//TODO Need to inspect
-	public void update(OvertimeEntity overtimeEntity) {
-		if (overtimeEntity.getPeriod() == null) {
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Overtime can't be empty",
-					overtimeEntity.getProject());
-		} else {
-			overtimeService.updateOvertime(overtimeEntity);
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Overtime updated", overtimeEntity.getProject());
+    //TODO Need to inspect
+    public void update(OvertimeEntity overtimeEntity) {
+        if (overtimeEntity.getPeriod() == null) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Overtime can't be empty",
+                    overtimeEntity.getProject());
+        } else {
+            overtimeService.updateOvertime(overtimeEntity);
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Overtime updated", overtimeEntity.getProject());
 //			//TODO Need to inspect
-			/*for (UserEntity userEntity : userService.getAllUsers()) {
+            /*for (UserEntity userEntity : userService.getAllUsers()) {
 				if (userEntity.getRole().equals("admin")) {
 					mail.sendThreadEmail("Update overtime",
 							"Hi ! \n" + "User " + overtimeEntity.getUserEntity().getUser_first_name() + " "
@@ -245,20 +239,20 @@ public class OvertimeBean implements Serializable {
 							userEntity.getUser_email());
 				}
 			}*/
-		}
-		FacesContext.getCurrentInstance().addMessage(null, message);
-	}
+        }
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
-	public void delete(OvertimeEntity overtimeEntity) {
-		overtimeService.deleteteOvertime(overtimeEntity);
-		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Overtime deleted", "");
-		FacesContext.getCurrentInstance().addMessage(null, message);
-	}
+    public void delete(OvertimeEntity overtimeEntity) {
+        overtimeService.deleteteOvertime(overtimeEntity);
+        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Overtime deleted", "");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
-	public void singleApprove() {
-		overtimePopup.setApprovement(1);
-		overtimeService.updateOvertime(overtimePopup);
-		//TODO need to inspect
+    public void singleApprove() {
+        overtimePopup.setApprovement(1);
+        overtimeService.updateOvertime(overtimePopup);
+        //TODO need to inspect
 //		message = new FacesMessage(FacesMessage.SEVERITY_INFO,
 //				"Overtime for " + overtimePopup.getUserEntity().getUser_first_name() + " approved",
 //				overtimePopup.getDate_from() + "-" + overtimePopup.getDate_to());
@@ -269,11 +263,11 @@ public class OvertimeBean implements Serializable {
 //						+ overtimePopup.getDate_from() + "\n" + "Date to: " + overtimePopup.getDate_to() + "\n"
 //						+ "Project name: " + overtimePopup.getProject(),
 //				overtimePopup.getUserEntity().getUser_email());
-	}
+    }
 
-	public void singleDisapprove() {
-		overtimePopup.setApprovement(0);
-		overtimeService.updateOvertime(overtimePopup);
+    public void singleDisapprove() {
+        overtimePopup.setApprovement(0);
+        overtimeService.updateOvertime(overtimePopup);
 //		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
 //				"Overtime for " + overtimePopup.getUserEntity().getUser_first_name() + " disapprove",
 //				overtimePopup.getDate_from() + "-" + overtimePopup.getDate_to());
@@ -284,27 +278,27 @@ public class OvertimeBean implements Serializable {
 //						+ overtimePopup.getDate_from() + "\n" + "Date to: " + overtimePopup.getDate_to() + "\n"
 //						+ "Project name: " + overtimePopup.getProject(),
 //				overtimePopup.getUserEntity().getUser_email());
-	}
+    }
 
-	public void switchApprovement() {
-		if (approvementAll) {
-			List<OvertimeEntity> overtimeEntities = overtimeService.getAllOvertimes(calendarBean.getDate());
-			for (OvertimeEntity overtime : overtimeEntities) {
-				overtime.setApprovement(1);
-				overtimeService.updateOvertime(overtime);
-			}
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "All overtimes aproved", "");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		} else if (!approvementAll) {
-			List<OvertimeEntity> overtimeEntities = overtimeService.getAllOvertimes(calendarBean.getDate());
-			for (OvertimeEntity overtime : overtimeEntities) {
-				overtime.setApprovement(0);
-				overtimeService.updateOvertime(overtime);
+    public void switchApprovement() {
+        if (approvementAll) {
+            List<OvertimeEntity> overtimeEntities = overtimeService.getAllOvertimes(calendarBean.getDate());
+            for (OvertimeEntity overtime : overtimeEntities) {
+                overtime.setApprovement(1);
+                overtimeService.updateOvertime(overtime);
+            }
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "All overtimes aproved", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else if (!approvementAll) {
+            List<OvertimeEntity> overtimeEntities = overtimeService.getAllOvertimes(calendarBean.getDate());
+            for (OvertimeEntity overtime : overtimeEntities) {
+                overtime.setApprovement(0);
+                overtimeService.updateOvertime(overtime);
 
-			}
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "All overtimes disaproved", "");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
-	}
+            }
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "All overtimes disaproved", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
 
 }
