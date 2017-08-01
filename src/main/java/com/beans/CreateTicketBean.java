@@ -32,7 +32,7 @@ public class CreateTicketBean implements Serializable {
     private List<Areas> selectedAreas;
     private Products selectedProduct;
     private FacesMessage message;
-    private int zendeskId = 0;
+    private int zendeskId;
     private int zendeskIdClosed;
     private String zendeskUrl;
     private List<TicketEntity> deleteTickets;
@@ -148,6 +148,7 @@ public class CreateTicketBean implements Serializable {
             createTicketEntity.setDate(calendarBean.getDate());
             createTicketEntity.setFront(front_area);
             createTicketEntity.setMembers(members_area);
+            System.out.println("---------------->>>>>" + selectedProduct.name());
             createTicketEntity.setProduct(selectedProduct.name());
             createTicketEntity.setOpen_user_id(loginBean.getUser_id());
             createTicketEntity.setZendesk_id(zendeskId);
@@ -236,21 +237,22 @@ public class CreateTicketBean implements Serializable {
 
     /**
      * Method for solved ticket
+     * Works fine 01.08 Sergiy.K
      */
-    //TODO
-    public void createSolvedTicket() {
-        TicketEntity solvedTicketEntity = new TicketEntity();
-        solvedTicketEntity.setDate(calendarBean.getDate());
-        solvedTicketEntity.setClose_user_id(loginBean.getUser_id());
-        solvedTicketEntity.setZendesk_id(zendeskIdClosed);
 
-        ticketService.createTicket(solvedTicketEntity);
+    public void closeTicket() {
+        TicketEntity closedTicket = new TicketEntity();
+        closedTicket.setDate(calendarBean.getDate());
+        closedTicket.setClose_user_id(loginBean.getUser_id());
+        closedTicket.setZendesk_id(zendeskIdClosed);
+
+        ticketService.createTicket(closedTicket);
         message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Ticket " + zendeskIdClosed + " closed", "");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     /**
-     * Method for create update control
+     * Method for create update control - works fine
      */
     public void createUpdateControl() {
         UpdateControlEntity updateControlEntity = new UpdateControlEntity();
@@ -281,15 +283,15 @@ public class CreateTicketBean implements Serializable {
      *
      * @return solved tickets count
      */
-    //TODO need to add methods to DAO and Service classes
-    public Integer getSolvedTicketsCount() {
-        /*if (loginBean.getUserRole().equals("admin")) {
-            return ticketService.getAllSolvedTickets(calendarBean.getDate()).size();
-		} else if (loginBean.getUserRole().equals("user")) {
-			return solvedTicketService.getSolvedTickets(loginBean.getUser_id(), calendarBean.getDate()).size();
-		} else {*/
-        return 6;
-        /*}*/
+    //TODO need to add methods to DAO and Service classes - already fixed will be tested
+    public Integer getClosedTicketsCount() {
+        if (loginBean.getUserRole().equals("admin")) {
+            return ticketService.getAllUsersClosedTicketsByMonth(calendarBean.getDate()).size();
+        } else if (loginBean.getUserRole().equals("user")) {
+            return ticketService.getUserClosedTicketsByDate(loginBean.getUser_id(), calendarBean.getDate()).size();
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -297,15 +299,15 @@ public class CreateTicketBean implements Serializable {
      *
      * @return create tickets count
      */
-    //TODO need to add methods to DAO and Service classes
+    //TODO need to add methods to DAO and Service classes - already fixed will be tested
     public Integer getCreatedTicketsCount() {
-		/*if (loginBean.getUserRole().equals("admin")) {
-			return createTicketService.getAllTickets(calendarBean.getDate()).size();
-		} else if (loginBean.getUserRole().equals("user")) {
-			return createTicketService.getTickets(loginBean.getUser_id(), calendarBean.getDate()).size();
-		} else {*/
-        return 5;
-		/*}*/
+        if (loginBean.getUserRole().equals("admin")) {
+            return ticketService.getAllUsersOpenedTicketsByMonth(calendarBean.getDate()).size();
+        } else if (loginBean.getUserRole().equals("user")) {
+            return ticketService.getUserCreatedTicketsByDate(loginBean.getUser_id(), calendarBean.getDate()).size();
+        } else {
+            return 5;
+        }
     }
 
     /**
@@ -315,9 +317,8 @@ public class CreateTicketBean implements Serializable {
      * @return count solved tickets
      */
     //TODO need to add methods to DAO and Service classes
-    public Integer getSolvedTicketsId(Integer userId) {
-		/*return ticketService.getSolvedTickets(userId, calendarBean.getDate()).size();*/
-        return 3;
+    public Integer getSolvedTicketsCount(Integer userId) {
+        return ticketService.getUserClosedTicketsByDate(userId, calendarBean.getDate()).size();
     }
 
     /**
@@ -328,8 +329,7 @@ public class CreateTicketBean implements Serializable {
      */
     //TODO need to add methods to DAO and Service classes
     public Integer getUpdateControlId(Integer userId) {
-//		return updateControlService.getUpdateControlDao(userId, calendarBean.getDate()).size();
-        return 34;
+        return updateControlService.getUserUpdateControlByDate(userId, calendarBean.getDate()).size();
     }
 
     /**
@@ -340,8 +340,7 @@ public class CreateTicketBean implements Serializable {
      */
     //TODO need to add methods to DAO and Service classes
     public Integer getCreatedTicketsId(Integer userId) {
-//		return createTicketService.getTickets(userId, calendarBean.getDate()).size();
-        return 21;
+        return ticketService.getUserCreatedTicketsByDate(userId, calendarBean.getDate()).size();
     }
 
     public enum Products {

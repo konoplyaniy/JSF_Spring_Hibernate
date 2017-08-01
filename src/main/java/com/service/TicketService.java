@@ -34,6 +34,17 @@ public class TicketService {
     }
 
     @Transactional
+    public ArrayList<TicketEntity> getAllUsersClosedTicketsByMonth(Date date) {
+        return ticketDao.getAllUsersClosedTicketsByMonth(date);
+    }
+
+    @Transactional
+    public ArrayList<TicketEntity> getAllUsersOpenedTicketsByMonth(Date date) {
+        return ticketDao.getAllUsersOpenedTicketsByMonth(date);
+    }
+
+
+    @Transactional
     public ArrayList<TicketEntity> getAllUsersTicketsByMonth(Date date) {
         return ticketDao.getAllUsersTicketsByMonth(date);
     }

@@ -33,7 +33,7 @@
 				</div>
 				<!-- Value panel -->
 				<div class="ui-g-3 box-value">
-					<h:outputText value="#{createTicketBean.solvedTicketsCount}" />
+					<h:outputText value="#{createTicketBean.closedTicketsCount}" />
 				</div>
 				<!-- Create/Delete solved tickets buttons with forms -->
 				<div class="ui-g-5">
@@ -54,7 +54,7 @@
 												 widgetVar="createSolvedTicketButton"
 												 onclick="PF('createSolvedTicketButton').disable();"
 												 oncomplete="PF('createSolvedTicketButton').enable();"
-												 action="#{createTicketBean.createSolvedTicket}"
+												 action="#{createTicketBean.closeTicket}"
 												 update=":mainViewForm,message">
 									<f:ajax render=":mainViewForm,message"/>
 								</p:commandButton>
@@ -65,7 +65,7 @@
 					</p:dialog>
 							<p:commandButton value="-"
 						      onclick="PF('deleteSolvedDialog').show();"
-						      disabled="#{not calendarBean.itsCurrentMonth() or createTicketBean.solvedTicketsCount==0}" />
+						      disabled="#{not calendarBean.itsCurrentMonth() or createTicketBean.closedTicketsCount==0}" />
 						<!-- Abort Solved ticket popup -->
 					<p:dialog header="Do you really want to abort solved ticket?"
 						widgetVar="deleteSolvedDialog"

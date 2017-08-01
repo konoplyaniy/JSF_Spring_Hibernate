@@ -35,7 +35,6 @@ public class TicketDao {
         return createList;
     }
 
-
     public ArrayList<TicketEntity> getUserCreatedTicketsByDate(int user_id, Date date) {
         Query query = sessionFactory.getCurrentSession()
                 .createQuery(
@@ -43,7 +42,7 @@ public class TicketDao {
         query.setParameter("user_id", user_id);
         query.setParameter("date", date);
         ArrayList<TicketEntity> createList = (ArrayList<TicketEntity>) query.list();
-        System.out.println("result list size" + createList.size());
+        System.out.println("result list size " + createList.size());
         return createList;
     }
 
@@ -57,6 +56,23 @@ public class TicketDao {
                 .createQuery(
                         "from TicketEntity where close_user_id=:user_id and month(date)=month(:date) and year(date)=year(:date)");
         query.setParameter("user_id", user_id);
+        query.setParameter("date", date);
+        ArrayList<TicketEntity> createList = (ArrayList<TicketEntity>) query.list();
+        return createList;
+    }
+
+
+    public ArrayList<TicketEntity> getAllUsersClosedTicketsByMonth(Date date) {
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("from TicketEntity where month(date)=month(:date) and year(date)=year(:date) and close_user_id > 0");
+        query.setParameter("date", date);
+        ArrayList<TicketEntity> createList = (ArrayList<TicketEntity>) query.list();
+        return createList;
+    }
+
+    public ArrayList<TicketEntity> getAllUsersOpenedTicketsByMonth(Date date) {
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("from TicketEntity where month(date)=month(:date) and year(date)=year(:date) and open_user_id > 0");
         query.setParameter("date", date);
         ArrayList<TicketEntity> createList = (ArrayList<TicketEntity>) query.list();
         return createList;
@@ -77,7 +93,7 @@ public class TicketDao {
     }*/
 
     public void createTicket(TicketEntity ticketEntity) {
-        sessionFactory.getCurrentSession().persist(ticketEntity);
+        sessionFactory.getCurrentSession().save(ticketEntity);
     }
 
     public void deleteTicket(TicketEntity ticketEntity) {
